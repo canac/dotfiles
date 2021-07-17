@@ -1,0 +1,57 @@
+# This file contains fish universal variable definitions.
+# VERSION: 3.0
+SETUVAR --export FONTAWESOME_NPM_AUTH_TOKEN:14F3D297\x2dB988\x2d4D3E\x2dB2BF\x2dAB6CEC797A8F
+SETUVAR --export PATH:/Users/caleb/\x2ecargo/bin\x1e/usr/local/sbin\x1e/Users/caleb/\x2ekenv/bin\x1e/Users/caleb/\x2egem/ruby/2\x2e6\x2e0/bin\x1e/Users/caleb/\x2ecargo/bin\x1e/usr/local/bin\x1e/usr/bin\x1e/bin\x1e/usr/sbin\x1e/sbin\x1e/Library/Apple/usr/bin\x1e/usr/local/MacGPG2/bin\x1e/Users/caleb/\x2elocal/bin
+SETUVAR __fish_classic_git_prompt_initialized:\x1d
+SETUVAR __fish_init_1_50_0:\x1d
+SETUVAR __fish_init_2_39_8:\x1d
+SETUVAR __fish_init_2_3_0:\x1d
+SETUVAR __fish_initialized:3100
+SETUVAR _fish_abbr__2E_2E_:cd\x20\x2e\x2e
+SETUVAR _fish_abbr_bu:brew\x20upgrade
+SETUVAR _fish_abbr_g:git
+SETUVAR _fish_abbr_gp:git\x20push
+SETUVAR _fish_abbr_gs:git\x20status
+SETUVAR _fish_abbr_l:ls\x20\x2dlah
+SETUVAR _fish_abbr_n:npm\x20run
+SETUVAR _fish_abbr_ni:npm\x20install\x20\x2d\x2dsave
+SETUVAR _fish_abbr_nid:npm\x20install\x20\x2d\x2dsave\x2ddev
+SETUVAR _fish_abbr_nr:npm\x20uninstall\x20\x2d\x2dsave
+SETUVAR _fish_abbr_nrd:npm\x20uninstall\x20\x2d\x2dsave\x2ddev
+SETUVAR _fish_abbr_ns:npm\x20start
+SETUVAR _fish_abbr_nt:npm\x20test
+SETUVAR _fish_abbr_r:npm\x2drun
+SETUVAR _fish_abbr_td:npm\x20run\x20test\x2ddebug
+SETUVAR _fish_abbr_to:npm\x20run\x20test\x2donce
+SETUVAR _fish_abbr_tw:npm\x20run\x20test\x2dwatch
+SETUVAR fish_color_autosuggestion:555\x1eyellow
+SETUVAR fish_color_cancel:\x2dr
+SETUVAR fish_color_command:005fd7\x1epurple
+SETUVAR fish_color_comment:red
+SETUVAR fish_color_cwd:green
+SETUVAR fish_color_cwd_root:red
+SETUVAR fish_color_end:green
+SETUVAR fish_color_error:red\x1e\x2d\x2dbold
+SETUVAR fish_color_escape:cyan
+SETUVAR fish_color_history_current:cyan
+SETUVAR fish_color_host:normal
+SETUVAR fish_color_host_remote:yellow
+SETUVAR fish_color_match:cyan
+SETUVAR fish_color_normal:normal
+SETUVAR fish_color_operator:cyan
+SETUVAR fish_color_param:00afff\x1ecyan
+SETUVAR fish_color_quote:brown
+SETUVAR fish_color_redirection:normal
+SETUVAR fish_color_search_match:\x2d\x2dbackground\x3dpurple
+SETUVAR fish_color_selection:\x2d\x2dbackground\x3dpurple
+SETUVAR fish_color_status:red
+SETUVAR fish_color_user:green
+SETUVAR fish_color_valid_path:\x2d\x2dunderline
+SETUVAR fish_greeting:\x1d
+SETUVAR fish_key_bindings:fish_default_key_bindings
+SETUVAR fish_pager_color_completion:normal
+SETUVAR fish_pager_color_description:555\x1eyellow
+SETUVAR fish_pager_color_prefix:cyan
+SETUVAR fish_pager_color_progress:cyan
+SETUVAR fish_user_abbreviations:\x2e\x2e\x20cd\x20\x2e\x2e\x1egl\x20git\x20pull\x3b\x20and\x20git\x20submodule\x20update\x1ego\x20git\x20checkout\x1egp\x20git\x20push\x1egs\x20git\x20status\x1el\x20ls\x20\x2dlah\x1eg\x20git\x1ebu\x20brew\x20upgrade\x1ea\x20atom\x2dbeta\x20\x2e\x1ecf\x20caffeinate\x1ens\x20npm\x20start\x1ent\x20npm\x20test\x1eto\x20npm\x20run\x20test\x2donce\x1etw\x20npm\x20run\x20test\x2dwatch\x1etd\x20npm\x20run\x20test\x2ddebug\x1es0\x20bundle\x20exec\x20rails\x20s\x20\x2dp\x203000\x1es1\x20bundle\x20exec\x20rails\x20s\x20\x2dp\x203001\x1es2\x20bundle\x20exec\x20rails\x20s\x20\x2dp\x203002
+SETUVAR fish_user_paths:/Users/caleb/\x2ecargo/bin

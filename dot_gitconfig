@@ -1,0 +1,68 @@
+[alias]
+	a = add
+	ai = add --interactive
+	ap = add --patch
+	b = branch
+	ba = branch --remote
+	bd = branch --delete
+	bdr = push origin --delete
+	bf = branch --force
+	bm = branch --move
+	bmf = branch --move --force
+	cb = checkout -b
+	co = checkout
+	ci = commit
+	cif = commit --no-verify
+	cia = commit --amend
+	ciaf = commit --amend --no-verify
+	cian = commit --amend --no-edit
+	cianf = commit --amend --no-edit --no-verify
+	cz = !npx -p commitizen cz
+	d = diff
+	ds = diff --staged
+	l1 = log --pretty=oneline
+	m = merge --no-ff
+	ma = merge --abort
+	ra = rebase --abort
+	rb = rebase origin/master
+	rc = rebase --continue
+	ri = rebase --interactive
+	rv = remote --verbose
+	pf = push --force-with-lease
+	pn = !git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)
+	s = status
+	sa = stash apply
+	sh = stash
+	sk = stash --keep-index
+	sp = stash pop
+	ss = stash show --patch
+	ua = reset HEAD
+	uci = reset HEAD^
+[branch]
+	autosetuprebase = always
+[color]
+	ui = true
+[commit]
+	gpgsign = true
+[core]
+	autocrlf = input
+	editor = code --wait
+	safecrlf = true
+[credential]
+	helper = osxkeychain
+[help]
+	autocorrect = 10
+[init]
+	defaultBranch = main
+[push]
+	default = current
+[pull]
+	rebase = true
+[rebase]
+	autosquash = true
+[remote "origin"]
+	prune = true
+[user]
+	email = canac@users.noreply.github.com
+	name = Caleb Cox
+	signingkey = A88CE79A6BAC53C39AC331099025163398B61D7E

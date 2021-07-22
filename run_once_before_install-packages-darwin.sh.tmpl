@@ -1,0 +1,62 @@
+{{- if (eq .chezmoi.os "darwin") -}}
+#!/bin/bash
+
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+brew bundle --no-lock --file=/dev/stdin <<EOF
+tap "heroku/brew"
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/cask-versions"
+tap "homebrew/core"
+tap "homebrew/services"
+tap "mongodb/brew"
+brew "cargo-instruments"
+brew "cask"
+brew "chezmoi"
+brew "deno"
+brew "ffmpeg"
+brew "fish"
+brew "git"
+brew "go"
+brew "imagemagick"
+brew "node"
+brew "pipx"
+brew "rustup-init"
+brew "wget"
+brew "youtube-dl"
+brew "heroku/brew/heroku"
+brew "mongodb/brew/mongodb-community"
+cask "adobe-acrobat-reader"
+cask "appcleaner"
+cask "brave-browser"
+cask "firefox"
+cask "google-chrome"
+cask "google-chrome-dev"
+cask "google-drive"
+cask "gpg-suite-no-mail"
+cask "kindle"
+cask "messenger"
+cask "microsoft-edge"
+cask "microsoft-excel"
+cask "microsoft-powerpoint"
+cask "microsoft-word"
+cask "postman"
+cask "runjs"
+cask "sourcetree"
+cask "spotify"
+cask "steam"
+cask "sublime-text"
+cask "ticktick"
+cask "visual-studio-code"
+cask "vlc"
+cask "zoom"
+mas "XCode", id: 497799835
+EOF
+
+brew services start mongodb/brew/mongodb-community
+
+npm install -g @cloudflare/wrangler @ionic/cli @vue/cli-service-global @vue/cli jay-repl netlify-cli nodemon npm-check npm-run npm trash-cli typescript vercel yarn
+
+pipx install copier
+{{ end -}}

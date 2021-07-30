@@ -8,7 +8,7 @@ const { findLast, mapValues } = await npm('lodash');
 
 const pattern = /^(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})-(?<index>\d+)\.md$/;
 
-const postsDir = '/Users/caleb/dev/journal/_posts';
+const postsDir = '/Users/caleb/dev/journal/jekyll/_posts';
 const lastPost = findLast(await readdir(postsDir), file => pattern.test(file));
 const { year, month, day, index } = mapValues(pattern.exec(lastPost).groups, str => parseInt(str, 10));
 const lastDay = new Date(year, month - 1, day);

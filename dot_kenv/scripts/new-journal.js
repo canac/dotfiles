@@ -30,7 +30,7 @@ const newPost = await arg('Post date:', [{
 }]);
 
 const numberFormattedDate = format(new Date(newPost.date), 'yyyy-MM-dd');
-const wordFormattedDate = format(new Date(newPost.date), 'MMMM d, y');
+const wordFormattedDate = format(new Date(newPost.date), 'EEEE, MMMM d, y');
 const newFilename = join(postsDir, `${numberFormattedDate}-${newPost.index}.md`);
 await writeFile(newFilename, `---
 title: "${wordFormattedDate} #${newPost.index}"

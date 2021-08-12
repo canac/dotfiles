@@ -4,17 +4,15 @@
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 brew bundle --no-lock --file=/dev/stdin <<EOF
-tap "heroku/brew"
 tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/cask-versions"
 tap "homebrew/core"
 tap "homebrew/services"
+tap "heroku/brew"
 tap "mongodb/brew"
-brew "cargo-instruments"
 brew "cask"
 brew "chezmoi"
-brew "deno"
 brew "ffmpeg"
 brew "fish"
 brew "git"

@@ -21,13 +21,15 @@ for (const filename of posts) {
     continue;
   }
 
-  tags.split(' ').forEach(tag => {
+  tags.split(' ').forEach((tag) => {
     usedTags.add(tag);
   });
 }
 
 // Sort alphabetically, ignoring case
-const sortedTags = sortBy(Array.from(usedTags.keys()).sort(), tag => tag.toLowerCase());
+const sortedTags = sortBy(Array.from(usedTags.keys()).sort(), (tag) =>
+  tag.toLowerCase(),
+);
 
 // Loop to allow picking multiple tags
 while (true) {

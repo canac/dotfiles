@@ -7,9 +7,9 @@ const { filterLimit } = await npm('async');
 
 const devDir = '/Users/caleb/dev';
 const projects = (await readdir(devDir, { withFileTypes: true }))
-  .filter(path => path.isDirectory())
-  .map(path => path.name);
-const devProjects = await filterLimit(projects, 10, async project => {
+  .filter((path) => path.isDirectory())
+  .map((path) => path.name);
+const devProjects = await filterLimit(projects, 10, async (project) => {
   try {
     const packageJson = await readFile(join(devDir, project, 'package.json'));
     return JSON.parse(packageJson).scripts.dev;

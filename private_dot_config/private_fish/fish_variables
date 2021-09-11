@@ -12,6 +12,7 @@ SETUVAR _fish_abbr_g:git
 SETUVAR _fish_abbr_gp:git\x20push
 SETUVAR _fish_abbr_gs:git\x20status
 SETUVAR _fish_abbr_l:ls\x20\x2dlah
+SETUVAR _fish_abbr_mc:mkdir_and_cd
 SETUVAR _fish_abbr_n:npm\x20run
 SETUVAR _fish_abbr_nd:npm\x20run\x20dev
 SETUVAR _fish_abbr_ni:npm\x20install\x20\x2d\x2dsave

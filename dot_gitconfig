@@ -24,7 +24,7 @@
 	m = merge --no-ff
 	ma = merge --abort
 	ra = rebase --abort
-	rb = rebase origin/master
+	rb = rebase origin/main
 	rc = rebase --continue
 	ri = rebase --interactive
 	rv = remote --verbose

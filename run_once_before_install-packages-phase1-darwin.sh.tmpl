@@ -1,7 +1,11 @@
 {{- if (eq .chezmoi.os "darwin") -}}
 #!/bin/bash
 
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# In phase 1, install all needed binary files from the package manager
+
+if [ ! $(which brew) ]; then
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
 
 brew bundle --no-lock --file=/dev/stdin <<EOF
 tap "homebrew/bundle"
@@ -60,7 +64,4 @@ EOF
 
 brew services start mongodb/brew/mongodb-community
 
-npm install -g @cloudflare/wrangler @ionic/cli @vue/cli-service-global @vue/cli jay-repl netlify-cli nodemon npm-check npm-run npm trash-cli typescript vercel yarn
-
-pipx install --force copier
 {{ end -}}

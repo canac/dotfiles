@@ -12,3 +12,24 @@ fish_add_path ~/.cargo/bin
 fish_add_path ~/.kenv/bin
 fish_add_path ~/.local/bin
 fish_add_path ~/go/bin
+
+set -Ux EDITOR code
+
+abbr -a -U -- .. 'cd ..'
+abbr -a -U -- bu 'brew upgrade'
+abbr -a -U -- c 'code .'
+abbr -a -U -- g git
+abbr -a -U -- gp 'git push'
+abbr -a -U -- gs 'git status'
+abbr -a -U -- l 'ls -lah'
+abbr -a -U -- mc mkdir_and_cd
+abbr -a -U -- n 'npm run'
+abbr -a -U -- nd 'npm run dev'
+abbr -a -U -- ni 'npm install --save'
+abbr -a -U -- nid 'npm install --save-dev'
+abbr -a -U -- nr 'npm uninstall --save'
+abbr -a -U -- nrd 'npm uninstall --save-dev'
+abbr -a -U -- ns 'npm start'
+abbr -a -U -- nt 'npm test'
+abbr -a -U -- r npm-run
+abbr -a -U -- s 'stree .'

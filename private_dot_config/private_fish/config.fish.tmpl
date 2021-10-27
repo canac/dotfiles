@@ -1,0 +1,14 @@
+{{ if (eq .chezmoi.os "darwin") }}
+eval (/usr/local/bin/brew shellenv)
+{{ else if (eq .chezmoi.os "linux" ) }}
+eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+{{ end }}
+starship init fish | source
+zoxide init fish | source
+source $HOME/.iterm2_shell_integration.fish
+
+fish_add_path (brew --prefix)/opt/ruby/bin
+fish_add_path ~/.cargo/bin
+fish_add_path ~/.kenv/bin
+fish_add_path ~/.local/bin
+fish_add_path ~/go/bin

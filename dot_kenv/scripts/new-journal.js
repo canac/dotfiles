@@ -4,7 +4,7 @@
 import { readdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 const { addDays, format } = await npm('date-fns');
-const { findLast, mapValues } = await npm('lodash');
+const { findLast, mapValues } = await npm('lodash-es');
 
 const pattern =
   /^(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})-(?<index>\d+)\.md$/;

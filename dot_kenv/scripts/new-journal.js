@@ -9,7 +9,8 @@ const { findLast, mapValues } = await npm('lodash-es');
 const pattern =
   /^(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})-(?<index>\d+)\.md$/;
 
-const postsDir = '/Users/caleb/dev/journal/jekyll/_posts';
+const journalDir = '/Users/caleb/dev/journal';
+const postsDir = join(journalDir, 'jekyll', '_posts');
 const lastPost = findLast(await readdir(postsDir), (file) =>
   pattern.test(file),
 );
@@ -61,4 +62,4 @@ tags: ` +
 
 Jesus, `,
 );
-edit(`${newFilename}`, null, 4, 7);
+edit(`${journalDir} ${newFilename}`, null, 4, 7);

@@ -5,6 +5,7 @@ eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 {{ end }}
 starship init fish | source
 zoxide init fish | source
+mcfly init fish | source
 {{ if (eq .chezmoi.os "darwin") }}
 source $HOME/.iterm2_shell_integration.fish
 {{ end }}

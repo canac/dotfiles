@@ -78,6 +78,8 @@ mas "XCode", id: 497799835
 {{ end }}
 EOF
 
+$(brew --prefix)/opt/fzf/install --key-bindings --no-completion --no-update-rc --no-bash --no-zsh
+
 {{ if (eq .chezmoi.os "darwin") }}
 brew services start mongodb/brew/mongodb-community
 brew services start postgresql

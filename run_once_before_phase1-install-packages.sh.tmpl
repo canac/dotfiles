@@ -26,6 +26,7 @@ tap "homebrew/services"
 {{ end }}
 tap "cantino/mcfly"
 tap "mongodb/brew"
+brew "caddy"
 brew "cargo-edit"
 brew "chezmoi"
 brew "ffmpeg"
@@ -82,5 +83,6 @@ $(brew --prefix)/opt/fzf/install --key-bindings --no-completion --no-update-rc -
 
 {{ if (eq .chezmoi.os "darwin") }}
 brew services start mongodb/brew/mongodb-community
+brew services start caddy
 brew services start postgresql
 {{ end }}

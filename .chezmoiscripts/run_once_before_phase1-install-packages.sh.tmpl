@@ -26,6 +26,7 @@ tap "homebrew/services"
 {{ end }}
 tap "cantino/mcfly"
 tap "mongodb/brew"
+tap "nextdns/tap"
 brew "caddy"
 brew "cargo-edit"
 brew "chezmoi"
@@ -37,6 +38,7 @@ brew "go"
 brew "hasura-cli"
 brew "imagemagick"
 brew "mcfly"
+brew "nextdns"
 brew "node"
 brew "pipx"
 brew "ruby"
@@ -78,8 +80,6 @@ cask "zoom"
 mas "XCode", id: 497799835
 {{ end }}
 EOF
-
-$(brew --prefix)/opt/fzf/install --key-bindings --no-completion --no-update-rc --no-bash --no-zsh
 
 {{ if (eq .chezmoi.os "darwin") }}
 brew services start mongodb/brew/mongodb-community

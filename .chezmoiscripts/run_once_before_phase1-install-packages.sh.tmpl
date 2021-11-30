@@ -18,7 +18,7 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 brew bundle --no-lock --file=/dev/stdin <<EOF
 tap "cantino/mcfly"
-tap "mongodb/brew"
+tap "homebrew/services"
 tap "nextdns/tap"
 brew "caddy"
 brew "cargo-edit"
@@ -31,7 +31,6 @@ brew "go"
 brew "hasura-cli"
 brew "imagemagick"
 brew "mcfly"
-brew "mongodb-community"
 brew "nextdns"
 brew "node"
 brew "pipx"
@@ -43,11 +42,12 @@ brew "wget"
 brew "youtube-dl"
 brew "zoxide"
 {{ if (eq .chezmoi.os "darwin") }}
+tap "mongodb/brew"
 tap "homebrew/cask"
 tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
-tap "homebrew/services"
 brew "cask"
+brew "mongodb-community"
 cask "adobe-acrobat-reader"
 cask "appcleaner"
 cask "brave-browser"
@@ -79,8 +79,8 @@ mas "XCode", id: 497799835
 {{ end }}
 EOF
 
-{{ if (eq .chezmoi.os "darwin") }}
 brew services start caddy
-brew services start mongodb-community
 brew services start postgresql
+{{ if (eq .chezmoi.os "darwin") }}
+brew services start mongodb-community
 {{ end }}

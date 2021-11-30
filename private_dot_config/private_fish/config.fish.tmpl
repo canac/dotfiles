@@ -10,7 +10,7 @@ mcfly init fish | source
 source $HOME/.iterm2_shell_integration.fish
 {{ end }}
 
-fish_add_path (brew --prefix)/opt/ruby/bin
+fish_add_path (brew --prefix ruby)/bin
 fish_add_path ~/.cargo/bin
 {{ if (eq .chezmoi.os "darwin") }}
 fish_add_path ~/.kenv/bin

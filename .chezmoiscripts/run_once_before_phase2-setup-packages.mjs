@@ -4,7 +4,7 @@
 // is a nicer scripting language than bash
 
 // Configure fzf
-await $`$(brew --prefix)/opt/fzf/install --key-bindings --no-completion --no-update-rc --no-bash --no-zsh`;
+await $`$(brew --prefix fzf)/install --key-bindings --no-completion --no-update-rc --no-bash --no-zsh`;
 
 // Configure nextdns
 if ((await $`sudo nextdns status`) !== 'running') {

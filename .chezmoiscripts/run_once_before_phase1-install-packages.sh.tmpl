@@ -3,7 +3,7 @@
 # In phase 1, install all needed binary files from the package manager
 
 {{ if (ne .chezmoi.os "darwin") }}
-sudo apt install curl git
+sudo apt install curl gcc git
 {{ end }}
 
 if [ ! $(which brew) ]; then

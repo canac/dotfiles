@@ -1,4 +1,4 @@
-#!/usr/bin/env npx zx
+#!/usr/bin/env -S npx zx
 
 // In phase 2, use zx, which was installed in phase 1, to install npm and pipx packages because it
 // is a nicer scripting language than bash

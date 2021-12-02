@@ -3,6 +3,11 @@
 // In phase 2, use zx, which was installed in phase 1, to configure installed packages because it
 // is a nicer scripting language than bash
 
+// Run rustup-init if it hasn't been run before
+if (!(await fs.pathExists(path.join(os.homedir(), '.rustup')))) {
+  await $`rustup-init -y --no-modify-path`;
+}
+
 // Configure fzf
 await $`$(brew --prefix fzf)/install --key-bindings --no-completion --no-update-rc --no-bash --no-zsh`;
 

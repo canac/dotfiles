@@ -20,6 +20,7 @@
 	cz = !npx -p commitizen cz
 	d = diff
 	ds = diff --staged
+	f = absorb --and-rebase
 	l1 = log --pretty=oneline
 	m = merge --no-ff
 	ma = merge --abort

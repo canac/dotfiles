@@ -10,34 +10,34 @@ mcfly init fish | source
 source $HOME/.iterm2_shell_integration.fish
 {{ end }}
 
-fish_add_path (brew --prefix ruby)/bin
-fish_add_path ~/.cargo/bin
+fish_add_path -g (brew --prefix ruby)/bin
+fish_add_path -g ~/.cargo/bin
 {{ if (eq .chezmoi.os "darwin") }}
-fish_add_path ~/.kenv/bin
+fish_add_path -g ~/.kenv/bin
 {{ end }}
-fish_add_path ~/.local/bin
-fish_add_path ~/go/bin
+fish_add_path -g ~/.local/bin
+fish_add_path -g ~/go/bin
 
-set -U fish_greeting
-set -Ux EDITOR code
-set -Ux HOMEBREW_NO_ENV_HINTS 1
+set -g fish_greeting
+set -gx EDITOR code
+set -gx HOMEBREW_NO_ENV_HINTS 1
 
-abbr -a -U -- .. 'cd ..'
-abbr -a -U -- bu 'brew upgrade'
-abbr -a -U -- c 'code .'
-abbr -a -U -- cd z
-abbr -a -U -- g git
-abbr -a -U -- gp 'git push'
-abbr -a -U -- gs 'git status'
-abbr -a -U -- l 'ls -lah'
-abbr -a -U -- mc mkdir_and_cd
-abbr -a -U -- n 'npm run'
-abbr -a -U -- nd 'npm run dev'
-abbr -a -U -- ni 'npm install --save'
-abbr -a -U -- nid 'npm install --save-dev'
-abbr -a -U -- nr 'npm uninstall --save'
-abbr -a -U -- nrd 'npm uninstall --save-dev'
-abbr -a -U -- ns 'npm start'
-abbr -a -U -- nt 'npm test'
-abbr -a -U -- r npm-run
-abbr -a -U -- s 'stree .'
+abbr -a -g -- .. 'cd ..'
+abbr -a -g -- bu 'brew upgrade'
+abbr -a -g -- c 'code .'
+abbr -a -g -- cd z
+abbr -a -g -- g git
+abbr -a -g -- gp 'git push'
+abbr -a -g -- gs 'git status'
+abbr -a -g -- l 'ls -lah'
+abbr -a -g -- mc mkdir_and_cd
+abbr -a -g -- n 'npm run'
+abbr -a -g -- nd 'npm run dev'
+abbr -a -g -- ni 'npm install --save'
+abbr -a -g -- nid 'npm install --save-dev'
+abbr -a -g -- nr 'npm uninstall --save'
+abbr -a -g -- nrd 'npm uninstall --save-dev'
+abbr -a -g -- ns 'npm start'
+abbr -a -g -- nt 'npm test'
+abbr -a -g -- r npm-run
+abbr -a -g -- s 'stree .'

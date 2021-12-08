@@ -1,3 +1,4 @@
+// Shortcut: command shift j
 // Menu: New journal entry
 // Description: Create a new journal entry
 

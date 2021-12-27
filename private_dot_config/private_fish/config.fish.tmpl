@@ -21,6 +21,8 @@ fish_add_path -g ~/go/bin
 set -g fish_greeting
 set -gx EDITOR code
 set -gx HOMEBREW_NO_ENV_HINTS 1
+set -gx FZF_CTRL_T_COMMAND "fd --type file --hidden --exclude .git/ | sed 's@^\./@@'"
+set -gx FZF_CTRL_T_OPTS "--preview \"bat --color=always {}\""
 
 abbr -a -g -- .. 'cd ..'
 abbr -a -g -- bu 'brew upgrade'

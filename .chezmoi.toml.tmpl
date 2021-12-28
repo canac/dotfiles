@@ -1,12 +1,14 @@
-{{- $backup_namespace := promptString "Backup namespace" -}}
-{{- $restic_password := promptString "Restic password" -}}
-{{- $b2_account_id := promptString "Backblaze B2 account ID" -}}
-{{- $b2_account_key := promptString "Backblaze B2 account key" -}}
+{{- $backup_namespace := "" -}}
+{{- if (hasKey . "backup_namespace") -}}
+{{-   $backup_namespace = .backup_namespace -}}
+{{- else -}}
+{{-   $backup_namespace = promptString "Backup namespace" -}}
+{{- end -}}
 
 [data]
     backup_namespace = {{ $backup_namespace | quote }}
 
 [data.env]
-    restic_password = {{ $restic_password | quote }}
-    b2_account_id = {{ $b2_account_id | quote }}
-    b2_account_key = {{ $b2_account_key | quote }}
+    restic_password = {{ default ((bitwarden "item" "env.fish").notes | fromYaml).RESTIC_PASSWORD .env.restic_password | quote }}
+    b2_account_id = {{ default ((bitwarden "item" "env.fish").notes | fromYaml).B2_ACCOUNT_ID .env.b2_account_id | quote }}
+    b2_account_key = {{ default ((bitwarden "item" "env.fish").notes | fromYaml).B2_ACCOUNT_KEY .env.b2_account_key | quote }}

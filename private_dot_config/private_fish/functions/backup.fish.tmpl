@@ -2,7 +2,14 @@ function backup --description 'Backup online using Restic'
     set -lx RESTIC_PASSWORD '{{ .env.restic_password }}'
     set -lx B2_ACCOUNT_ID {{ .env.b2_account_id }}
     set -lx B2_ACCOUNT_KEY {{ .env.b2_account_key }}
+    set -l repo b2:grader-rectify-patio:/{{ .backup_namespace }}
+
+    # Create the repo if necessary
+    if not restic -r $repo snapshots
+        # The repo doesn't exist yet because listing the snapshots failed
+        restic init -r $repo
+    end
 
     # Make a list of all the files to be backed up and pipe them to Restic to be backed up
-    fd . ~/dev/ -E .DS_Store -E .git -E node_modules/ -E forks/ -E third-party/ -H --full-path -t file | restic backup -r b2:grader-rectify-patio:/{{ .backup_namespace }} --verbose --files-from-verbatim -
+    fd . ~/dev/ -E .DS_Store -E .git -E node_modules/ -E forks/ -E third-party/ -H --full-path -t file | restic backup -r $repo --verbose --files-from-verbatim -
 end

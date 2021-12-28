@@ -5,10 +5,13 @@
 {{-   $backup_namespace = promptString "Backup namespace" -}}
 {{- end -}}
 
+{{- $password_salt := default ((bitwarden "item" "env.fish").notes | fromYaml).PASSWORD_SALT .password_salt -}}
+
 [data]
     backup_namespace = {{ $backup_namespace | quote }}
+    password_salt = {{ $password_salt | quote }}
 
 [data.env]
-    restic_password = {{ default ((bitwarden "item" "env.fish").notes | fromYaml).RESTIC_PASSWORD .env.restic_password | quote }}
+    restic_password = {{ sha256sum (print $backup_namespace $password_salt) | quote }}
     b2_account_id = {{ default ((bitwarden "item" "env.fish").notes | fromYaml).B2_ACCOUNT_ID .env.b2_account_id | quote }}
     b2_account_key = {{ default ((bitwarden "item" "env.fish").notes | fromYaml).B2_ACCOUNT_KEY .env.b2_account_key | quote }}

@@ -1,8 +1,8 @@
 function backup --description 'Backup online using Restic'
-    set -lx RESTIC_PASSWORD '{{ .env.restic_password }}'
-    set -lx B2_ACCOUNT_ID {{ .env.b2_account_id }}
-    set -lx B2_ACCOUNT_KEY {{ .env.b2_account_key }}
-    set -l repo b2:grader-rectify-patio:/{{ .backup_namespace }}
+    set -x RESTIC_PASSWORD {{ .env.restic_password }}
+    set -x B2_ACCOUNT_ID {{ .env.b2_account_id }}
+    set -x B2_ACCOUNT_KEY {{ .env.b2_account_key }}
+    set repo b2:grader-rectify-patio:/{{ .backup_namespace }}
 
     # Create the repo if necessary
     if not restic -r $repo snapshots

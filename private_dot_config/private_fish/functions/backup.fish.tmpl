@@ -2,14 +2,17 @@ function backup --description 'Backup online using Restic'
     set -x RESTIC_PASSWORD {{ .env.restic_password }}
     set -x B2_ACCOUNT_ID {{ .env.b2_account_id }}
     set -x B2_ACCOUNT_KEY {{ .env.b2_account_key }}
-    set repo b2:grader-rectify-patio:/{{ .backup_namespace }}
+    set -x repo b2:grader-rectify-patio:/{{ .backup_namespace }}
 
-    # Create the repo if necessary
-    if not restic -r $repo snapshots
-        # The repo doesn't exist yet because listing the snapshots failed
-        restic init -r $repo
+    function __backup
+        # Make a list of all the files to be backed up and pipe them to Restic to be backed up
+        fd . ~/dev/ -E .DS_Store -E .git -E node_modules/ -E forks/ -E third-party/ -H --full-path -t file | restic backup -r $repo --verbose --files-from-verbatim -
     end
 
-    # Make a list of all the files to be backed up and pipe them to Restic to be backed up
-    fd . ~/dev/ -E .DS_Store -E .git -E node_modules/ -E forks/ -E third-party/ -H --full-path -t file | restic backup -r $repo --verbose --files-from-verbatim -
+    if __backup 2>&1 | rg '404: File with such name does not exist.'
+        echo "Creating repo at $repo"
+        # The repo doesn't exist yet, so create it and re-run the backup
+        restic init -r $repo
+        __backup
+    end
 end

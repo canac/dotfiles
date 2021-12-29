@@ -9,7 +9,6 @@
 
 [data]
     backup_namespace = {{ $backup_namespace | quote }}
-    password_salt = {{ $password_salt | quote }}
 
 [data.env]
     restic_password = {{ sha256sum (print $backup_namespace $password_salt) | quote }}

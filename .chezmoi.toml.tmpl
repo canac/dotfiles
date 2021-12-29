@@ -15,3 +15,7 @@
     restic_password = {{ sha256sum (print $backup_namespace $password_salt) | quote }}
     b2_account_id = {{ default ((bitwarden "item" "backup-env.yml").notes | fromYaml).B2_ACCOUNT_ID .env.b2_account_id | quote }}
     b2_account_key = {{ default ((bitwarden "item" "backup-env.yml").notes | fromYaml).B2_ACCOUNT_KEY .env.b2_account_key | quote }}
+
+[diff]
+    command = "delta"
+    args = {{`["{{ .Destination }}", "{{ .Target }}"]`}}

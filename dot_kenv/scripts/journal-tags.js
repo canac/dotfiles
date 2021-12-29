@@ -1,6 +1,7 @@
 // Menu: Journal tags
 // Description: Choose journal tags
 
+import '@johnlindquist/kit';
 import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 const { sortBy } = await npm('lodash-es');

@@ -2,6 +2,7 @@
 // Menu: New journal entry
 // Description: Create a new journal entry
 
+import '@johnlindquist/kit';
 import { readdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 const { addDays, format } = await npm('date-fns');

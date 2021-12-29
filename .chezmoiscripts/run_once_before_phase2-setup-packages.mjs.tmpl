@@ -13,7 +13,7 @@ await $`$(brew --prefix fzf)/install --key-bindings --no-completion --no-update-
 
 // Configure nextdns
 if ((await $`sudo nextdns status`) !== 'running') {
-  await $`sudo nextdns install --config 1d7724 -report-client-info -auto-activate`;
+  await $`sudo nextdns install --config {{ .nextdns_profile }} -report-client-info -auto-activate`;
 }
 
 // Change the shell to fish

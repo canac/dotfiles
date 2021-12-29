@@ -26,3 +26,13 @@ if ((await nothrow($`grep ${fish} ${shellsPath}`).exitCode) !== 0) {
 if (process.env.SHELL !== fish) {
   await $`chsh -s ${fish}`;
 }
+
+// Import the GPG signing key if it hasn't been imported already
+if (
+  (await nothrow($`gpg --list-secret-keys | rg {{ .signing_key_id }}`)
+    .exitCode) !== 0
+) {
+  await $`bw get attachment private.key --itemid "GPG signing key"`;
+  await $`gpg --import private.key`;
+  await $`rm private.key`;
+}

@@ -1,20 +1,6 @@
 #!/bin/bash
 
-# In phase 1, install all needed binary files from the package manager
-
-{{ if (ne .chezmoi.os "darwin") }}
-sudo apt install curl gcc git
-{{ end }}
-
-if [ ! $(which brew) ]; then
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-fi
-
-{{ if (eq .chezmoi.os "darwin") }}
-eval "$(/usr/local/bin/brew shellenv)"
-{{ else if (eq .chezmoi.os "linux" ) }}
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-{{ end }}
+# In phase 1, assume that Homebrew has already been installed and install all needed binary files from the package manager
 
 brew bundle --no-lock --file=/dev/stdin <<EOF
 tap "cantino/mcfly"

@@ -8,6 +8,7 @@
 {{- $password_salt := default ((bitwarden "item" "backup-env.yml").notes | fromYaml).PASSWORD_SALT .password_salt -}}
 
 [data]
+    backup_bucket = "grader-rectify-patio"
     backup_namespace = {{ $backup_namespace | quote }}
     nextdns_profile = "1d7724"
     signing_key_id = "A88CE79A6BAC53C39AC331099025163398B61D7E"

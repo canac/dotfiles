@@ -2,7 +2,7 @@ function backup --description 'Backup online using Restic'
     set -x RESTIC_PASSWORD {{ .env.restic_password }}
     set -x B2_ACCOUNT_ID {{ .env.b2_account_id }}
     set -x B2_ACCOUNT_KEY {{ .env.b2_account_key }}
-    set -x repo b2:grader-rectify-patio:/{{ .backup_namespace }}
+    set -x repo b2:{{ .backup_bucket }}:/{{ .backup_namespace }}
 
     function __backup
         # Make a list of all the files to be backed up and pipe them to Restic to be backed up

@@ -5,7 +5,8 @@
 {{-   $backup_namespace = promptString "Backup namespace" -}}
 {{- end -}}
 
-{{- $password_salt := default ((bitwarden "item" "backup-env.yml").notes | fromYaml).PASSWORD_SALT .password_salt -}}
+{{- $backup_env := (bitwarden "item" "backup-env.yml").notes | fromYaml -}}
+{{- $password_salt := default $backup_env.PASSWORD_SALT .password_salt -}}
 
 [data]
     backup_bucket = "grader-rectify-patio"
@@ -15,8 +16,8 @@
 
 [data.env]
     restic_password = {{ sha256sum (print $backup_namespace $password_salt) | quote }}
-    b2_account_id = {{ default ((bitwarden "item" "backup-env.yml").notes | fromYaml).B2_ACCOUNT_ID .env.b2_account_id | quote }}
-    b2_account_key = {{ default ((bitwarden "item" "backup-env.yml").notes | fromYaml).B2_ACCOUNT_KEY .env.b2_account_key | quote }}
+    b2_account_id = {{ default $backup_env.B2_ACCOUNT_ID .env.b2_account_id | quote }}
+    b2_account_key = {{ default $backup_env.B2_ACCOUNT_KEY .env.b2_account_key | quote }}
 
 [diff]
     command = "delta"

@@ -8,7 +8,7 @@ sudo apt install curl gcc git
 HOMEBREW_BIN="$(/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" | tee /dev/tty | grep '^.\+/bin/brew$')"
 $HOMEBREW_BIN shellenv
 
-# Install Bitwarden
+# Install chezmoi and node for running Bitwarden
 brew install chezmoi node
 
 # Log into Bitwarden, or unlock the vault if the user is already logged in

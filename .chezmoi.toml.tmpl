@@ -13,6 +13,11 @@
     backup_namespace = {{ $backup_namespace | quote }}
     nextdns_profile = "1d7724"
     signing_key_id = "A88CE79A6BAC53C39AC331099025163398B61D7E"
+    {{ if (eq .chezmoi.os "darwin") }}
+    brew_cmd = "/usr/local/bin/brew"
+    {{ else if (eq .chezmoi.os "linux" ) }}
+    brew_cmd = "/home/linuxbrew/.linuxbrew/bin/brew"
+    {{ end }}
 
 [data.env]
     restic_password = {{ sha256sum (print $backup_namespace $password_salt) | quote }}

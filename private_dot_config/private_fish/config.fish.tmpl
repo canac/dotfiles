@@ -1,7 +1,5 @@
-{{ if (eq .chezmoi.os "darwin") }}
-eval (/usr/local/bin/brew shellenv)
-{{ else if (eq .chezmoi.os "linux" ) }}
-eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+{{ if .brew_cmd }}
+eval ({{ .brew_cmd }} shellenv)
 {{ end }}
 starship init fish | source
 zoxide init fish | source

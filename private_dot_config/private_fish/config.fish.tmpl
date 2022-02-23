@@ -10,9 +10,6 @@ source $HOME/.iterm2_shell_integration.fish
 
 fish_add_path -g (brew --prefix ruby)/bin
 fish_add_path -g ~/.cargo/bin
-{{ if (eq .chezmoi.os "darwin") }}
-fish_add_path -g ~/.kenv/bin
-{{ end }}
 fish_add_path -g ~/.local/bin
 fish_add_path -g ~/go/bin
 

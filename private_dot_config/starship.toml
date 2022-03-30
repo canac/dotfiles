@@ -14,3 +14,9 @@ modified = '[!${count}](bold blue)'
 staged = '[+${count}](bold green)'
 renamed = '[»${count}](bold yellow)'
 deleted = '[✘${count}](bold red)'
+
+[custom.port]
+command = 'echo $PORT'
+when = 'test -n "${PORT-}"'
+format = ':[$output]($style) '
+shell = ['bash', '--noprofile', '--norc']

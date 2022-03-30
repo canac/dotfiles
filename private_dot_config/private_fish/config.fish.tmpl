@@ -4,6 +4,7 @@ eval ({{ .brew_cmd }} shellenv)
 starship init fish | source
 zoxide init fish | source
 mcfly init fish | source
+portman init fish | source
 {{ if (eq .chezmoi.os "darwin") }}
 source $HOME/.iterm2_shell_integration.fish
 {{ end }}

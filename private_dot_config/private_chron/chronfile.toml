@@ -1,0 +1,11 @@
+[schedule.release-watcher]
+schedule = "0 0 * * * *" # hourly
+command = "release-watcher"
+
+[schedule.homebrew-upgrade]
+schedule = "0 0 12 * * *" # every day at noon
+command = "fish -c homebrew_upgrade"
+
+[schedule.online-backup]
+schedule = "0 0 12 * * *" # every day at noon
+command = "fish -c backup"

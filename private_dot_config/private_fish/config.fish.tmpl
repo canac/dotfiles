@@ -11,10 +11,12 @@ source $HOME/.iterm2_shell_integration.fish
 
 fish_add_path -g (brew --prefix ruby)/bin
 fish_add_path -g ~/.cargo/bin
+fish_add_path -g ~/.deno/bin
 fish_add_path -g ~/.local/bin
 fish_add_path -g ~/go/bin
 
 set -g fish_greeting
+set -gx DENO_TLS_CA_STORE system
 set -gx EDITOR code
 set -gx HOMEBREW_NO_ENV_HINTS 1
 set -gx FZF_CTRL_T_COMMAND "fd --type file --hidden --exclude .git/ | sed 's@^\./@@'"

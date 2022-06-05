@@ -5,7 +5,7 @@
 {{-   $backup_namespace = promptString "Backup namespace" -}}
 {{- end -}}
 
-{{- $backup_env := (bitwarden "item" "backup-env.yml").notes | fromYaml -}}
+{{- $backup_env := (bitwarden "item" "chezmoi-env.yml").notes | fromYaml -}}
 {{- $password_salt := default $backup_env.PASSWORD_SALT .password_salt -}}
 
 [data]

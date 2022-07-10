@@ -2,7 +2,7 @@
 
 # Required parameters:
 # @raycast.schemaVersion 1
-# @raycast.title Chron status
+# @raycast.title Count mailbox notifications
 # @raycast.mode inline
 # @raycast.refreshTime 1m
 
@@ -10,12 +10,8 @@
 # @raycast.icon 🤖
 
 # Documentation:
-# @raycast.description Check whether the chron server is running
+# @raycast.description Count the number of mailbox notifications
 # @raycast.author Caleb Cox
 # @raycast.authorURL https://github.com/canac
 
-if curl --silent https://chron.localhost/status > /dev/null; then
-  echo "Running"
-else
-  echo "Not running"
-fi
+fish -c "mailbox view | wc -l"

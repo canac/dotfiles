@@ -31,26 +31,17 @@ async function run() {
     }
   }
 
-  const mailboxUrl = Deno.env.get("CHRON_MAILBOX_URL");
-  if (mailboxUrl) {
-    // Clear the mailbox
-    await fetch(mailboxUrl, {
-      method: "DELETE",
-    });
+  // Clear the mailbox
+  await Deno.run({
+    cmd: ["mailbox", "clear", "release-watcher"],
+    stdout: "null",
+  }).status();
 
-    if (updates.length > 0) {
-      // Post the new messages
-      updates.forEach((update) => {
-        fetch(mailboxUrl, {
-          method: "POST",
-          body: update,
-        });
-      });
-    }
-  }
-
-  if (updates.length > 0) {
-    console.log(updates.join(", "));
+  // Add the new messages
+  for (const update of updates) {
+    await Deno.run({
+      cmd: ["mailbox", "add", "release-watcher", update],
+    }).status();
   }
 }
 

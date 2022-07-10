@@ -11,3 +11,8 @@ makeUpMissedRuns = 1
 schedule = "0 0 12 * * *" # every day at noon
 command = "fish -c backup"
 makeUpMissedRuns = 1
+
+[schedule.feed-watcher]
+schedule = "0 0 18 * * 6" # every Saturday at 6pm
+command = "feed-watcher"
+makeUpMissedRuns = 1

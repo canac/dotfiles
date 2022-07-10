@@ -1,3 +1,3 @@
 #!/bin/bash
 
-createdb feed-digest --username=postgres || true
+createdb feed-watcher --username=postgres || true

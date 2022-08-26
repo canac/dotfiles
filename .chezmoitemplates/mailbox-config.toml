@@ -1,0 +1,4 @@
+[overrides]
+'chron/error' = 'ignored'
+'chron/error/homebrew-upgrade' = 'unread'
+'chron/error/online-backup' = 'unread'

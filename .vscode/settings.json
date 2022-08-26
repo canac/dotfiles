@@ -1,0 +1,4 @@
+{
+  "deno.enablePaths": ["dev/scripts/"],
+  "editor.defaultFormatter": "denoland.vscode-deno",
+}

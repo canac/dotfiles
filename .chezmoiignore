@@ -1,5 +1,10 @@
 {{ if (ne .chezmoi.os "darwin") }}
 .config/fish/functions/lcman.fish
+Library/
+{{ end }}
+
+{{ if (ne .chezmoi.os "linux") }}
+.config/mailbox/config.toml
 {{ end }}
 
 README.md

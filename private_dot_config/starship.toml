@@ -1,3 +1,5 @@
+format = "${custom.mailbox}$all"
+
 [directory]
 truncation_length = 5
 truncation_symbol = '…/'
@@ -14,6 +16,12 @@ modified = '[!${count}](bold blue)'
 staged = '[+${count}](bold green)'
 renamed = '[»${count}](bold yellow)'
 deleted = '[✘${count}](bold red)'
+
+[custom.mailbox]
+command = 'export count=$(mailbox view | wc -l) && test $count -gt 0 && echo $count'
+when = true
+format = '[($output )](bold yellow)'
+shell = ['bash', '--noprofile', '--norc']
 
 [custom.port]
 command = 'echo $PORT'

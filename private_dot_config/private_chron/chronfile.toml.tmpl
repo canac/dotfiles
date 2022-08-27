@@ -3,6 +3,11 @@ schedule = "0 0 * * * *" # hourly
 command = "release-watcher https://gist.githubusercontent.com/canac/ac3eaa16cb9c3e03530fbee64e1e690f/raw/packages.toml"
 retry = false
 
+[scheduled.stargazer]
+schedule = "0 0 * * * *" # hourly
+command = "GITHUB_TOKEN={{ .env.github_token }} stargazer \"stars:>=1000 language:rust pushed:>=$(date -v-1m +%Y-%m-%d)\" 1000"
+makeUpMissedRuns = 1
+
 [scheduled.homebrew-upgrade]
 schedule = "0 0 12 * * *" # every day at noon
 command = "homebrew_upgrade"

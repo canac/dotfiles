@@ -14,3 +14,4 @@
 # @raycast.authorURL https://github.com/canac
 
 nextdns deactivate
+echo "DNS filtering disabled"

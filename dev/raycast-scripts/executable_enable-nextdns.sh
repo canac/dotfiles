@@ -14,3 +14,4 @@
 # @raycast.authorURL https://github.com/canac
 
 nextdns activate
+echo "DNS filtering enabled"

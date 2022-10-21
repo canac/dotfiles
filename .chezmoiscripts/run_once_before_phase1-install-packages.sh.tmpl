@@ -25,7 +25,7 @@ brew "imagemagick"
 brew "lazygit"
 brew "mcfly"
 brew "node"
-brew "postgresql@14"
+brew "postgresql@15"
 brew "restic"
 brew "ripgrep"
 brew "ruby"
@@ -69,7 +69,7 @@ cask "zoom"
 EOF
 
 brew services start caddy
-brew services start postgresql@14
+brew services start postgresql@15
 {{ if (eq .chezmoi.os "darwin") }}
 brew services start mongodb-community
 {{ end }}

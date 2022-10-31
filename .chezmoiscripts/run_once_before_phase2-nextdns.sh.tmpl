@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+# Configure nextdns
+if [[ $(sudo nextdns status) != "running" ]]; then
+  sudo nextdns install --config {{ .nextdns_profile }} -report-client-info -auto-activate
+fi

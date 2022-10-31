@@ -1,13 +1,3 @@
-[scheduled.release-watcher]
-schedule = "0 0 * * * *" # hourly
-command = "release-watcher https://gist.githubusercontent.com/canac/ac3eaa16cb9c3e03530fbee64e1e690f/raw/packages.toml"
-retry = false
-
-[scheduled.stargazer]
-schedule = "0 0 * * * *" # hourly
-command = "set -x GITHUB_TOKEN {{ .env.github_token }}; stargazer \"stars:>=1000 language:rust pushed:>=$(date -v-1m +%Y-%m-%d)\" 1000; stargazer \"stars:>=10000 language:typescript language:javascript pushed:>=$(date -v-1m +%Y-%m-%d)\" 5000;"
-makeUpMissedRuns = 1
-
 [scheduled.homebrew-upgrade]
 schedule = "0 0 12 * * *" # every day at noon
 command = "homebrew_upgrade"
@@ -18,7 +8,19 @@ schedule = "0 0 12 * * *" # every day at noon
 command = "backup"
 makeUpMissedRuns = 1
 
+{{ if not .work }}
 [scheduled.feed-watcher]
 schedule = "0 0 6 * * Sat" # every Saturday at 6am
 command = "feed-watcher https://gist.githubusercontent.com/canac/647a8c4542cc088b333b3d0bcc765b9d/raw/feeds.toml"
 makeUpMissedRuns = 1
+
+[scheduled.release-watcher]
+schedule = "0 0 * * * *" # hourly
+command = "release-watcher https://gist.githubusercontent.com/canac/ac3eaa16cb9c3e03530fbee64e1e690f/raw/packages.toml"
+retry = false
+
+[scheduled.stargazer]
+schedule = "0 0 * * * *" # hourly
+command = "set -x GITHUB_TOKEN {{ .env.github_token }}; stargazer \"stars:>=1000 language:rust pushed:>=$(date -v-1m +%Y-%m-%d)\" 1000; stargazer \"stars:>=10000 language:typescript language:javascript pushed:>=$(date -v-1m +%Y-%m-%d)\" 5000;"
+makeUpMissedRuns = 1
+{{ end }}

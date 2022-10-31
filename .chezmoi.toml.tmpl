@@ -1,24 +1,29 @@
 {{- $backup_namespace := promptStringOnce . "backup_namespace" "What is your backup namespace" -}}
+{{- $email := "canac@users.noreply.github.com" -}}
 {{- $env := (bitwarden "item" "chezmoi-env.yml").notes | fromYaml -}}
-{{- $password_salt := default $env.PASSWORD_SALT .password_salt -}}
+{{- $password_salt := $env.PASSWORD_SALT -}}
+{{- $work := promptBoolOnce . "work" "Is this your Cru machine" -}}
+
+encryption = "gpg"
 
 [data]
     backup_bucket = "grader-rectify-patio"
     backup_namespace = {{ $backup_namespace | quote }}
+    brew_bin = {{ default (printf "%s/bin" (env "HOMEBREW_PREFIX")) (index . "brew_bin") | quote }}
+    email = {{ $email | quote }}
     nextdns_profile = "1d7724"
-    signing_key_id = "A88CE79A6BAC53C39AC331099025163398B61D7E"
-    {{ if (eq .chezmoi.os "darwin") }}
-    brew_cmd = "/usr/local/bin/brew"
-    {{ else if (eq .chezmoi.os "linux" ) }}
-    brew_cmd = "/home/linuxbrew/.linuxbrew/bin/brew"
-    {{ end }}
+    signing_key_id = {{ default (env "SIGNING_KEY_ID") .signing_key_id | quote }}
+    work = {{ $work }}
 
 [data.env]
+    b2_account_id = {{ $env.B2_ACCOUNT_ID | quote }}
+    b2_account_key = {{ $env.B2_ACCOUNT_KEY | quote }}
+    github_token = {{ $env.GITHUB_TOKEN | quote }}
     restic_password = {{ sha256sum (print $backup_namespace $password_salt) | quote }}
-    b2_account_id = {{ default $env.B2_ACCOUNT_ID .env.b2_account_id | quote }}
-    b2_account_key = {{ default $env.B2_ACCOUNT_KEY .env.b2_account_key | quote }}
-    github_token = {{ default $env.GITHUB_TOKEN .env.github_token | quote }}
 
 [diff]
     command = "delta"
     args = {{`["{{ .Destination }}", "{{ .Target }}"]`}}
+
+[gpg]
+    recipient = {{ $email | quote }}

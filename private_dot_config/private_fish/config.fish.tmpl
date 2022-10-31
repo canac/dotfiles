@@ -1,26 +1,34 @@
-{{ if .brew_cmd }}
-eval ({{ .brew_cmd }} shellenv)
-{{ end }}
+eval ({{ .brew_bin }}/brew shellenv)
 starship init fish | source
 zoxide init fish | source
 mcfly init fish | source
 portman init fish | source
-{{ if (eq .chezmoi.os "darwin") }}
+{{ if eq .chezmoi.os "darwin" }}
 source $HOME/.iterm2_shell_integration.fish
 {{ end }}
 
 fish_add_path -g (brew --prefix ruby)/bin
+fish_add_path -g (brew --prefix postgresql@15)/bin
+{{ if .work }}
+fish_add_path -g (brew --prefix openjdk@8)/bin
+fish_add_path -g ~/dev/ecs_config/bin
+{{ else }}
 fish_add_path -g ~/.cargo/bin
 fish_add_path -g ~/.deno/bin
-fish_add_path -g ~/.local/bin
-fish_add_path -g ~/go/bin
+{{ end }}
+fish_add_path -g ~/.volta/bin
 
 set -g fish_greeting
+{{ if .work }}
+set -gx ECS_CONFIG "$HOME/dev/ecs_config"
+set -gx JAVA_HOME (brew --prefix openjdk@8)
+{{ end }}
 set -gx EDITOR code
 set -gx HOMEBREW_NO_ENV_HINTS 1
 set -gx FZF_CTRL_T_COMMAND "fd --type file --hidden --exclude .git/ | sed 's@^\./@@'"
 set -gx FZF_CTRL_T_OPTS "--preview \"bat --color=always {}\""
 set -gx LG_CONFIG_FILE "$HOME/.config/lazygit/config.yml"
+set -gx VOLTA_HOME "$HOME/.volta"
 
 abbr -a -g -- .. 'cd ..'
 abbr -a -g -- bu 'brew upgrade'

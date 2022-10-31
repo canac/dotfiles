@@ -1,11 +1,19 @@
-{{ if (ne .chezmoi.os "darwin") }}
+{{ if ne .chezmoi.os "darwin" }}
+.chezmoiscripts/run_once_after_setup-macos.sh
 .config/fish/functions/lcman.fish
+.gnupg/
 Library/
 {{ end }}
 
-{{ if (ne .chezmoi.os "linux") }}
+{{ if ne .chezmoi.os "linux" }}
 .config/mailbox/config.toml
 {{ end }}
 
+{{ if .work }}
+.chezmoiscripts/phase2-rustup.sh
+dev/scripts/
+{{ end }}
+
+.vscode/
+install.sh
 README.md
-scripts/

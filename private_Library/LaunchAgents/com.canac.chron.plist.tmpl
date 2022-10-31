@@ -10,13 +10,13 @@
     <true/>
     <key>ProgramArguments</key>
     <array>
-      <string>/bin/sh</string>
+      <string>{{ .brew_bin }}/fish</string>
       <string>-c</string>
-      <string>eval $({{ .brew_cmd }} shellenv); fish -c 'chron $HOME/.config/chron/chronfile.toml --port (portman get chron --allocate)'</string>
+      <string>chron $HOME/.config/chron/chronfile.toml --port (portman get chron --allocate)</string>
     </array>
     <key>StandardErrorPath</key>
-    <string>{{ .chezmoi.homeDir }}/.local/share/chron/chron.log</string>
+    <string>{{ .chezmoi.homeDir }}/Library/Application Support/com.canac.chron/chron.log</string>
     <key>StandardOutPath</key>
-    <string>{{ .chezmoi.homeDir }}/.local/share/chron/chron.log</string>
+    <string>{{ .chezmoi.homeDir }}/Library/Application Support/com.canac.chron/chron.log</string>
   </dict>
 </plist>

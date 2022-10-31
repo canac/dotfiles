@@ -1,5 +1,4 @@
-{{- if (eq .chezmoi.os "darwin") -}}
-#!/bin/bash
+#!/usr/bin/env bash
 
 defaults write -g AppleInterfaceStyle -int 4
 defaults write -g AppleEnableSwipeNavigateWithScrolls -int 1
@@ -60,4 +59,3 @@ defaults write com.apple.menuextra.battery ShowPercent -bool true
 
 killall Finder
 killall Dock
-{{- end -}}

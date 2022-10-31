@@ -1,57 +1,61 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # In phase 1, assume that Homebrew has already been installed and install all needed binary files from the package manager
 
-brew bundle --no-lock --file=/dev/stdin <<EOF
+brew bundle --no-lock --file=- <<EOF
+tap "canac/tap"
 tap "homebrew/services"
+tap "nextdns/tap"
 brew "canac/tap/chron"
 brew "canac/tap/mailbox"
 brew "canac/tap/portman"
 brew "nextdns/tap/nextdns"
 brew "bat"
+brew "bitwarden-cli"
 brew "broot"
 brew "caddy"
-brew "cargo-edit"
 brew "chezmoi"
-brew "ffmpeg"
 brew "fd"
 brew "fish"
 brew "fisher"
 brew "fzf"
 brew "git"
 brew "git-delta"
-brew "go"
-brew "imagemagick"
+brew "gnupg"
 brew "lazygit"
 brew "mcfly"
-brew "node"
 brew "postgresql@15"
 brew "restic"
 brew "ripgrep"
 brew "ruby"
-brew "rustup-init"
 brew "starship"
+brew "volta"
 brew "wget"
-brew "yt-dlp"
 brew "zoxide"
-{{ if (eq .chezmoi.os "darwin") }}
+{{ if .work }}
+brew "awscli"
+brew "maven"
+brew "openjdk@8"
+{{ else }}
+brew "cargo-edit"
+brew "deno"
+brew "ffmpeg"
+brew "imagemagick"
+brew "rustup-init"
+brew "yt-dlp"
+{{ end }}
+{{ if eq .chezmoi.os "darwin" }}
 tap "homebrew/cask"
-tap "homebrew/cask-versions"
-brew "mongodb/brew/mongodb-community"
+tap "homebrew/cask-fonts"
 brew "cask"
+brew "pinentry-mac"
 cask "homebrew/cask-fonts/font-fira-code-nerd-font"
-cask "adobe-acrobat-reader"
 cask "appcleaner"
 cask "brave-browser"
-cask "docker"
 cask "firefox"
 cask "google-chrome"
-cask "google-chrome-dev"
 cask "google-drive"
-cask "gpg-suite-no-mail"
 cask "iterm2"
-cask "kindle"
-cask "messenger"
 cask "microsoft-excel"
 cask "microsoft-powerpoint"
 cask "microsoft-word"
@@ -59,17 +63,32 @@ cask "postman"
 cask "raycast"
 cask "sourcetree"
 cask "spotify"
-cask "sublime-text"
-cask "ticktick"
 cask "visual-studio-code"
+cask "zoom"
+{{ if .work }}
+cask "slack"
+{{ else }}
+tap "mongodb/brew"
+brew "mongodb/brew/mongodb-community"
+cask "adobe-acrobat-reader"
+cask "docker"
+cask "kindle"
+cask "messenger"
+cask "ticktick"
 cask "vlc"
 cask "warp"
-cask "zoom"
+{{ end }}
 {{ end }}
 EOF
 
+# Create an empty Caddyfile if it doesn't exist yet so that caddy can be started
+caddyfile="$(brew --prefix)/etc/Caddyfile"
+if [[ ! -e "$caddyfile" ]]; then
+  echo "# Empty" > $caddyfile
+fi
+
 brew services start caddy
 brew services start postgresql@15
-{{ if (eq .chezmoi.os "darwin") }}
+{{ if and (not .work) (eq .chezmoi.os "darwin") }}
 brew services start mongodb-community
 {{ end }}

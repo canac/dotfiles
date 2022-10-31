@@ -30,8 +30,8 @@ type FeedEntry = { id: string; link: string; title: string };
 
 // Load the feed entries from a feed URL
 async function loadFeedEntries(feedUrl: string): Promise<FeedEntry[]> {
-  const res = await fetch(feedUrl);
-  if (!res.ok) {
+  const res = await fetch(feedUrl).catch(() => null);
+  if (!res?.ok) {
     console.error(`Couldn't load feed at ${feedUrl}`);
     return [];
   }

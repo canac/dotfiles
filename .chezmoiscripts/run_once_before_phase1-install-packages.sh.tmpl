@@ -35,7 +35,6 @@ brew "zoxide"
 {{ if .work }}
 brew "awscli"
 brew "maven"
-brew "openjdk@8"
 {{ else }}
 brew "cargo-edit"
 brew "deno"
@@ -66,7 +65,9 @@ cask "spotify"
 cask "visual-studio-code"
 cask "zoom"
 {{ if .work }}
+tap "homebrew/cask-versions"
 cask "slack"
+cask "temurin8"
 {{ else }}
 tap "mongodb/brew"
 brew "mongodb/brew/mongodb-community"

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+# hash: {{ joinPath .chezmoi.sourceDir "dev/scripts/release-watcher.ts" | include | sha256sum }}
+
+# Install release-watcher whenever it changes
+deno install --allow-read=$HOME/.local/share/canac/ --allow-write=$HOME/.local/share/canac/ --allow-env=HOME --allow-net --allow-run=mailbox -f ~/dev/scripts/release-watcher.ts

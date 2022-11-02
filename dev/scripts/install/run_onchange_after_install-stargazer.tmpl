@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+# hash: {{ joinPath .chezmoi.sourceDir "dev/scripts/stargazer.ts" | include | sha256sum }}
+
+# Install stargazer whenever it changes
+deno install --allow-read=$HOME/.local/share/canac/ --allow-write=$HOME/.local/share/canac/ --allow-env=HOME,GITHUB_TOKEN --allow-net --allow-run=mailbox -f ~/dev/scripts/stargazer.ts

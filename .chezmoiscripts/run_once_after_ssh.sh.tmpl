@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
 
 # Add the SSH key if it hasn't been added already
-if [[ ! $(ssh-add -l | grep "{{ .email }}") ]]; then
-  ssh-add $HOME/.ssh/id_ed25519
-fi
+ssh-add -l | grep "{{ .email }}" || ssh-add $HOME/.ssh/id_ed25519

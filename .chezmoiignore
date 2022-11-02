@@ -1,5 +1,6 @@
 {{ if ne .chezmoi.os "darwin" }}
-.chezmoiscripts/run_once_after_setup-macos.sh
+.chezmoiscripts/phase2-iterm.sh
+.chezmoiscripts/setup-macos.sh
 .config/fish/functions/lcman.fish
 .gnupg/
 Library/

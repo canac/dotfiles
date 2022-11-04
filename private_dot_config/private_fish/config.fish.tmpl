@@ -3,6 +3,9 @@ starship init fish | source
 zoxide init fish | source
 mcfly init fish | source
 portman init fish | source
+{{ if .work }}
+source (brew --prefix asdf)/libexec/asdf.fish
+{{ end }}
 {{ if eq .chezmoi.os "darwin" }}
 source $HOME/.iterm2_shell_integration.fish
 {{ end }}
@@ -27,8 +30,8 @@ fish_add_path -g ~/dev/ecs_config/bin
 {{ else }}
 fish_add_path -g ~/.cargo/bin
 fish_add_path -g ~/.deno/bin
-{{ end }}
 fish_add_path -g ~/.volta/bin
+{{ end }}
 
 abbr -a -g -- .. 'cd ..'
 abbr -a -g -- bu 'brew upgrade'

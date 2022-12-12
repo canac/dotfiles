@@ -4,7 +4,8 @@ zoxide init fish | source
 mcfly init fish | source
 portman init fish | source
 {{ if .work }}
-source (brew --prefix asdf)/libexec/asdf.fish
+test -f .tool-versions && source (brew --prefix asdf)/libexec/asdf.fish
+fnm env --use-on-cd | source &> /dev/null
 {{ end }}
 {{ if eq .chezmoi.os "darwin" }}
 source $HOME/.iterm2_shell_integration.fish

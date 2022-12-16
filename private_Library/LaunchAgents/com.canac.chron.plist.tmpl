@@ -12,7 +12,7 @@
     <array>
       <string>{{ .brew_bin }}/fish</string>
       <string>-c</string>
-      <string>chron $HOME/.config/chron/chronfile.toml --port (portman get chron --allocate)</string>
+      <string>chron $HOME/.config/chron/chronfile.toml --port (portman get chron --allocate --matcher=none)</string>
     </array>
     <key>StandardErrorPath</key>
     <string>{{ .chezmoi.homeDir }}/Library/Application Support/com.canac.chron/chron.log</string>

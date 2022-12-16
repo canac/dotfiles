@@ -13,6 +13,8 @@ Library/
 {{ if .work }}
 .chezmoiscripts/phase2-rustup.sh
 dev/scripts/
+{{ else }}
+.config/fish/functions/rvm.fish
 {{ end }}
 
 .vscode/

@@ -14,6 +14,7 @@ Library/
 .chezmoiscripts/phase2-rustup.sh
 dev/scripts/
 {{ else }}
+.config/fish/functions/mpdx-new.fish
 .config/fish/functions/rvm.fish
 {{ end }}
 

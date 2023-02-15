@@ -22,6 +22,6 @@ retry = false
 
 [scheduled.stargazer]
 schedule = "0 0 * * * *" # hourly
-command = 'set -x GITHUB_TOKEN {{ .env.github_token }}; stargazer "language:rust pushed:>=$(date -v-1m +%Y-%m-%d)" 100; stargazer "language:typescript language:javascript pushed:>=$(date -v-1m +%Y-%m-%d)" 5000;'
+command = 'set -x GITHUB_TOKEN {{ .env.github_token }}; stargazer "language:rust pushed:>=$(date -v-1m +%Y-%m-%d)" 100 rust; stargazer "language:typescript language:javascript pushed:>=$(date -v-1m +%Y-%m-%d)" 5000 js;'
 makeUpMissedRuns = 1
 {{ end }}

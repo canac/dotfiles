@@ -9,14 +9,10 @@ if (!token) {
 }
 
 const query = Deno.args[0];
-if (!query) {
-  console.error("Usage: stargazer [search query] [threshold]");
-  Deno.exit(1);
-}
-
-const threshold = parseInt(Deno.args[1] ?? "");
-if (Number.isNaN(threshold)) {
-  console.error("Usage: stargazer [search query] [threshold]");
+const threshold = parseInt(Deno.args[1] ?? "", 10);
+const mailbox = Deno.args[2];
+if (!query || Number.isNaN(threshold) || !mailbox) {
+  console.error("Usage: stargazer [search query] [threshold] [mailbox]");
   Deno.exit(1);
 }
 
@@ -142,7 +138,7 @@ async function getNewRepos(
 // Convert the new repo entries into a list of mailbox messages
 const newRepos = (await getNewRepos(query, threshold)).map(
   (repo) => ({
-    mailbox: "stargazer",
+    mailbox: `stargazer/${mailbox}`,
     content: `${repo.name} (${repo.stars} ⭐): ${repo.description}`,
   }),
 );

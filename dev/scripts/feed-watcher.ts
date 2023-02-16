@@ -1,7 +1,7 @@
 import { parse as parseToml } from "https://deno.land/std@0.154.0/encoding/toml.ts";
 import { writeAll } from "https://deno.land/std@0.154.0/streams/conversion.ts";
 import { join } from "https://deno.land/std@0.154.0/path/mod.ts";
-import { parseFeed } from "https://deno.land/x/rss@0.5.6/mod.ts";
+import { parseFeed } from "https://deno.land/x/rss@0.5.8/mod.ts";
 import { DB } from "https://deno.land/x/sqlite@v3.4.1/mod.ts";
 import { z } from "https://deno.land/x/zod@v3.18.0/mod.ts";
 

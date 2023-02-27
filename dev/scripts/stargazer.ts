@@ -81,9 +81,9 @@ async function* loadRepos(criteria: string): AsyncIterable<Repo> {
         authorization: `Bearer ${token}`,
       },
       body,
+      signal: AbortSignal.timeout(5000),
     });
-    const searchResults =
-      (await gqlResponse.parseAsync(await res.json())).data.search;
+    const searchResults = gqlResponse.parse(await res.json()).data.search;
     yield* searchResults.nodes.map((repo) => ({
       name: repo.nameWithOwner,
       description: repo.description ?? "",

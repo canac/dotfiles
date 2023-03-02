@@ -6,7 +6,7 @@
 # @raycast.mode fullOutput
 
 # Optional parameters:
-# @raycast.icon 🤖
+# @raycast.icon 📬
 
 # Documentation:
 # @raycast.description View unread mailbox notifications mailbox notifications

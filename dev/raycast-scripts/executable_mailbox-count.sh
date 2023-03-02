@@ -7,7 +7,7 @@
 # @raycast.refreshTime 1m
 
 # Optional parameters:
-# @raycast.icon 🤖
+# @raycast.icon 📬
 
 # Documentation:
 # @raycast.description Count the number of mailbox notifications

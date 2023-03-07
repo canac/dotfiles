@@ -58,7 +58,7 @@ for (const [packageName, changeType] of Object.entries(packages)) {
   ) {
     updates.push(`${packageName} v${currentVersion}`);
     db.query(
-      `INSERT INTO package(name, version) VALUES(?, ?) ON CONFLICT(name) DO UPDATE SET version=?;`,
+      `INSERT INTO package(name, version) VALUES(?, ?) ON CONFLICT(name) DO UPDATE SET version=?`,
       [packageName, currentVersion, currentVersion],
     );
   }

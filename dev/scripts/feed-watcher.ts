@@ -32,16 +32,14 @@ type FeedEntry = { id: string; link: string; title: string };
 async function loadFeedEntries(feedUrl: string): Promise<FeedEntry[]> {
   const res = await fetch(feedUrl).catch(() => null);
   if (!res?.ok) {
-    console.error(`Couldn't load feed at ${feedUrl}`);
-    return [];
+    throw new Error(`Couldn't load feed at ${feedUrl}`);
   }
 
   try {
     const feed = await parseFeed(await res.text());
     const feedTitle = feed.title.value;
     if (!feedTitle) {
-      console.error(`Missing title in feed at ${feedUrl}`);
-      return [];
+      throw new Error(`Missing title in feed at ${feedUrl}`);
     }
 
     return feed.entries.flatMap((
@@ -50,12 +48,10 @@ async function loadFeedEntries(feedUrl: string): Promise<FeedEntry[]> {
       const link = entry.links[0]?.href;
       const title = entry.title?.value;
       if (!link) {
-        console.error(`Missing link in feed entry at ${feedUrl}`);
-        return [];
+        throw new Error(`Missing link in feed entry at ${feedUrl}`);
       }
       if (!title) {
-        console.error(`Missing title in feed entry at ${feedUrl}`);
-        return [];
+        throw new Error(`Missing title in feed entry at ${feedUrl}`);
       }
 
       return [{
@@ -65,9 +61,7 @@ async function loadFeedEntries(feedUrl: string): Promise<FeedEntry[]> {
       }];
     });
   } catch (err) {
-    console.error(`Error parsing feed at ${feedUrl}`);
-    console.error(err);
-    return [];
+    throw new Error(`Error parsing feed at ${feedUrl}`, { cause: err });
   }
 }
 
@@ -88,7 +82,7 @@ async function getNewEntries(feedUrl: string): Promise<FeedEntry[]> {
       INSERT INTO seen_entries (entry_guid)
       SELECT entry_guid FROM new_entries
       EXCEPT SELECT entry_guid FROM seen_entries
-      RETURNING entry_guid;`,
+      RETURNING entry_guid`,
       entries.map((entry) => entry.id),
     ).map(([guid]) => guid as string),
   );
@@ -96,28 +90,44 @@ async function getNewEntries(feedUrl: string): Promise<FeedEntry[]> {
 }
 
 // Get all of the new feed entries, organized by feed name
-const feedsWithUpdates = (await Promise.all(
-  Object.entries(feeds).map(async ([feedName, feedUrl]) => ({
-    feedName,
-    newEntries: await getNewEntries(feedUrl),
-  })),
-)).filter(({ newEntries }) => newEntries.length > 0);
+const messageGroups = await Promise.all(
+  Object.entries(feeds).map(async ([feedName, feedUrl]) => {
+    try {
+      const entries = await getNewEntries(feedUrl);
+      return {
+        messages: entries.map((entry) => ({
+          mailbox: `feed-watcher/${feedName}`,
+          content: `${entry.title.replaceAll("\n", " ")} ${entry.link}`,
+        })),
+      };
+    } catch (err) {
+      console.error(err);
+      if (err.cause) {
+        console.error(err.cause);
+      }
+
+      return {
+        messages: [{
+          mailbox: `feed-watcher/@error/${feedName}`,
+          content: err.message,
+        }],
+      };
+    }
+  }),
+);
 
 db.close();
 
 // Convert the new feed entries into a list of mailbox messages
-const newMessages = feedsWithUpdates.flatMap(({ feedName, newEntries }) =>
-  newEntries.map((entry) => ({
-    mailbox: `feed-watcher/${feedName}`,
-    content: `${entry.title.replaceAll("\n", " ")} ${entry.link}`,
-  }))
-);
-console.log(`Found ${newMessages.length} new feed entries`);
+const messages = messageGroups.flatMap((group) => group.messages);
+const numNewEntries =
+  messages.filter((message) =>
+    !message.mailbox.startsWith("feed-watcher/@error/")
+  ).length;
+console.log(`Found ${numNewEntries} new feed entries`);
 
 // Create the mailbox messages
-const stdin = newMessages
-  .map((message) => JSON.stringify(message))
-  .join("\n");
+const stdin = messages.map((message) => JSON.stringify(message)).join("\n");
 const process = Deno.run({
   cmd: ["mailbox", "import", "--format=json"],
   stdin: "piped",

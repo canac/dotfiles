@@ -1,20 +1,26 @@
 import { join } from "https://deno.land/std@0.153.0/path/mod.ts";
 import { writeAll } from "https://deno.land/std@0.153.0/streams/conversion.ts";
 import { DB } from "https://deno.land/x/sqlite@v3.4.1/mod.ts";
-import { z } from "https://deno.land/x/zod@v3.18.0/mod.ts";
+import { z } from "https://deno.land/x/zod@v3.21.4/mod.ts";
 
 const token = Deno.env.get("GITHUB_TOKEN");
 if (!token) {
   throw new Error("$GITHUB_TOKEN environment variable is not set");
 }
 
-const query = Deno.args[0];
-const threshold = parseInt(Deno.args[1] ?? "", 10);
-const mailbox = Deno.args[2];
-if (!query || Number.isNaN(threshold) || !mailbox) {
+const argsSchema = z.tuple([
+  z.string().min(1),
+  z.coerce.number().min(1),
+  z.string().min(1),
+]);
+
+const res = argsSchema.safeParse(Deno.args);
+if (!res.success) {
   console.error("Usage: stargazer [search query] [threshold] [mailbox]");
   Deno.exit(1);
 }
+
+const [query, threshold, mailbox] = res.data;
 
 const home = Deno.env.get("HOME");
 if (!home) {
@@ -31,7 +37,6 @@ type Repo = {
   name: string;
   description: string;
   stars: number;
-  updatedAt: Date;
 };
 
 const gqlResponse = z.object({
@@ -41,7 +46,6 @@ const gqlResponse = z.object({
         nameWithOwner: z.string(),
         description: z.string().nullable(),
         stargazerCount: z.number(),
-        pushedAt: z.string().nullable(),
       })),
       pageInfo: z.object({
         endCursor: z.string().nullable(),
@@ -58,7 +62,6 @@ async function* loadRepos(criteria: string): AsyncIterable<Repo> {
       ... on Repository {
         nameWithOwner
         description
-        pushedAt
         stargazerCount
       }
     }
@@ -88,7 +91,6 @@ async function* loadRepos(criteria: string): AsyncIterable<Repo> {
       name: repo.nameWithOwner,
       description: repo.description ?? "",
       stars: repo.stargazerCount,
-      updatedAt: new Date(repo.pushedAt ?? 0),
     }));
 
     cursor = searchResults.pageInfo.endCursor;
@@ -139,7 +141,7 @@ async function getNewRepos(
 const newRepos = (await getNewRepos(query, threshold)).map(
   (repo) => ({
     mailbox: `stargazer/${mailbox}`,
-    content: `${repo.name} (${repo.stars} ⭐): ${repo.description}`,
+    content: `github.com/${repo.name} (${repo.stars} ⭐): ${repo.description}`,
   }),
 );
 console.log(`Found ${newRepos.length} new repos`);

@@ -91,7 +91,7 @@ cask "warp"
 EOF
 
 # Create an empty Caddyfile if it doesn't exist yet so that caddy can be started
-caddyfile="$(brew --prefix)/etc/Caddyfile"
+caddyfile=$(brew --prefix)/etc/Caddyfile
 if [[ ! -e "$caddyfile" ]]; then
   echo "# Empty" > $caddyfile
 fi

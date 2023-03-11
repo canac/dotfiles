@@ -5,8 +5,8 @@ if [[ $(uname -s) != "Darwin" ]]; then
 fi
 
 # Install Homebrew and extract the Homebrew binary location
-homebrew_bin="$(/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" | tee /dev/tty | grep '^.\+/bin/brew$')"
-eval "$($homebrew_bin shellenv)"
+homebrew_bin=$(/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" | tee /dev/tty | grep '^.\+/bin/brew$')
+eval "$("$homebrew_bin" shellenv)"
 
 # Install bootstrap dependencies
 brew bundle --no-lock --file=- <<EOF
@@ -16,13 +16,14 @@ brew "gnupg"
 EOF
 
 # Log into Bitwarden, or unlock the vault if the user is already logged in
-export BW_SESSION=$(bw login --raw || bw unlock --raw)
+BW_SESSION=$(bw login --raw || bw unlock --raw)
+export BW_SESSION
 bw sync
 
 # Import the GPG signing key if it hasn't been imported already
 # because it will be needed by chezmoi to decrypt files
 export SIGNING_KEY_ID="A88CE79A6BAC53C39AC331099025163398B61D7E"
-if [[ ! $(gpg --list-secret-keys "$SIGNING_KEY_ID") ]]; then
+if ! gpg --list-secret-keys "$SIGNING_KEY_ID"; then
   bw get attachment private.key --itemid "GPG signing key"
   passphrase=$(bw get notes "GPG passphrase")
   gpg --import private.key --passphrase "$passphrase"

@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 # Configure nextdns
-test $(sudo nextdns status) == running || sudo nextdns install --config {{ .nextdns_profile }} -report-client-info -auto-activate
+test "$(sudo nextdns status)" == running || sudo nextdns install --config {{ .nextdns_profile }} -report-client-info -auto-activate

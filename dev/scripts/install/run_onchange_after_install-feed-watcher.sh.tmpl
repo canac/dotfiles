@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# hash: {{ joinPath .chezmoi.sourceDir "dev/scripts/feed-watcher.ts" | include | sha256sum }}
+
+# Install feed-watcher whenever it changes
+deno install -f \
+  --allow-read="$HOME/.local/share/canac/" \
+  --allow-write="$HOME/.local/share/canac/" \
+  --allow-env=HOME \
+  --allow-net \
+  --allow-run=mailbox \
+  "$HOME/dev/scripts/feed-watcher.ts"

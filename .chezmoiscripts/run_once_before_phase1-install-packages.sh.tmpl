@@ -77,9 +77,6 @@ cask "breaktimer"
 cask "slack"
 cask "temurin8"
 {{ else }}
-tap "mongodb/brew"
-brew "mongodb/brew/mongodb-community"
-cask "adobe-acrobat-reader"
 cask "kindle"
 cask "messenger"
 cask "ticktick"
@@ -97,6 +94,3 @@ fi
 
 brew services start caddy
 brew services start postgresql@15
-{{ if and (not .work) (eq .chezmoi.os "darwin") }}
-brew services start mongodb-community
-{{ end }}

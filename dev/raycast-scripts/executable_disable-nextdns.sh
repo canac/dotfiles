@@ -13,5 +13,5 @@
 # @raycast.author Caleb Cox
 # @raycast.authorURL https://github.com/canac
 
-nextdns deactivate
+sudo nextdns deactivate
 echo "DNS filtering disabled"

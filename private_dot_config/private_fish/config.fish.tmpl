@@ -35,14 +35,11 @@ fish_add_path -g ~/.deno/bin
 fish_add_path -g ~/.volta/bin
 {{- end }}
 
-abbr -a -g -- .. 'cd ..'
-abbr -a -g -- bu 'brew upgrade'
 abbr -a -g -- c 'code .'
 abbr -a -g -- cd z
 abbr -a -g -- cr 'cargo run --'
 abbr -a -g -- g git
-abbr -a -g -- gp 'git push'
-abbr -a -g -- gs 'git status'
+abbr -a -g -- jr 'yarn jest --runTestsByPath'
 abbr -a -g -- l 'ls -lah'
 abbr -a -g -- lg lazygit
 abbr -a -g -- mc mkdir_and_cd
@@ -55,5 +52,7 @@ abbr -a -g -- nr 'npm uninstall --save'
 abbr -a -g -- nrd 'npm uninstall --save-dev'
 abbr -a -g -- ns 'npm start'
 abbr -a -g -- nt 'npm test'
-abbr -a -g -- r npm-run
 abbr -a -g -- s 'stree .'
+abbr -a -g -- y yarn
+abbr -a -g -- ys 'yarn start'
+abbr -a -g -- yt 'yarn test'

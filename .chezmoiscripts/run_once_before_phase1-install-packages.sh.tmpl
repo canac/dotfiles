@@ -86,11 +86,8 @@ cask "warp"
 {{ end }}
 EOF
 
-# Create an empty Caddyfile if it doesn't exist yet so that caddy can be started
-caddyfile=$(brew --prefix)/etc/Caddyfile
-if [[ ! -e "$caddyfile" ]]; then
-  echo "# Empty" > $caddyfile
-fi
+# Use porman to initialize the Caddyfile so that caddy can be started
+portman reload-caddy || true
 
 brew services start caddy
 brew services start postgresql@15

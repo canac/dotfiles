@@ -141,7 +141,8 @@ async function getNewRepos(
 const newRepos = (await getNewRepos(query, threshold)).map(
   (repo) => ({
     mailbox: `stargazer/${mailbox}`,
-    content: `github.com/${repo.name} (${repo.stars} ⭐): ${repo.description}`,
+    content:
+      `${repo.name} (${repo.stars} ⭐): ${repo.description} https://github.com/${repo.name}`,
   }),
 );
 console.log(`Found ${newRepos.length} new repos`);

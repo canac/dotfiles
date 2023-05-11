@@ -5,6 +5,4 @@ git:
 gui:
   showIcons: true
 os:
-  editCommand: code
-  editCommandTemplate: '{{editor}} -g {{filename}}:{{line}}'
-  openCommand: 'code -rg {{filename}}'
+  editPreset: 'vscode'

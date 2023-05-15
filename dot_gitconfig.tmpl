@@ -54,11 +54,11 @@
 [delta]
 	features = decorations
 [delta "decorations"]
-	syntax-theme = "Visual Studio Dark+"
 	commit-decoration-style = blue ol
 	file-style = omit
 	hunk-header-file-style = red
 	hunk-header-style = file line-number syntax
+	syntax-theme = "Visual Studio Dark+"
 [delta "interactive"]
 	keep-plus-minus-markers = false
 [help]
@@ -67,11 +67,11 @@
 	defaultBranch = main
 [interactive]
 	diffFilter = delta --color-only --features=interactive
+[pull]
+	rebase = true
 [push]
 	autoSetupRemote = true
 	default = current
-[pull]
-	rebase = true
 [rebase]
 	autosquash = true
 [remote "origin"]

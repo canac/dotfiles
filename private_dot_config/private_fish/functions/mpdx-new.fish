@@ -4,8 +4,7 @@ function mpdx-new --description 'Create a new MPDX worktree'
     set directory "$HOME/dev/$dirname" &&
     set branch $(gum input --prompt "Branch name: " --value "$dirname_suffix") &&
     set root_directory "$HOME/dev/mpdx-react" &&
-    cd $root_directory &&
-    git worktree add -b $branch $directory main &&
+    git -C $root_directory worktree add -b $branch $directory main &&
     cd $directory &&
     cp $root_directory/.env $directory &&
     yarn &&

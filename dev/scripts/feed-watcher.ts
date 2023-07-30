@@ -1,9 +1,9 @@
-import { parse as parseToml } from "https://deno.land/std@0.154.0/encoding/toml.ts";
-import { writeAll } from "https://deno.land/std@0.154.0/streams/conversion.ts";
-import { join } from "https://deno.land/std@0.154.0/path/mod.ts";
-import { parseFeed } from "https://deno.land/x/rss@0.5.8/mod.ts";
-import { DB } from "https://deno.land/x/sqlite@v3.4.1/mod.ts";
-import { z } from "https://deno.land/x/zod@v3.18.0/mod.ts";
+import { parse as parseToml } from "https://deno.land/std@0.196.0/toml/parse.ts";
+import { join } from "https://deno.land/std@0.196.0/path/mod.ts";
+import { parseFeed } from "https://deno.land/x/rss@0.6.0/mod.ts";
+import { DB } from "https://deno.land/x/sqlite@v3.7.2/mod.ts";
+import { z } from "https://deno.land/x/zod@v3.21.4/mod.ts";
+import { createMailboxMessages } from "./mailbox.ts";
 
 // The first command-line argument is the URL to a TOML file containing the list of feeds
 const feedsListUrl = Deno.args[0];
@@ -14,7 +14,7 @@ if (!feedsListUrl) {
 console.log(`Loading feeds list from ${feedsListUrl}`);
 const res = await fetch(feedsListUrl);
 const feedsListSchema = z.object({ feeds: z.record(z.string()) });
-const feeds = feedsListSchema.parse(parseToml(await res.text())).feeds;
+const { feeds } = feedsListSchema.parse(parseToml(await res.text()));
 
 const home = Deno.env.get("HOME");
 if (!home) {
@@ -26,7 +26,11 @@ db.query(`CREATE TABLE IF NOT EXISTS seen_entries (
   entry_guid TEXT NOT NULL UNIQUE
 )`);
 
-type FeedEntry = { id: string; link: string; title: string };
+type FeedEntry = {
+  id: string;
+  link: string;
+  title: string;
+};
 
 // Load the feed entries from a feed URL
 async function loadFeedEntries(feedUrl: string): Promise<FeedEntry[]> {
@@ -89,49 +93,39 @@ async function getNewEntries(feedUrl: string): Promise<FeedEntry[]> {
   return entries.filter((entry) => newGuids.has(entry.id));
 }
 
+// Start a transaction that will be reverted if there are any errors
+db.query("BEGIN TRANSACTION");
+
 // Get all of the new feed entries, organized by feed name
 const messageGroups = await Promise.all(
   Object.entries(feeds).map(async ([feedName, feedUrl]) => {
     try {
       const entries = await getNewEntries(feedUrl);
-      return {
-        messages: entries.map((entry) => ({
-          mailbox: `feed-watcher/${feedName}`,
-          content: `${entry.title.replaceAll("\n", " ")} ${entry.link}`,
-        })),
-      };
+      return entries.map((entry) => ({
+        mailbox: `feed-watcher/${feedName}`,
+        content: `${entry.title.replaceAll("\n", " ")} ${entry.link}`,
+      }));
     } catch (err) {
       console.error(err);
       if (err.cause) {
         console.error(err.cause);
       }
 
-      return {
-        messages: [{
-          mailbox: `feed-watcher/@error/${feedName}`,
-          content: err.message,
-        }],
-      };
+      return [{
+        mailbox: `feed-watcher/@error/${feedName}`,
+        content: err.message,
+      }];
     }
   }),
 );
-
-db.close();
-
 // Convert the new feed entries into a list of mailbox messages
-const messages = messageGroups.flatMap((group) => group.messages);
+const messages = messageGroups.flat();
 const numNewEntries =
   messages.filter((message) =>
     !message.mailbox.startsWith("feed-watcher/@error/")
   ).length;
 console.log(`Found ${numNewEntries} new feed entries`);
 
-// Create the mailbox messages
-const stdin = messages.map((message) => JSON.stringify(message)).join("\n");
-const process = Deno.run({
-  cmd: ["mailbox", "import", "--format=json"],
-  stdin: "piped",
-});
-await writeAll(process.stdin, new TextEncoder().encode(stdin));
-process.stdin.close();
-await process.status();
+// Create the mailbox messages and persist the seen feed entries only after creating the messages succeeds
+await createMailboxMessages(messages);
+db.query("END TRANSACTION");

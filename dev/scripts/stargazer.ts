@@ -1,7 +1,7 @@
-import { join } from "https://deno.land/std@0.153.0/path/mod.ts";
-import { writeAll } from "https://deno.land/std@0.153.0/streams/conversion.ts";
-import { DB } from "https://deno.land/x/sqlite@v3.4.1/mod.ts";
+import { join } from "https://deno.land/std@0.196.0/path/mod.ts";
+import { DB } from "https://deno.land/x/sqlite@v3.7.2/mod.ts";
 import { z } from "https://deno.land/x/zod@v3.21.4/mod.ts";
+import { createMailboxMessages } from "./mailbox.ts";
 
 const token = Deno.env.get("GITHUB_TOKEN");
 if (!token) {
@@ -137,6 +137,9 @@ async function getNewRepos(
   return repos.filter((repo) => newRepos.has(repo.name));
 }
 
+// Start a transaction that will be reverted if there are any errors
+db.query("BEGIN TRANSACTION");
+
 // Convert the new repo entries into a list of mailbox messages
 const newRepos = (await getNewRepos(query, threshold)).map(
   (repo) => ({
@@ -147,12 +150,6 @@ const newRepos = (await getNewRepos(query, threshold)).map(
 );
 console.log(`Found ${newRepos.length} new repos`);
 
-// Create the mailbox messages
-const stdin = newRepos.map((message) => JSON.stringify(message)).join("\n");
-const process = Deno.run({
-  cmd: ["mailbox", "import", "--format=json"],
-  stdin: "piped",
-});
-await writeAll(process.stdin, new TextEncoder().encode(stdin));
-process.stdin.close();
-await process.status();
+// Create the mailbox messages and persist the repo entries only after creating the messages succeeds
+await createMailboxMessages(newRepos);
+db.query("END TRANSACTION");

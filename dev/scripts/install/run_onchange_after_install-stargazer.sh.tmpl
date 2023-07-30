@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # hash: {{ joinPath .chezmoi.sourceDir "dev/scripts/stargazer.ts" | include | sha256sum }}
+# hash: {{ joinPath .chezmoi.sourceDir "dev/scripts/mailbox.ts" | include | sha256sum }}
 
 # Install stargazer whenever it changes
 deno install -f \

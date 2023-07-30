@@ -1,8 +1,8 @@
-import { parse as parseToml } from "https://deno.land/std@0.154.0/encoding/toml.ts";
-import { join } from "https://deno.land/std@0.154.0/path/mod.ts";
-import { writeAll } from "https://deno.land/std@0.154.0/streams/conversion.ts";
-import { DB } from "https://deno.land/x/sqlite@v3.4.1/mod.ts";
-import { z } from "https://deno.land/x/zod@v3.18.0/mod.ts";
+import { parse as parseToml } from "https://deno.land/std@0.196.0/toml/parse.ts";
+import { join } from "https://deno.land/std@0.196.0/path/mod.ts";
+import { DB } from "https://deno.land/x/sqlite@v3.7.2/mod.ts";
+import { z } from "https://deno.land/x/zod@v3.21.4/mod.ts";
+import { createMailboxMessages } from "./mailbox.ts";
 
 // The first command-line argument is the URL to a TOML file containing the list of packages to watch
 const packagesListUrl = Deno.args[0];
@@ -46,6 +46,9 @@ const converters: {
   major: (v) => v.split(".")[0],
 };
 
+// Start a transaction that will be reverted if there are any errors
+db.query("BEGIN TRANSACTION");
+
 const updates: string[] = [];
 for (const [packageName, changeType] of Object.entries(packages)) {
   const res = await fetch(`https://registry.npmjs.org/${packageName}`);
@@ -64,14 +67,8 @@ for (const [packageName, changeType] of Object.entries(packages)) {
   }
 }
 
-// Add the new messages
-const process = Deno.run({
-  cmd: ["mailbox", "import", "--format=json"],
-  stdin: "piped",
-});
-const stdin = updates.map((update) =>
-  JSON.stringify({ mailbox: "release-watcher", content: update })
-).join("\n");
-await writeAll(process.stdin, new TextEncoder().encode(stdin));
-process.stdin.close();
-await process.status();
+// Create the mailbox messages and persist the current package versions only after creating the messages succeeds
+await createMailboxMessages(
+  updates.map((update) => ({ mailbox: "release-watcher", content: update })),
+);
+db.query("END TRANSACTION");

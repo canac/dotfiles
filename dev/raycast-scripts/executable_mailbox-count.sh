@@ -2,7 +2,7 @@
 
 # Required parameters:
 # @raycast.schemaVersion 1
-# @raycast.title Count mailbox notifications
+# @raycast.title Count Mailbox Notifications
 # @raycast.mode inline
 # @raycast.refreshTime 1m
 

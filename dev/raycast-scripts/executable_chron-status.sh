@@ -2,7 +2,7 @@
 
 # Required parameters:
 # @raycast.schemaVersion 1
-# @raycast.title Chron status
+# @raycast.title Chron Status
 # @raycast.mode inline
 # @raycast.refreshTime 1m
 

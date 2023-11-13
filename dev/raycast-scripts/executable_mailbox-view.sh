@@ -2,7 +2,7 @@
 
 # Required parameters:
 # @raycast.schemaVersion 1
-# @raycast.title View mailbox notifications
+# @raycast.title View Mailbox Notifications
 # @raycast.mode fullOutput
 
 # Optional parameters:

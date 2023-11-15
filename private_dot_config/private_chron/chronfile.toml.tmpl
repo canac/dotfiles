@@ -2,12 +2,14 @@
 schedule = "0 0 12 * * *" # every day at noon
 command = "homebrew_upgrade"
 makeUpMissedRuns = 1
+retry = true
 
 [scheduled.online-backup]
 schedule = "0 0 12 * * *" # every day at noon
 disabled = true
 command = "backup"
 makeUpMissedRuns = 1
+retry = true
 
 {{- if not .work }}
 
@@ -15,11 +17,11 @@ makeUpMissedRuns = 1
 schedule = "0 0 6 * * Sat" # every Saturday at 6am
 command = "feed-watcher https://gist.githubusercontent.com/canac/647a8c4542cc088b333b3d0bcc765b9d/raw/feeds.toml"
 makeUpMissedRuns = 1
+retry = true
 
 [scheduled.release-watcher]
 schedule = "0 0 * * * *" # hourly
 command = "release-watcher https://gist.githubusercontent.com/canac/ac3eaa16cb9c3e03530fbee64e1e690f/raw/packages.toml"
-retry = false
 
 [scheduled.stargazer]
 schedule = "0 0 * * * *" # hourly

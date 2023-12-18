@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Install the caddy root certificates
+caddy trust
+
+{{ if .work }}
+# Add Caddyfile entries
+caddyfile_path="$HOMEBREW_PREFIX/etc/Caddyfile"
+if ! grep localhost.cru.org "$caddyfile_path"; then
+  echo -e "\nlocalhost.cru.org {\n\treverse_proxy 127.0.0.1:4502\n\ttls internal\n}" >> "$caddyfile_path"
+  brew services restart caddy
+fi
+{{ end }}

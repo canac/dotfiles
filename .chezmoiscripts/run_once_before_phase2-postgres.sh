@@ -7,3 +7,5 @@ if "$pg_bin/psql" -c "\du" postgres | grep "$USER"; then
   rm -rf "$data_dir"
   "$pg_bin/initdb" --locale=C --encoding=UTF-8 --username=postgres "$data_dir"
 fi
+
+brew services restart postgresql@15

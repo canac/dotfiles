@@ -85,9 +85,3 @@ cask "warp"
 {{ end }}
 {{ end }}
 EOF
-
-# Use porman to initialize the Caddyfile so that caddy can be started
-portman reload-caddy || true
-
-brew services start caddy
-brew services start postgresql@15

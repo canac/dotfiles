@@ -3,11 +3,13 @@
 # Install the caddy root certificates
 caddy trust
 
+# Use porman to initialize the Caddyfile so that caddy can be started
+portman reload-caddy || true
+
 {{ if .work }}
 # Add Caddyfile entries
 caddyfile_path="$HOMEBREW_PREFIX/etc/Caddyfile"
-if ! grep localhost.cru.org "$caddyfile_path"; then
-  echo -e "\nlocalhost.cru.org {\n\treverse_proxy 127.0.0.1:4502\n\ttls internal\n}" >> "$caddyfile_path"
-  brew services restart caddy
-fi
+grep localhost.cru.org "$caddyfile_path" || echo -e "\nlocalhost.cru.org {\n\treverse_proxy 127.0.0.1:4502\n\ttls internal\n}" >> "$caddyfile_path"
 {{ end }}
+
+brew services restart caddy

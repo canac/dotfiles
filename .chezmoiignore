@@ -8,14 +8,14 @@ Library/
 {{ end }}
 
 {{ if ne .chezmoi.os "linux" }}
-.config/mailbox/config.toml
+.config/mailbox/
 {{ end }}
 
 {{ if .work }}
 .chezmoiscripts/phase2-rustup.sh
 dev/scripts/
 {{ else }}
-.config/fish/functions/mpdx-new.fish
+.config/fish/functions/mpdx-init.fish
 {{ end }}
 
 .vscode/

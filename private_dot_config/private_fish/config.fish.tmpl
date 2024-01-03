@@ -4,7 +4,7 @@ zoxide init fish | source
 mcfly init fish | source
 portman init fish | source
 {{- if .work }}
-rtx activate fish --quiet | source
+mise activate fish --quiet | source
 {{- end }}
 {{- if eq .chezmoi.os "darwin" }}
 source $HOME/.iterm2_shell_integration.fish
@@ -13,16 +13,18 @@ source $HOME/.iterm2_shell_integration.fish
 set -g fish_greeting
 set -g sponge_delay 10
 {{- if .work }}
-set -gx ECS_CONFIG "$HOME/dev/ecs_config"
+set -gx ECS_CONFIG $HOME/dev/ecs_config
+{{- if eq .chezmoi.os "darwin" }}
 set -gx JAVA_HOME /Library/Java/JavaVirtualMachines/temurin-8.jdk/Contents/Home
+{{- end }}
 {{ else }}
-set -gx VOLTA_HOME "$HOME/.volta"
+set -gx VOLTA_HOME $HOME/.volta
 {{- end }}
 set -gx EDITOR code
 set -gx HOMEBREW_NO_ENV_HINTS 1
 set -gx FZF_CTRL_T_COMMAND "fd --type file --hidden --exclude .git/ | sed 's@^\./@@'"
 set -gx FZF_CTRL_T_OPTS "--preview \"bat --color=always {}\""
-set -gx LG_CONFIG_FILE "$HOME/.config/lazygit/config.yml"
+set -gx LG_CONFIG_FILE $HOME/.config/lazygit/config.yml
 set -gx PGUSER postgres
 
 fish_add_path -g (brew --prefix postgresql@15)/bin
@@ -43,7 +45,6 @@ abbr -a -g g git
 abbr -a -g jr 'yarn jest --runTestsByPath'
 abbr -a -g l 'ls -lah'
 abbr -a -g lg lazygit
-abbr -a -g mc mkdir_and_cd
 abbr -a -g mx mailbox
 abbr -a -g n 'npm run'
 abbr -a -g nd 'npm run dev'

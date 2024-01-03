@@ -14,7 +14,7 @@
 # @raycast.author Caleb Cox
 # @raycast.authorURL https://github.com/canac
 
-if curl -s https://$(openssl rand -hex 12)-{{ .nextdns_profile }}.test.nextdns.io/ | grep --silent '"status": "ok"'; then
+if curl -s "https://$(openssl rand -hex 12)-{{ .nextdns_profile }}.test.nextdns.io/" | grep --silent '"status": "ok"'; then
   echo "Enabled"
 else
   echo "Disabled"

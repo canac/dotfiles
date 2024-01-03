@@ -35,9 +35,8 @@ brew "xh"
 brew "zoxide"
 {{ if .work }}
 brew "awscli"
-brew "gum"
 brew "maven"
-brew "rtx"
+brew "mise"
 brew "terraform"
 {{ else }}
 brew "cargo-edit"
@@ -70,18 +69,17 @@ cask "signal"
 cask "sourcetree"
 cask "spotify"
 cask "visual-studio-code"
+cask "warp"
 {{ if .work }}
 tap "homebrew/cask-versions"
 cask "breaktimer"
 cask "docker"
 cask "slack"
-cask "temurin8"
+cask "homebrew/cask-versions/temurin8"
 {{ else }}
 cask "kindle"
 cask "messenger"
 cask "ticktick"
-cask "vlc"
-cask "warp"
 {{ end }}
 {{ end }}
 EOF

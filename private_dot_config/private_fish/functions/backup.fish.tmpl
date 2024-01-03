@@ -6,13 +6,13 @@ function backup --description 'Backup online using Restic'
 
     function __backup
         # Make a list of all the files to be backed up and pipe them to Restic to be backed up
-        fd . ~/dev/ -E .DS_Store -E .git/ -E node_modules/ -E forks/ -E third-party/ -H --full-path -t file | restic backup -r $repo --verbose --files-from-verbatim -
+        fd . ~/dev/ -E .DS_Store -E .git/ -E node_modules/ -E forks/ -E third-party/ --hidden --full-path --type file | restic backup --repo $repo --verbose --files-from-verbatim -
     end
 
     if __backup 2>&1 | rg '404: File with such name does not exist.'
         echo "Creating repo at $repo"
         # The repo doesn't exist yet, so create it and re-run the backup
-        restic init -r $repo
+        restic init --repo $repo
         __backup
     end
 end

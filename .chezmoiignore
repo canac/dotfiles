@@ -7,6 +7,11 @@
 Library/
 {{ end }}
 
+{{ if or (not .work) (ne .chezmoi.os "darwin") }}
+.chezmoiscripts/phase2-mitmproxy.sh
+.config/fish/functions/proxy.fish
+{{ end }}
+
 {{ if ne .chezmoi.os "linux" }}
 .config/mailbox/
 {{ end }}

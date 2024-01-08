@@ -30,6 +30,7 @@ brew "restic"
 brew "ripgrep"
 brew "ruby"
 brew "starship"
+brew "trash"
 brew "wget"
 brew "xh"
 brew "zoxide"
@@ -84,3 +85,8 @@ cask "ticktick"
 {{ end }}
 {{ end }}
 EOF
+
+{{ if .work }}
+# Install v1.22.19 because as of v1.21.21, the last two releases don't include the .asc files, which causes installation to fail
+mise use --global --yes yarn@1.22.19
+{{ end }}

@@ -20,6 +20,7 @@ Library/
 .chezmoiscripts/phase2-rustup.sh
 dev/scripts/
 {{ else }}
+.config/fish/functions/gql.fish
 .config/fish/functions/mpdx-init.fish
 {{ end }}
 

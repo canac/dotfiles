@@ -41,7 +41,6 @@ abbr -a -g c 'code .'
 abbr -a -g cd z
 abbr -a -g cr 'cargo run --'
 abbr -a -g g git
-abbr -a -g jr 'yarn jest --runTestsByPath'
 abbr -a -g l 'ls -lah'
 abbr -a -g lg lazygit
 abbr -a -g mx mailbox
@@ -57,3 +56,9 @@ abbr -a -g s 'stree .'
 abbr -a -g y yarn
 abbr -a -g ys 'yarn start'
 abbr -a -g yt 'yarn test'
+{{- if .work }}
+abbr -a -g jr 'yarn jest --runTestsByPath'
+abbr -a -g rf 'rubocop -A'
+abbr -a -g rt rspec
+abbr -a -g w watchexec
+{{- end }}

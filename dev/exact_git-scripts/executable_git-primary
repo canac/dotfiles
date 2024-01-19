@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if git show-ref --quiet refs/heads/main; then
+  echo "main"
+else
+  echo "master"
+fi

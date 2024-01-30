@@ -8,5 +8,6 @@ deno install -f \
   --allow-read="$HOME/.local/share/canac/" \
   --allow-write="$HOME/.local/share/canac/" \
   --allow-env=HOME,GITHUB_TOKEN \
-  --allow-net --allow-run=mailbox \
+  --allow-net \
+  --allow-run=mailbox \
   "$HOME/dev/scripts/stargazer.ts"

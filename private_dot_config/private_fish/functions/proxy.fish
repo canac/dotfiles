@@ -8,7 +8,7 @@ function proxy --description 'Set system HTTP(S) proxy status'
     switch $state
         case on
             # Setup HTTP and HTTPS proxy in macOS settings, which also turns the proxy on
-            set port $(portman allocate mitmproxy --matcher=none)
+            set port $(portman get mitmproxy)
             networksetup -setwebproxy "Wi-Fi" localhost $port
             networksetup -setsecurewebproxy "Wi-Fi" localhost $port
         case off

@@ -13,7 +13,7 @@ retry = true
 
 {{ if .work }}
 [startup.mitmproxy]
-command = "mitmdump --quiet --ssl-insecure --listen-port $(portman allocate mitmproxy --matcher=none) --scripts $HOME/dev/proxy.py"
+command = "mitmdump --quiet --ssl-insecure --listen-port $(portman create mitmproxy --no-activate --overwrite) --scripts $HOME/dev/proxy.py"
 keepAlive = true
 {{ else }}
 [scheduled.feed-watcher]

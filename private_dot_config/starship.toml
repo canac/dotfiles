@@ -24,7 +24,7 @@ format = '[($output )](bold yellow)'
 shell = ['bash', '--noprofile', '--norc']
 
 [custom.port]
-command = 'echo $PORT'
-when = 'test -n "${PORT-}"'
+command = 'if test -n "$PORTMAN_LINKED_PORT"; then echo "$PORT -> $PORTMAN_LINKED_PORT"; else echo "$PORT"; fi'
+when = 'test -n "$PORT"'
 format = ':[$output]($style) '
 shell = ['bash', '--noprofile', '--norc']

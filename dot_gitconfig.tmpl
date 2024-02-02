@@ -18,13 +18,15 @@
 	cif = commit --no-verify
 	d = diff
 	ds = diff --staged
+	fm = !git fetch origin $(git primary)
 	l = log
 	l1 = log --oneline --abbrev-commit
 	lg = l1 --graph
 	m = merge --no-ff
 	ma = merge --abort
-	mm = !git merge $(git primary)
+	mm = !git merge origin/$(git primary)
 	ms = merge staging
+	mt = merge -X theirs
 	ra = rebase --abort
 	rbm = !git rebase origin/$(git primary)
 	rc = rebase --continue

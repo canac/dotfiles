@@ -41,7 +41,7 @@
 	sk = stash --keep-index
 	sn = show --name-only
 	sp = stash pop
-	ss = stash show --patch
+	ss = stash show
 	st = switch
 	stb = switch --create
 	std = switch --detach
@@ -54,6 +54,7 @@
 	uci = reset HEAD^
 [branch]
 	autosetuprebase = always
+	sort = -committerdate
 [color]
 	ui = true
 [commit]
@@ -75,12 +76,16 @@
 	syntax-theme = "Visual Studio Dark+"
 [delta "interactive"]
 	keep-plus-minus-markers = false
+[diff]
+	algorithm = histogram
 [help]
-	autocorrect = 10
+	autocorrect = prompt
 [init]
 	defaultBranch = main
 [interactive]
 	diffFilter = delta --color-only --features=interactive
+[merge]
+	conflictstyle = zdiff3
 [pull]
 	rebase = true
 [push]
@@ -88,8 +93,15 @@
 	default = current
 [rebase]
 	autosquash = true
+	autostash = true
+	updateRefs = true
 [remote "origin"]
 	prune = true
+[rerere]
+	autoUpdate = true
+	enabled = true
+[stash]
+	showPatch = true
 [tag]
 	gpgsign = true
 [user]

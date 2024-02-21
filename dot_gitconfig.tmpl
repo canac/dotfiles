@@ -1,5 +1,6 @@
 [alias]
 	a = add
+	aa = add .
 	ai = add --interactive
 	ap = add --patch
 	b = branch
@@ -7,15 +8,19 @@
 	bd = branch --delete
 	bdo = push origin --delete
 	bf = branch --force
+	bk = reset HEAD@{1}
 	bm = branch --move
 	bmf = branch --move --force
-	ch = !git reflog | rg commit: | fzf --no-sort
-	ci = commit
-	cia = commit --amend
-	ciaf = commit --amend --no-verify
-	cian = commit --amend --no-edit
-	cianf = commit --amend --no-edit --no-verify
-	cif = commit --no-verify
+	c = commit
+	ca = commit --amend --no-edit
+	cav = commit --amend --no-edit --no-verify
+	ce = commit --amend
+	cf = fixup
+	ch = cherry-pick
+	cha = cherry-pick --abort
+	cm = commit --allow-empty
+	cr = recommit
+	cv = commit --no-verify
 	d = diff
 	ds = diff --staged
 	fm = !git fetch origin $(git primary)
@@ -26,12 +31,14 @@
 	ma = merge --abort
 	mm = !git merge origin/$(git primary)
 	ms = merge staging
-	mt = merge -X theirs
+	mt = merge --strategy-option theirs
+	r = restore
 	ra = rebase --abort
 	rbm = !git rebase origin/$(git primary)
 	rc = rebase --continue
 	ri = rebase --interactive
-	rim = !git rebase --interactive $(git primary) $(git current)
+	rim = !git rebase --interactive $(git primary)
+	ro = !git reset origin/$(git current)
 	rv = remote --verbose
 	p = push
 	pf = push --force-with-lease
@@ -48,10 +55,8 @@
 	stm = !git switch $(git primary)
 	sts = switch staging
 	sw = show
-	r = restore
-	rr = restore origin/$(git current)
 	ua = reset HEAD
-	uci = reset HEAD^
+	uc = reset HEAD~1
 [branch]
 	autosetuprebase = always
 	sort = -committerdate
@@ -94,6 +99,7 @@
 [rebase]
 	autosquash = true
 	autostash = true
+	rebaseMerges = true
 	updateRefs = true
 [remote "origin"]
 	prune = true

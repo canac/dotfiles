@@ -1,0 +1,6 @@
+[repos.give-web]
+prefix = "give"
+
+[repos.mpdx-react]
+prefix = "mpdx"
+init_command = "cp ~/dev/mpdx-react/.env ."

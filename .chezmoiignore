@@ -24,6 +24,7 @@ dev/scripts/
 .config/fish/functions/gql.fish
 .config/fish/functions/jr.fish
 .config/fish/functions/jrw.fish
+.config/fish/functions/preview.fish
 .config/fish/functions/start.fish
 .config/fish/functions/worktree-add.fish
 .config/worktrees.toml

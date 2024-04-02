@@ -4,7 +4,7 @@
 # hash: {{ include "dev/exact_scripts/mailbox.ts" | sha256sum }}
 
 # Install feed-watcher whenever it changes
-deno install -f \
+deno install --global --force \
   --allow-read="$HOME/.local/share/canac/" \
   --allow-write="$HOME/.local/share/canac/" \
   --allow-env=HOME \

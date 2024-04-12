@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-git commit --fixup $(git l1 | fzf --no-sort | cut -w -f1)
+git commit --fixup $(git l1 --grep='^[a-z]*!' --invert-grep | fzf --no-sort | cut -w -f1)

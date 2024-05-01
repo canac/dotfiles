@@ -22,6 +22,7 @@
 	cr = recommit
 	cv = commit --no-verify
 	d = diff
+	do = !git diff origin/$(git current)
 	ds = diff --staged
 	fm = !git fetch origin $(git primary)
 	l = log

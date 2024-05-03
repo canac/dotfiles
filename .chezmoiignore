@@ -21,7 +21,6 @@ Library/
 dev/scripts/
 {{ else }}
 .config/fish/functions/gh-repo.fish
-.config/fish/functions/gql.fish
 .config/fish/functions/jr.fish
 .config/fish/functions/jrw.fish
 .config/fish/functions/preview.fish

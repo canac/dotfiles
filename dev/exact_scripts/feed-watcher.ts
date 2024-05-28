@@ -49,7 +49,9 @@ async function loadFeedEntries(feedUrl: string): Promise<FeedEntry[]> {
     return feed.entries.flatMap((
       entry,
     ) => {
-      const link = entry.links[0]?.href;
+      const link = (entry.links.find((link) =>
+        link.rel === "alternate"
+      ) || entry.links[0])?.href;
       const title = entry.title?.value;
       if (!link) {
         throw new Error(`Missing link in feed entry at ${feedUrl}`);

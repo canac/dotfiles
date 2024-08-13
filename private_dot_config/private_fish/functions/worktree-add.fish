@@ -12,13 +12,13 @@ function worktree-add --description 'Add a new worktree'
     set branch_type $(gum filter new existing --header="Do you want to base the worktree on a new branch or an existing branch?" --placeholder="" || return 1)
     switch $branch_type
         case new
-            set branch $(gum input --prompt "New branch name: " --placeholder "" || return 1)
+            set branch $(gum input --prompt="New branch name: " --placeholder="" --width=0 || return 1)
         case existing
             set branch $(git for-each-ref 'refs/heads/*' 'refs/remotes/origin/*' --format '%(refname:short)' --sort '-committerdate' | fzf || return 1)
             set branch $(echo $branch | string split /)[-1]
     end
 
-    set dir_suffix $(gum input --prompt "Directory name: $dir_prefix-" --placeholder="" --value=$branch) || return 1
+    set dir_suffix $(gum input --prompt="Directory name: $dir_prefix-" --placeholder="" --width=0 --value=$branch) || return 1
     set directory $HOME/dev/$dir_prefix-$dir_suffix
 
     switch $branch_type

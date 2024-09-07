@@ -1,5 +1,5 @@
-import { join } from "https://deno.land/std@0.196.0/path/mod.ts";
-import { DB } from "https://deno.land/x/sqlite@v3.7.2/mod.ts";
+import { join } from "jsr:@std/path@1.0.4";
+import { DB } from "https://deno.land/x/sqlite@v3.9.0/mod.ts";
 import { z } from "https://deno.land/x/zod@v3.21.4/mod.ts";
 import { createMailboxMessages } from "./mailbox.ts";
 

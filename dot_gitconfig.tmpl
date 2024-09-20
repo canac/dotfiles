@@ -22,6 +22,7 @@
 	cr = recommit
 	cv = commit --no-verify
 	d = diff
+	db = !git diff $(git merge-base $(git primary) HEAD)
 	do = !git diff origin/$(git current)
 	ds = diff --staged
 	fm = !git fetch origin $(git primary)

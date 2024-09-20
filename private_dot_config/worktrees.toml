@@ -3,4 +3,4 @@ prefix = "give"
 
 [repos.mpdx-react]
 prefix = "mpdx"
-init_command = "ln -s ~/dev/mpdx-react/.env .env"
+init_command = "ln -s ~/dev/mpdx-react/.env .env && yarn gql"

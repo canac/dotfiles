@@ -16,6 +16,7 @@ set -g sponge_delay 10
 {{- if .work }}
 set -gx ECS_CONFIG $HOME/dev/ecs_config
 {{- if eq .chezmoi.os "darwin" }}
+set -gx DOCKER_HOST "unix://$HOME/.colima/default/docker.sock"
 set -gx JAVA_HOME /Library/Java/JavaVirtualMachines/temurin-8.jdk/Contents/Home
 {{- end }}
 {{ else }}

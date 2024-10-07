@@ -36,7 +36,10 @@ brew "xh"
 brew "zoxide"
 {{ if .work }}
 brew "awscli"
+brew "colima"
 brew "dasel"
+brew "docker"
+brew "docker-credential-helper"
 brew "gum"
 brew "maven"
 brew "mise"
@@ -73,7 +76,6 @@ cask "visual-studio-code"
 cask "warp"
 {{ if .work }}
 cask "breaktimer"
-cask "docker"
 cask "heynote"
 cask "mitmproxy"
 cask "slack"
@@ -88,4 +90,8 @@ EOF
 {{ if .work }}
 # Install v1.22.19 because as of v1.21.21, the last two releases don't include the .asc files, which causes installation to fail
 mise use --global --yes yarn@1.22.19
+
+# stage-console expects to be able to call docker-credential-desktop
+ln -sf $(brew --prefix)/bin/docker-credential-helper $(brew --prefix)/bin/docker-credential-desktop
 {{ end }}
+

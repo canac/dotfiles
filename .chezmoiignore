@@ -7,19 +7,11 @@
 Library/
 {{ end }}
 
-{{ if or (not .work) (ne .chezmoi.os "darwin") }}
-.chezmoiscripts/phase2-mitmproxy.sh
-.config/fish/functions/proxy.fish
-{{ end }}
-
 {{ if ne .chezmoi.os "linux" }}
 .config/mailbox/
 {{ end }}
 
-{{ if .work }}
-.chezmoiscripts/phase2-rustup.sh
-dev/scripts/
-{{ else }}
+{{ if not .cru }}
 .config/fish/functions/gh-repo.fish
 .config/fish/functions/jr.fish
 .config/fish/functions/jrw.fish
@@ -27,6 +19,19 @@ dev/scripts/
 .config/fish/functions/start.fish
 .config/fish/functions/worktree-add.fish
 .config/worktrees.toml
+{{ end }}
+
+{{ if or (not .proxy) (ne .chezmoi.os "darwin") }}
+.chezmoiscripts/phase2-mitmproxy.sh
+.config/fish/functions/proxy.fish
+{{ end }}
+
+{{ if not .rust }}
+.chezmoiscripts/phase2-rustup.sh
+{{ end }}
+
+{{ if not .watcher }}
+dev/scripts/
 {{ end }}
 
 .vscode/

@@ -16,6 +16,7 @@ brew "bitwarden-cli"
 brew "broot"
 brew "caddy"
 brew "chezmoi"
+brew "deno"
 brew "fd"
 brew "fish"
 brew "fisher"
@@ -34,7 +35,7 @@ brew "trash"
 brew "wget"
 brew "xh"
 brew "zoxide"
-{{ if .work }}
+{{ if .cru }}
 brew "awscli"
 brew "colima"
 brew "dasel"
@@ -43,12 +44,14 @@ brew "docker-credential-helper"
 brew "gum"
 brew "maven"
 brew "mise"
-{{ else }}
-brew "deno"
+{{ end }}
+{{ if .personal }}
 brew "ffmpeg"
-brew "rustup-init"
 brew "volta"
 brew "yt-dlp"
+{{ end }}
+{{ if .rust }}
+brew "rustup-init"
 {{ end }}
 {{ if eq .chezmoi.os "darwin" }}
 tap "homebrew/cask"
@@ -74,20 +77,21 @@ cask "sourcetree"
 cask "spotify"
 cask "visual-studio-code"
 cask "warp"
-{{ if .work }}
+{{ if .cru }}
 cask "breaktimer"
 cask "heynote"
 cask "mitmproxy"
 cask "slack"
 cask "temurin@8"
-{{ else }}
+{{ end }}
+{{ if .personal }}
 cask "messenger"
 cask "ticktick"
 {{ end }}
 {{ end }}
 EOF
 
-{{ if .work }}
+{{ if .cru }}
 # Install v1.22.19 because as of v1.21.21, the last two releases don't include the .asc files, which causes installation to fail
 mise use --global --yes yarn@1.22.19
 

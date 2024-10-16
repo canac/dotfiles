@@ -2,7 +2,10 @@
 {{- $email := "canac@users.noreply.github.com" -}}
 {{- $env := (bitwarden "item" "chezmoi-env.yml").notes | fromYaml -}}
 {{- $password_salt := $env.PASSWORD_SALT -}}
-{{- $work := promptBoolOnce . "work" "Is this your Cru machine" -}}
+{{- $cru := promptBoolOnce . "cru" "Do you want to set up Cru development dependencies" -}}
+{{- $proxy := promptBoolOnce . "proxy" "Do you want to set up mitmproxy" -}}
+{{- $rust := promptBoolOnce . "rust" "Do you want to set up Rust development" -}}
+{{- $watcher := promptBoolOnce . "watcher" "Do you want to set up watcher scripts" -}}
 
 encryption = "gpg"
 
@@ -13,7 +16,11 @@ encryption = "gpg"
     email = {{ $email | quote }}
     nextdns_profile = "1d7724"
     signing_key_id = {{ default (env "SIGNING_KEY_ID") (index . "signing_key_id") | quote }}
-    work = {{ $work }}
+    cru = {{ $cru }}
+    personal = {{ not $cru }}
+    proxy = {{ $proxy }}
+    rust = {{ $rust }}
+    watcher = {{ $watcher }}
 
 [data.env]
     b2_account_id = {{ $env.B2_ACCOUNT_ID | quote }}

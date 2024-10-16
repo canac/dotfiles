@@ -6,7 +6,7 @@ caddy trust
 # Use porman to initialize the Caddyfile so that caddy can be started
 portman reload-caddy || true
 
-{{ if .work }}
+{{ if .cru }}
 # Add Caddyfile entries
 caddyfile_path="$HOMEBREW_PREFIX/etc/Caddyfile"
 grep --silent localhost.cru.org "$caddyfile_path" || echo -e "\nlocalhost.cru.org {\n\treverse_proxy 127.0.0.1:4502\n\ttls internal\n}" >> "$caddyfile_path"

@@ -11,11 +11,13 @@ command = "backup"
 makeUpMissedRun = true
 retry = true
 
-{{ if .work }}
+{{ if .proxy }}
 [startup.mitmproxy]
 command = "mitmdump --quiet --ssl-insecure --listen-port $(portman create mitmproxy --no-activate --overwrite) --scripts $HOME/dev/proxy.py"
 keepAlive = true
-{{ else }}
+{{ end }}
+
+{{ if .watcher }}
 [scheduled.feed-watcher]
 schedule = "0 0 6 * * Sat" # every Saturday at 6am
 command = "feed-watcher https://gist.githubusercontent.com/canac/647a8c4542cc088b333b3d0bcc765b9d/raw/feeds.toml"

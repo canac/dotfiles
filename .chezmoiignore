@@ -21,7 +21,7 @@ Library/
 .config/worktrees.toml
 {{ end }}
 
-{{ if or (not .proxy) (ne .chezmoi.os "darwin") }}
+{{ if not .proxy }}
 .chezmoiscripts/phase2-mitmproxy.sh
 .config/fish/functions/proxy.fish
 {{ end }}

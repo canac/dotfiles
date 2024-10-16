@@ -3,7 +3,7 @@
 {{- $env := (bitwarden "item" "chezmoi-env.yml").notes | fromYaml -}}
 {{- $password_salt := $env.PASSWORD_SALT -}}
 {{- $cru := promptBoolOnce . "cru" "Do you want to set up Cru development dependencies" -}}
-{{- $proxy := promptBoolOnce . "proxy" "Do you want to set up mitmproxy" -}}
+{{- $proxy := and (eq .chezmoi.os "darwin") (promptBoolOnce . "proxy" "Do you want to set up mitmproxy") -}}
 {{- $rust := promptBoolOnce . "rust" "Do you want to set up Rust development" -}}
 {{- $watcher := promptBoolOnce . "watcher" "Do you want to set up watcher scripts" -}}
 

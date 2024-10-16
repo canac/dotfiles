@@ -90,8 +90,7 @@ cask "ticktick"
 {{ end }}
 EOF
 
-# Install v1.22.19 because as of v1.21.21, the last two releases don't include the .asc files, which causes installation to fail
-mise use --global --yes yarn@1.22.19
+mise use --global --yes yarn
 
 {{ if .cru }}
 # stage-console expects to be able to call docker-credential-desktop

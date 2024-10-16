@@ -7,9 +7,6 @@ fish_add_path -g ~/.deno/bin
 fish_add_path -g $JAVA_HOME/bin
 fish_add_path -g ~/dev/ecs_config/bin
 {{- end }}
-{{- if .personal}}
-fish_add_path -g ~/.volta/bin
-{{- end }}
 {{- if .rust}}
 fish_add_path -g ~/.cargo/bin
 {{- end }}
@@ -24,9 +21,6 @@ set -gx ECS_CONFIG $HOME/dev/ecs_config
 set -gx DOCKER_HOST "unix://$HOME/.colima/default/docker.sock"
 set -gx JAVA_HOME /Library/Java/JavaVirtualMachines/temurin-8.jdk/Contents/Home
 {{- end }}
-{{- end }}
-{{- if .personal }}
-set -gx VOLTA_HOME $HOME/.volta
 {{- end }}
 set -gx EDITOR code
 set -gx HOMEBREW_NO_ENV_HINTS 1

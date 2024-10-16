@@ -14,6 +14,8 @@ fish_add_path -g ~/.volta/bin
 fish_add_path -g ~/.cargo/bin
 {{- end }}
 
+bind \cx wrap-watchexec
+
 set -g fish_greeting
 set -g sponge_delay 10
 {{- if .cru }}

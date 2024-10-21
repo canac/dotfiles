@@ -1,4 +1,4 @@
-eval ({{ .brew_bin }}/brew shellenv)
+eval $({{ .brew_bin }}/brew shellenv)
 
 fish_add_path -g $HOMEBREW_PREFIX/opt/postgresql@15/bin
 fish_add_path -g ~/dev/git-scripts

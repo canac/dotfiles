@@ -26,9 +26,9 @@
 	do = !git diff origin/$(git current)
 	ds = diff --staged
 	fm = !git fetch origin $(git primary)
-	l = log
-	l1 = log --oneline --abbrev-commit
-	lg = l1 --graph
+	l = log --oneline --abbrev-commit
+	lg = l --graph
+	lv = log
 	m = merge --no-ff
 	ma = merge --abort
 	mm = !git merge origin/$(git primary)
@@ -41,6 +41,7 @@
 	ri = rebase --interactive
 	rim = !git rebase --interactive $(git primary)
 	ro = !git reset origin/$(git current)
+	roh = ro --hard
 	rv = remote --verbose
 	p = push
 	pf = push --force-with-lease

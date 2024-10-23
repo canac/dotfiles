@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-commit=$(git l1 --grep='^[a-z]*!' --invert-grep | fzf --no-sort | cut -w -f1)
+commit=$(git l --grep='^[a-z]*!' --invert-grep | fzf --no-sort | cut -w -f1)
 
 if [[ -n "$commit" ]]; then
   git commit --fixup "$commit"

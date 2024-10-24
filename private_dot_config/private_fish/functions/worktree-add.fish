@@ -10,6 +10,7 @@ function worktree-add --description 'Add a new worktree'
     set init_command $(dasel --file $HOME/.config/worktrees.toml "repos.$repo.property(init_command?)" --write plain || return 1)
 
     set branch_type $(gum filter new existing --header="Do you want to base the worktree on a new branch or an existing branch?" --placeholder="" || return 1)
+    git fetch
     switch $branch_type
         case new
             set branch $(gum input --prompt="New branch name: " --placeholder="" --width=0 || return 1)
@@ -23,7 +24,7 @@ function worktree-add --description 'Add a new worktree'
 
     switch $branch_type
         case new
-            git worktree add -b $branch $directory $(git primary) || return 1
+            git worktree add -b $branch $directory origin/$(git primary) --no-track || return 1
         case existing
             git worktree add $directory --checkout $branch || return 1
     end

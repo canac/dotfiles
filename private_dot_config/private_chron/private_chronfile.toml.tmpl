@@ -11,6 +11,12 @@ command = "backup"
 makeUpMissedRun = true
 retry = true
 
+{{ if .cru }}
+[scheduled.mpdx-update]
+schedule = "0 */10 9-16 * * Mon-Fri" # 9-5 Monday-Friday
+command = "git -C ~/dev/mpdx-react pull"
+{{ end }}
+
 {{ if .proxy }}
 [startup.mitmproxy]
 command = "mitmdump --quiet --ssl-insecure --listen-port $(portman create mitmproxy --no-activate --overwrite) --scripts $HOME/dev/proxy.py"

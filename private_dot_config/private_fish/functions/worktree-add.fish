@@ -23,7 +23,9 @@ function worktree-add --description 'Add a new worktree'
 
     switch $branch_type
         case new
-            git worktree add -b $branch $directory $(git primary) || return 1
+            set primary $(git primary)
+            git fetch origin $primary
+            git worktree add -b $branch $directory origin/$primary --no-track || return 1
         case existing
             git worktree add $directory --checkout $branch || return 1
     end

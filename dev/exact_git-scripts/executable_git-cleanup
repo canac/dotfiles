@@ -1,0 +1,24 @@
+#!/usr/bin/env fish
+
+# Fetch latest upstream branches
+git fetch --prune
+
+# Get the list of all worktree paths
+for worktree_path in $(git worktree list --porcelain | rg worktree | cut -d' ' -f2)
+    # Check whether the worktree's branch was deleted upstream
+    if git -C $worktree_path branch --format '%(refname:short) %(upstream:track) %(HEAD)' | rg --fixed-strings "[gone] *" >/dev/null; and gum confirm "Do you want to delete the worktree at $worktree_path?"
+        git worktree remove $worktree_path --force
+    end
+end
+
+# Delete branches that have been deleted upstream
+for branch in $(git branch --format '%(refname:short) %(upstream:track)' | rg --fixed-strings "[gone]" | cut -d' ' -f1)
+    gum confirm "Do you want to delete the branch $branch?" || continue
+    git branch -D $branch
+
+    # Escape special characters in the branch name to create a regex to find backup branches
+    set branch_pattern "^$(echo $branch | sed 's/[].$^[]/\\\\&/g')-backup.*\$"
+    if set backup_branches $(git branch --format '%(refname:short)' | rg $branch_pattern); and gum confirm "Do you also want to delete $(count $backup_branches) backup branches for $branch?"
+        git branch -D $backup_branches
+    end
+end

@@ -3,6 +3,10 @@ customCommands:
     context: files
     command: git fixup
     subprocess: true
+  - key: R
+    context: files
+    command: git recommit
+    subprocess: true
 git:
   paging:
     colorArg: always

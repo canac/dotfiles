@@ -27,6 +27,7 @@
 	ds = diff --staged
 	fm = !git fetch origin $(git primary)
 	l = log --oneline --abbrev-commit
+	lb = !git l $(git merge-base $(git primary) HEAD)..HEAD
 	lg = l --graph
 	lv = log
 	m = merge --no-ff

@@ -23,8 +23,12 @@
 	cv = commit --no-verify
 	d = diff
 	db = !git diff $(git merge-base $(git primary) HEAD)
+	dn = diff --name-only
 	do = !git diff origin/$(git current)
 	ds = diff --staged
+	dsn = diff --staged --name-only
+	dst = diff --staged --stat
+	dt = diff --stat
 	fm = !git fetch origin $(git primary)
 	l = log --oneline --abbrev-commit
 	lb = !git l $(git merge-base $(git primary) HEAD)..HEAD
@@ -60,6 +64,8 @@
 	stm = !git switch $(git primary)
 	sts = switch staging
 	sw = show
+	swn = show --name-only
+	swt = show --stat
 	ua = reset HEAD
 	uc = reset HEAD~1
 [branch]

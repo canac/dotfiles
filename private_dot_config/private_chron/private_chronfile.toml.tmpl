@@ -14,7 +14,8 @@ retry = true
 {{ if .cru }}
 [scheduled.mpdx-update]
 schedule = "0 */10 9-16 * * Mon-Fri" # 9-5 Monday-Friday
-command = "git -C ~/dev/mpdx-react pull"
+command = "git pull"
+workingDir = "~/dev/mpdx-react"
 {{ end }}
 
 {{ if .proxy }}

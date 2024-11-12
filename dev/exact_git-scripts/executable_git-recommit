@@ -1,3 +1,8 @@
 #!/usr/bin/env bash
 
-git commit --message "$(git reflog | rg 'commit: (?!\w+! )' --pcre2 | fzf --no-sort | rg 'commit: (.+)$' --replace '$1' --only-matching)"
+commit=$(git reflog | rg 'commit: (?!\w+! )' --pcre2 | fzf --no-sort | cut -d' ' -f1)
+if [[ -z "$commit" ]]; then
+  exit 1
+fi
+
+git log --format=%B --max-count=1 "$commit" | git commit --file=-

@@ -1,6 +1,5 @@
 function worktree-add --description 'Add a new worktree'
     set full_repo $(git remote get-url origin) || return 1
-    set dir_prefix
     if ! set repo $(echo $full_repo | rg '^https:\/\/github\.com\/CruGlobal\/(.+?)\.git$' -r '$1')
         echo "Repo \"$full_repo\" does not match a CruGlobal GitHub repo"
         return 1

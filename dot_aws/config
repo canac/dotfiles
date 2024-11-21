@@ -1,0 +1,13 @@
+[profile cru-sso]
+sso_start_url = https://cru.awsapps.com/start
+sso_region = us-east-1
+sso_role_name = default
+region = us-east-1
+output = json
+
+[profile mpdx-amplify]
+sso_start_url = https://cru.awsapps.com/start
+sso_region = us-east-1
+sso_account_id = 753232867021
+sso_role_name = mpdx-react-amplify
+region = us-east-1

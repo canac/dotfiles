@@ -12,6 +12,7 @@ Library/
 {{ end }}
 
 {{ if not .cru }}
+.aws/
 .chezmoiscripts/phase2-colima.sh
 .config/fish/functions/gh-repo.fish
 .config/fish/functions/jr.fish

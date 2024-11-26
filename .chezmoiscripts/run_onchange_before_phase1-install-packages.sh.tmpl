@@ -91,7 +91,7 @@ cask "ticktick"
 {{ end }}
 EOF
 
-mise use --global --yes yarn
+mise install
 
 {{ if .cru }}
 # stage-console expects to be able to call docker-credential-desktop

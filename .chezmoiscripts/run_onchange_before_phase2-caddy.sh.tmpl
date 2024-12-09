@@ -3,7 +3,7 @@
 # Install the caddy root certificates
 caddy trust
 
-# Use porman to initialize the Caddyfile so that caddy can be started
+# Use portman to initialize the Caddyfile so that caddy can be started
 portman reload-caddy || true
 
 {{ if .cru }}

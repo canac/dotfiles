@@ -1,9 +1,4 @@
 #!/usr/bin/env bash
 
-# Allow the current user to run sudo nextdns without a password
-sudoers_path="/etc/sudoers"
-sudoers_line="$USER ALL = (ALL) NOPASSWD: {{ .brew_bin }}/nextdns"
-sudo grep --silent "$sudoers_line" "$sudoers_path" || echo "$sudoers_line" | sudo tee -a "$sudoers_path"
-
 # Configure nextdns
 test "$(sudo nextdns status)" == running || sudo nextdns install --config {{ .nextdns_profile }} -report-client-info -auto-activate

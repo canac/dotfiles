@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# hash: {{ include "dev/exact_scripts/release-watcher.ts" | sha256sum }}
-# hash: {{ include "dev/exact_scripts/mailbox.ts" | sha256sum }}
-
 # Install release-watcher whenever it changes
 deno install --global --force \
   --allow-read="$HOME/.local/share/canac/" \

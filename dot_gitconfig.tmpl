@@ -49,7 +49,7 @@
 	roh = ro --hard
 	rv = remote --verbose
 	p = push
-	pf = push --force-with-lease
+	pf = push --force-with-lease --force-if-includes
 	s = status
 	sa = stash apply
 	sh = stash
@@ -107,6 +107,7 @@
 [push]
 	autoSetupRemote = true
 	default = current
+	useForceIfIncludes = true
 [rebase]
 	autosquash = true
 	autostash = true

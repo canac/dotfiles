@@ -1,0 +1,10 @@
+#!/usr/bin/env fish
+
+set file $argv[1]
+
+if test -z "$file"
+    # No file was provided, so choose one interactively
+    set file (fd --type file | fzf --header "Choose a file to trace its history" || return 1)
+end
+
+git l "$file" | fzf --preview "git -c color.ui=always sw {1} \"$file\"" --preview-window 'right,75%'

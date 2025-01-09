@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-commit=$(git l --grep='^[a-z]*!' --invert-grep | fzf --no-sort | cut -w -f1)
+commit=$(git l --grep='^(amend|fixup|squash)! ' --extended-regexp --invert-grep | fzf --no-sort | cut -w -f1)
 if [[ -z "$commit" ]]; then
   exit 1
 fi

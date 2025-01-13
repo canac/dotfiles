@@ -1,33 +1,33 @@
 eval $({{ .brew_bin }}/brew shellenv)
 
-fish_add_path -g $HOMEBREW_PREFIX/opt/postgresql@15/bin
-fish_add_path -g ~/dev/git-scripts
-fish_add_path -g ~/.deno/bin
+fish_add_path --global $HOMEBREW_PREFIX/opt/postgresql@15/bin
+fish_add_path --global ~/dev/git-scripts
+fish_add_path --global ~/.deno/bin
 {{- if .cru }}
-fish_add_path -g $JAVA_HOME/bin
-fish_add_path -g ~/dev/ecs_config/bin
+fish_add_path --global $JAVA_HOME/bin
+fish_add_path --global ~/dev/ecs_config/bin
 {{- end }}
 {{- if .rust}}
-fish_add_path -g ~/.cargo/bin
+fish_add_path --global ~/.cargo/bin
 {{- end }}
 
 bind \cx wrap-watchexec
 
-set -g fish_greeting
-set -g sponge_delay 10
+set fish_greeting
+set sponge_delay 10
 {{- if .cru }}
-set -gx ECS_CONFIG $HOME/dev/ecs_config
+set --export ECS_CONFIG $HOME/dev/ecs_config
 {{- if eq .chezmoi.os "darwin" }}
-set -gx DOCKER_HOST "unix://$HOME/.colima/default/docker.sock"
-set -gx JAVA_HOME /Library/Java/JavaVirtualMachines/temurin-8.jdk/Contents/Home
+set --export DOCKER_HOST "unix://$HOME/.colima/default/docker.sock"
+set --export JAVA_HOME /Library/Java/JavaVirtualMachines/temurin-8.jdk/Contents/Home
 {{- end }}
 {{- end }}
-set -gx EDITOR code
-set -gx HOMEBREW_NO_ENV_HINTS 1
-set -gx FZF_CTRL_T_COMMAND "fd --type file --hidden"
-set -gx FZF_CTRL_T_OPTS '--preview "bat --color=always {}"'
-set -gx LG_CONFIG_FILE $HOME/.config/lazygit/config.yml
-set -gx PGUSER postgres
+set --export EDITOR code
+set --export HOMEBREW_NO_ENV_HINTS 1
+set --export FZF_CTRL_T_COMMAND "fd --type file --hidden"
+set --export FZF_CTRL_T_OPTS '--preview "bat --color=always {}"'
+set --export LG_CONFIG_FILE $HOME/.config/lazygit/config.yml
+set --export PGUSER postgres
 
 fzf --fish | source
 mcfly init fish | source
@@ -38,29 +38,29 @@ zoxide init fish | source
 source $HOME/.iterm2_shell_integration.fish
 {{- end }}
 
-abbr -a -g c 'code .'
-abbr -a -g ca 'chezmoi apply'
-abbr -a -g cd z
-abbr -a -g cgron 'pbpaste | gron | code -'
-abbr -a -g cr 'cargo run --'
-abbr -a -g g git
-abbr -a -g l 'ls -lah'
-abbr -a -g lg lazygit
-abbr -a -g mx mailbox
-abbr -a -g n 'npm run'
-abbr -a -g nd 'npm run dev'
-abbr -a -g ni 'npm install --save'
-abbr -a -g nid 'npm install --save-dev'
-abbr -a -g nr 'npm uninstall --save'
-abbr -a -g nrd 'npm uninstall --save-dev'
-abbr -a -g ns 'npm start'
-abbr -a -g nt 'npm test'
-abbr -a -g s 'stree .'
-abbr -a -g w watchexec
-abbr -a -g y yarn
-abbr -a -g ys 'yarn start'
-abbr -a -g yt 'yarn test'
+abbr --add c 'code .'
+abbr --add ca 'chezmoi apply'
+abbr --add cd z
+abbr --add cgron 'pbpaste | gron | code -'
+abbr --add cr 'cargo run --'
+abbr --add g git
+abbr --add l 'ls -lah'
+abbr --add lg lazygit
+abbr --add mx mailbox
+abbr --add n 'npm run'
+abbr --add nd 'npm run dev'
+abbr --add ni 'npm install --save'
+abbr --add nid 'npm install --save-dev'
+abbr --add nr 'npm uninstall --save'
+abbr --add nrd 'npm uninstall --save-dev'
+abbr --add ns 'npm start'
+abbr --add nt 'npm test'
+abbr --add s 'stree .'
+abbr --add w watchexec
+abbr --add y yarn
+abbr --add ys 'yarn start'
+abbr --add yt 'yarn test'
 {{- if .cru }}
-abbr -a -g rf 'rubocop -A'
-abbr -a -g rt rspec
+abbr --add rf 'rubocop -A'
+abbr --add rt rspec
 {{- end }}

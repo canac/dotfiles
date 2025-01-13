@@ -1,6 +1,6 @@
 function worktree-add --description 'Add a new worktree'
     set full_repo $(git remote get-url origin || return 1)
-    if not set repo $(echo $full_repo | rg '^https:\/\/github\.com\/CruGlobal\/(.+?)\.git$' -r '$1')
+    if not set repo $(echo $full_repo | rg '^https:\/\/github\.com\/CruGlobal\/(.+?)\.git$' --replace '$1')
         echo "Repo \"$full_repo\" does not match a CruGlobal GitHub repo"
         return 1
     end
@@ -41,7 +41,7 @@ function worktree-add --description 'Add a new worktree'
     end
 
     z $directory
-    if set -q init_command
+    if set --query init_command
         echo $init_command | source
     end
     if test -e yarn.lock

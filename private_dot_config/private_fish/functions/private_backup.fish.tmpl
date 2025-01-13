@@ -1,12 +1,12 @@
 function backup --description 'Backup online using Restic'
-    set -x RESTIC_PASSWORD {{ .env.restic_password }}
-    set -x B2_ACCOUNT_ID {{ .env.b2_account_id }}
-    set -x B2_ACCOUNT_KEY {{ .env.b2_account_key }}
-    set -x repo b2:{{ .backup_bucket }}:/{{ .backup_namespace }}
+    set --export RESTIC_PASSWORD {{ .env.restic_password }}
+    set --export B2_ACCOUNT_ID {{ .env.b2_account_id }}
+    set --export B2_ACCOUNT_KEY {{ .env.b2_account_key }}
+    set --export repo b2:{{ .backup_bucket }}:/{{ .backup_namespace }}
 
     function __backup
         # Make a list of all the files to be backed up and pipe them to Restic to be backed up
-        fd . ~/dev/ -E .DS_Store -E .git/ -E node_modules/ -E forks/ -E third-party/ --hidden --full-path --type file | restic backup --repo $repo --verbose --files-from-verbatim -
+        fd . ~/dev/ --exclude .DS_Store --exclude .git/ --exclude node_modules/ --exclude forks/ --exclude third-party/ --hidden --full-path --type file | restic backup --repo $repo --verbose --files-from-verbatim -
     end
 
     if __backup 2>&1 | rg '404: File with such name does not exist.'

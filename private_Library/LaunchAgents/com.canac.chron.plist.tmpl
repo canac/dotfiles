@@ -11,7 +11,7 @@
     <key>ProgramArguments</key>
     <array>
       <string>{{ .brew_bin }}/fish</string>
-      <string>-c</string>
+      <string>--command</string>
       <string>chron $HOME/.config/chron/chronfile.toml --port $(portman create chron --no-activate --overwrite)</string>
     </array>
     <key>StandardErrorPath</key>

@@ -37,7 +37,7 @@ command = "release-watcher https://gist.githubusercontent.com/canac/ac3eaa16cb9c
 
 [scheduled.stargazer]
 schedule = "0 0 * * * *" # hourly
-command = 'set -x GITHUB_TOKEN {{ .env.github_token }}; stargazer "language:rust pushed:>=$(date -v-1m +%Y-%m-%d)" 100 rust; stargazer "language:typescript language:javascript pushed:>=$(date -v-1m +%Y-%m-%d)" 5000 js;'
+command = 'set --export GITHUB_TOKEN {{ .env.github_token }}; stargazer "language:rust pushed:>=$(date -v-1m +%Y-%m-%d)" 100 rust; stargazer "language:typescript language:javascript pushed:>=$(date -v-1m +%Y-%m-%d)" 5000 js;'
 makeUpMissedRun = true
 disabled = true
 {{ end }}

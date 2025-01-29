@@ -20,7 +20,7 @@ function worktree-add --description 'Add a new worktree'
     end
 
     if not set --query branch_type
-        set branch_type $(gum filter new existing --header="Do you want to base the worktree on a new branch or an existing branch?" --height=3 --placeholder="" || return 1)
+        set branch_type $(gum filter new existing --header="Do you want to base the worktree on a new branch or an existing branch?" --height=6 --placeholder="" || return 1)
         switch $branch_type
             case new
                 set branch $(gum input --prompt="New branch name: " --placeholder="" || return 1)

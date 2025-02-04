@@ -20,6 +20,7 @@ Library/
 .config/fish/functions/preview.fish
 .config/fish/functions/start.fish
 .config/fish/functions/worktree-add.fish
+.config/caddy/
 .config/worktrees.toml
 {{ end }}
 

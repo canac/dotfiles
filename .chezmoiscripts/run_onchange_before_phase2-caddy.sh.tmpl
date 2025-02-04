@@ -9,7 +9,8 @@ portman reload-caddy || true
 {{ if .cru }}
 # Add Caddyfile entries
 caddyfile_path="$HOMEBREW_PREFIX/etc/Caddyfile"
-grep --silent localhost.cru.org "$caddyfile_path" || echo -e "\nlocalhost.cru.org {\n\treverse_proxy 127.0.0.1:4502\n\ttls internal\n}" >> "$caddyfile_path"
+cru_caddyfile_path="$HOME/.config/caddy/cru-Caddyfile"
+grep --silent --fixed-strings "$cru_caddyfile_path" "$caddyfile_path" || echo "import \"$cru_caddyfile_path\"" >> "$caddyfile_path"
 {{ end }}
 
 brew services restart caddy

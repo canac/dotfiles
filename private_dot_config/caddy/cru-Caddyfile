@@ -1,0 +1,4 @@
+localhost.cru.org {
+	reverse_proxy localhost:4502
+	tls internal
+}

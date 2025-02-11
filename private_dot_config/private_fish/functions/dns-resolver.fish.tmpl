@@ -1,5 +1,10 @@
 function dns-resolver --description 'Set the system DNS resolver'
     switch $argv[1]
+        case none
+            {{ if eq .chezmoi.os "darwin" }}
+            networksetup -setdnsservers Wi-Fi empty
+            {{ end }}
+            return 0
         case adguard
             set servers "# AdGuard filtering servers
 server=2a10:50c0::ad2:ff
@@ -14,7 +19,7 @@ server=2a07:a8c0::
 server=45.90.28.0
 add-cpe-id={{ .nextdns_profile }}"
         case '*'
-            echo "Usage: dns-resolver [adguard|nextdns]"
+            echo "Usage: dns-resolver [none|adguard|nextdns]"
             return 1
     end
 

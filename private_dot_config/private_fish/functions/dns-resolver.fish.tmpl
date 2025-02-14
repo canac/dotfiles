@@ -30,9 +30,10 @@ strict-order
 # Listen on all interfaces to avoid requiring sudo on macOS
 listen-address=0.0.0.0
 
-# Resolve *.localhost and localhost.cru.org to 127.0.0.01
+# Resolve *.localhost and localhost.cru.org to the loopback address
 address=/.localhost/127.0.0.1
 {{ if .cru }}
+address=/localhost.cru.org/::1
 address=/localhost.cru.org/127.0.0.1
 {{ end }}
 $servers

@@ -8,6 +8,9 @@ function worktree-add --description 'Add a new worktree'
     set dir_prefix $(dasel --file $HOME/.config/worktrees.toml "repos.$repo.prefix" --write plain || return 1)
     set init_command $(dasel --file $HOME/.config/worktrees.toml "repos.$repo.property(init_command?)" --write plain || return 1)
 
+    # Ensure we have the latest branches
+    git fetch
+
     # Use the branch name from the first argument if present
     if test $(count $argv) -ge 1
         set branch $argv[1]

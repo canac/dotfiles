@@ -1,3 +1,6 @@
+[repos.conf-registration-web]
+prefix = "ert"
+
 [repos.give-web]
 prefix = "give"
 

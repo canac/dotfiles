@@ -25,6 +25,10 @@ keepAlive = true
 {{ end }}
 
 {{ if .watcher }}
+[startup.mailbox-proxy]
+command = "MAILBOX_PROXY_DATABASE_ID={{ .env.mailbox_proxy_database_id }} DENO_KV_ACCESS_TOKEN={{ .env.deno_kv_token }} mailbox-proxy"
+keepAlive = { delay = "1m", failures = true }
+
 [scheduled.feed-watcher]
 schedule = "0 0 12 * * Fri" # every Friday at noon
 command = "feed-watcher https://gist.githubusercontent.com/canac/647a8c4542cc088b333b3d0bcc765b9d/raw/feeds.toml"

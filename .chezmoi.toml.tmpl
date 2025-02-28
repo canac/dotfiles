@@ -25,7 +25,9 @@ encryption = "gpg"
 [data.env]
     b2_account_id = {{ $env.B2_ACCOUNT_ID | quote }}
     b2_account_key = {{ $env.B2_ACCOUNT_KEY | quote }}
+    deno_kv_token = {{ $env.DENO_KV_ACCESS_TOKEN | quote }}
     github_token = {{ $env.GITHUB_TOKEN | quote }}
+    mailbox_proxy_database_id = {{ $env.MAILBOX_PROXY_DATABASE_ID | quote }}
     restic_password = {{ sha256sum (print $backup_namespace $password_salt) | quote }}
 
 [diff]

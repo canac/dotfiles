@@ -1,34 +1,42 @@
 function dns-resolver --description 'Set the system DNS resolver'
+    {{ if eq .chezmoi.os "darwin" }}
+    if test $argv[1] = none
+        networksetup -setdnsservers Wi-Fi empty
+    else
+        networksetup -setdnsservers Wi-Fi 127.0.0.1
+    end
+    {{ end }}
+
     switch $argv[1]
-        case none
-            {{ if eq .chezmoi.os "darwin" }}
-            networksetup -setdnsservers Wi-Fi empty
-            {{ end }}
-            return 0
         case adguard
             set servers "# AdGuard filtering servers
 server=2a10:50c0::ad2:ff
 server=94.140.15.15
 server=2a10:50c0::ad1:ff
-server=94.140.14.14"
+server=94.140.14.14
+no-resolv"
         case nextdns
             set servers "# NextDNS filtering servers
 server=2a07:a8c1::
 server=45.90.30.0
 server=2a07:a8c0::
 server=45.90.28.0
+no-resolv
 add-cpe-id={{ .nextdns_profile }}"
         case '*'
             echo "Usage: dns-resolver [none|adguard|nextdns]"
             return 1
     end
 
-    echo "no-resolv
-bogus-priv
+    echo "bogus-priv
 strict-order
 
 # Listen on all interfaces to avoid requiring sudo on macOS
 listen-address=0.0.0.0
+
+# Block some sites
+address=/news.ycombinator.com/
+address=/lobste.rs/
 
 # Resolve *.localhost and localhost.cru.org to the loopback address
 address=/.localhost/127.0.0.1
@@ -40,8 +48,4 @@ $servers
 " >$HOMEBREW_PREFIX/etc/dnsmasq.conf
 
     brew services restart dnsmasq
-
-    {{ if eq .chezmoi.os "darwin" }}
-    networksetup -setdnsservers Wi-Fi 127.0.0.1
-    {{ end }}
 end

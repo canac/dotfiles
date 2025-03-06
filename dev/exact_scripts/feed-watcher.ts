@@ -46,9 +46,7 @@ async function loadFeedEntries(feedUrl: string): Promise<FeedEntry[]> {
       throw new Error(`Missing title in feed at ${feedUrl}`);
     }
 
-    return feed.entries.flatMap((
-      entry,
-    ) => {
+    return feed.entries.flatMap((entry) => {
       const link = (entry.links.find((link) =>
         link.rel === "alternate"
       ) || entry.links[0])?.href;
@@ -109,6 +107,10 @@ const messageGroups = await Promise.all(
       }));
     } catch (err) {
       console.error(err);
+      if (!(err instanceof Error)) {
+        return [];
+      }
+
       if (err.cause) {
         console.error(err.cause);
       }

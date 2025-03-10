@@ -1,0 +1,8 @@
+#!/usr/bin/env fish
+
+set tag v$(dasel --file Cargo.toml package.version --write plain) || return 1
+git add .
+git commit --message $tag
+git tag $tag -asm $tag
+gum confirm "Push tag $tag to origin?" || return 1
+git push --atomic origin $tag main

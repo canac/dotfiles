@@ -1,6 +1,6 @@
 function lcman --description 'launchctl manager'
     function usage
-        echo "Usage: lcman [print|start|stop|restart] [service]"
+        echo "Usage: lcman [print|logs|start|stop|restart] [service]"
     end
 
     if test $(count $argv) -ne 2
@@ -20,6 +20,8 @@ function lcman --description 'launchctl manager'
     switch $command
         case print
             bat $plist_file
+        case logs
+            plutil -extract StandardOutPath raw $plist_file
         case start
             launchctl bootstrap $domain_target $plist_file
         case stop

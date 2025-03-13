@@ -45,7 +45,9 @@
 	rc = rebase --continue
 	rh = reset --hard
 	ri = rebase --interactive
+	rik = rebase --interactive --keep-base
 	rim = !git rebase --interactive $(git primary)
+	rimk = rim --keep-base
 	ro = !git reset origin/$(git current)
 	roh = ro --hard
 	rv = remote --verbose

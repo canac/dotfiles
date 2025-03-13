@@ -13,5 +13,5 @@
 # @raycast.author Caleb Cox
 # @raycast.authorURL https://github.com/canac
 
-dns-resolver none
+dns-resolver default
 echo "Using network default for DNS resolution"

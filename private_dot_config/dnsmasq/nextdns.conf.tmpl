@@ -1,0 +1,10 @@
+{{- template "dnsmasq-common.conf" . -}}
+
+no-resolv
+
+# NextDNS filtering servers
+server=2a07:a8c1::
+server=45.90.30.0
+server=2a07:a8c0::
+server=45.90.28.0
+add-cpe-id={{ .nextdns_profile }}

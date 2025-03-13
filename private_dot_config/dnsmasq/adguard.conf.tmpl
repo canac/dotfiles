@@ -1,0 +1,9 @@
+{{- template "dnsmasq-common.conf" . -}}
+
+no-resolv
+
+# AdGuard filtering servers
+server=2a10:50c0::ad2:ff
+server=94.140.15.15
+server=2a10:50c0::ad1:ff
+server=94.140.14.14

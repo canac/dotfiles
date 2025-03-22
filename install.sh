@@ -9,7 +9,7 @@ homebrew_bin=$(/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Home
 eval "$("$homebrew_bin" shellenv)"
 
 # Install bootstrap dependencies
-brew bundle --no-lock --file=- <<EOF
+brew bundle --file=- <<EOF
 brew "bitwarden-cli"
 brew "chezmoi"
 brew "gnupg"

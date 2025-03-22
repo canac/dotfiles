@@ -2,7 +2,7 @@
 
 # In phase 1, assume that Homebrew has already been installed and install all needed binary files from the package manager
 
-brew bundle --no-lock --file=- <<EOF
+brew bundle --file=- <<EOF
 tap "canac/tap"
 tap "homebrew/services"
 brew "canac/tap/chron"

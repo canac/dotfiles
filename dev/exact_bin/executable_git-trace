@@ -7,5 +7,5 @@ if test -z $file
     set file (fd --type file | fzf --ghost "Choose a file to trace its history" || return 1)
 end
 
-set commit (git l "$file" | fzf --preview "git -c color.ui=always sw {1} \"$file\"" --preview-window 'right,75%' --accept-nth 1 || return 1)
+set commit (git l -- "$file" | fzf --preview "git -c color.ui=always sw {1} -- \"$file\"" --preview-window 'right,75%' --accept-nth 1 || return 1)
 git show $commit -- $file

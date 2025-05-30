@@ -2,17 +2,17 @@ customCommands:
   - key: F
     context: files
     command: git fixup
-    subprocess: true
+    output: terminal
   - key: R
     context: files
     command: git recommit
-    subprocess: true
+    output: terminal
 git:
   paging:
     colorArg: always
     pager: delta --paging=never
 gui:
-  nerdFontsVersion: '3'
+  nerdFontsVersion: "3"
   showIcons: true
 os:
   editPreset: vscode

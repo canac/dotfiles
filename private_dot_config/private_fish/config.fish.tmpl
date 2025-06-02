@@ -5,7 +5,6 @@ fish_add_path --global ~/dev/bin
 fish_add_path --global ~/.deno/bin
 {{- if .cru }}
 fish_add_path --global $JAVA_HOME/bin
-fish_add_path --global ~/dev/ecs_config/bin
 {{- end }}
 {{- if .rust}}
 fish_add_path --global ~/.cargo/bin
@@ -15,12 +14,9 @@ bind \cx wrap-watchexec
 
 set fish_greeting
 set sponge_delay 10
-{{- if .cru }}
-set --export ECS_CONFIG $HOME/dev/ecs_config
-{{- if eq .chezmoi.os "darwin" }}
+{{- if and .cru (eq .chezmoi.os "darwin") }}
 set --export DOCKER_HOST "unix://$HOME/.colima/default/docker.sock"
 set --export JAVA_HOME /Library/Java/JavaVirtualMachines/temurin-8.jdk/Contents/Home
-{{- end }}
 {{- end }}
 set --export EDITOR code
 set --export HOMEBREW_NO_ENV_HINTS 1

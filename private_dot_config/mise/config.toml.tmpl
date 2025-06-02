@@ -1,0 +1,12 @@
+[settings]
+idiomatic_version_file_enable_tools = ["ruby"]
+
+[alias]
+cru-cli = "https://github.com/CruGlobal/asdf-cru-cli.git"
+
+[tools]
+{{ if .cru }}
+cru-cli = "latest"
+{{ end }}
+ruby = "latest"
+yarn = "latest"

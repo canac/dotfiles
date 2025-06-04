@@ -9,9 +9,9 @@
 # @raycast.icon 🚫
 
 # Documentation:
-# @raycast.description Start using the network default for DNS resolution on this machine
+# @raycast.description Switch to the network default for DNS resolution on this machine
 # @raycast.author Caleb Cox
 # @raycast.authorURL https://github.com/canac
 
 dns-resolver default
-echo "Using network default for DNS resolution"
+echo "Switch to network default for DNS resolution"

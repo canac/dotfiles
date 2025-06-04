@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-brew services start colima
+brew services restart colima

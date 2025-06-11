@@ -15,6 +15,7 @@ end
 set target_branch $argv[1]
 
 git switch $target_branch &&
+    git pull &&
     git merge $current_branch --no-edit &&
     git push &&
     git switch $current_branch

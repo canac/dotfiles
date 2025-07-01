@@ -2,8 +2,6 @@
 
 # Install feed-watcher
 deno install --global --force \
-  --unstable-kv \
-  --allow-env=DENO_KV_ACCESS_TOKEN,MAILBOX_PROXY_DATABASE_ID \
-  --allow-net=api.deno.com,us-east4.txnproxy.deno-gcp.net \
+  --allow-net=mailbox-proxy.deno.dev \
   --allow-run=mailbox \
   "$HOME/dev/scripts/mailbox-proxy.ts"

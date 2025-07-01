@@ -26,7 +26,7 @@ keepAlive = true
 
 {{ if .watcher }}
 [startup.mailbox-proxy]
-command = "MAILBOX_PROXY_DATABASE_ID={{ .env.mailbox_proxy_database_id }} DENO_KV_ACCESS_TOKEN={{ .env.deno_kv_token }} mailbox-proxy"
+command = "mailbox-proxy"
 keepAlive = { delay = "1m", failures = true }
 
 [scheduled.feed-watcher]

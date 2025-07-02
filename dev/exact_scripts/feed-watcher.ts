@@ -5,6 +5,12 @@ import { DB } from "https://deno.land/x/sqlite@v3.9.0/mod.ts";
 import { z } from "https://deno.land/x/zod@v3.21.4/mod.ts";
 import { createMailboxMessages } from "./mailbox.ts";
 
+const feedDefinition = z.object({
+  url: z.string(),
+  categories: z.array(z.string()).optional(),
+});
+type FeedDefinition = z.infer<typeof feedDefinition>;
+
 // The first command-line argument is the URL to a TOML file containing the list of feeds
 const feedsListUrl = Deno.args[0];
 if (!feedsListUrl) {
@@ -13,7 +19,17 @@ if (!feedsListUrl) {
 }
 console.log(`Loading feeds list from ${feedsListUrl}`);
 const res = await fetch(feedsListUrl);
-const feedsListSchema = z.object({ feeds: z.record(z.string()) });
+const feedsListSchema = z.object({
+  feeds: z.record(
+    z.union([z.string(), feedDefinition]).transform((feed) => {
+      // Convert URLs to feed definitions
+      if (typeof feed === "string") {
+        return { url: feed };
+      }
+      return feed;
+    }),
+  ),
+});
 const { feeds } = feedsListSchema.parse(parseToml(await res.text()));
 
 const home = Deno.env.get("HOME");
@@ -33,7 +49,10 @@ type FeedEntry = {
 };
 
 // Load the feed entries from a feed URL
-async function loadFeedEntries(feedUrl: string): Promise<FeedEntry[]> {
+async function loadFeedEntries(
+  feedDefinition: FeedDefinition,
+): Promise<FeedEntry[]> {
+  const feedUrl = feedDefinition.url;
   const res = await fetch(feedUrl).catch(() => null);
   if (!res?.ok) {
     throw new Error(`Couldn't load feed at ${feedUrl}`);
@@ -42,6 +61,7 @@ async function loadFeedEntries(feedUrl: string): Promise<FeedEntry[]> {
   try {
     const feed = await parseFeed(await res.text());
     const feedTitle = feed.title.value;
+    const feedCategories = feedDefinition.categories;
     if (!feedTitle) {
       throw new Error(`Missing title in feed at ${feedUrl}`);
     }
@@ -58,6 +78,16 @@ async function loadFeedEntries(feedUrl: string): Promise<FeedEntry[]> {
         throw new Error(`Missing title in feed entry at ${feedUrl}`);
       }
 
+      if (
+        feedCategories &&
+        !entry.categories?.some((category) =>
+          category.term && feedCategories.includes(category.term)
+        )
+      ) {
+        // The feed doesn't match any whitelisted category, so skip it
+        return [];
+      }
+
       return [{
         id: entry.id,
         link,
@@ -70,8 +100,10 @@ async function loadFeedEntries(feedUrl: string): Promise<FeedEntry[]> {
 }
 
 // Load a feed URL and return the new feed entries
-async function getNewEntries(feedUrl: string): Promise<FeedEntry[]> {
-  const entries = await loadFeedEntries(feedUrl);
+async function getNewEntries(
+  feedDefinition: FeedDefinition,
+): Promise<FeedEntry[]> {
+  const entries = await loadFeedEntries(feedDefinition);
   if (entries.length === 0) {
     // The SQLite query will be malformed if there aren't any values provided
     // to new_entries, so just abort
@@ -98,9 +130,9 @@ db.query("BEGIN TRANSACTION");
 
 // Get all of the new feed entries, organized by feed name
 const messageGroups = await Promise.all(
-  Object.entries(feeds).map(async ([feedName, feedUrl]) => {
+  Object.entries(feeds).map(async ([feedName, feedDefinition]) => {
     try {
-      const entries = await getNewEntries(feedUrl);
+      const entries = await getNewEntries(feedDefinition);
       return entries.map((entry) => ({
         mailbox: `feed-watcher/${feedName}`,
         content: `${entry.title.replaceAll("\n", " ")} ${entry.link}`,

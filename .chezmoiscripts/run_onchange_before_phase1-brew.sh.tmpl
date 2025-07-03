@@ -19,6 +19,7 @@ brew "fd"
 brew "fish"
 brew "fisher"
 brew "fzf"
+brew "gh"
 brew "git"
 brew "git-delta"
 brew "gnupg"
@@ -89,6 +90,8 @@ cask "ticktick"
 EOF
 
 mise install
+
+gh extension install github/gh-copilot
 
 deno install jsr:@canac/git-cleanup --global --reload --force --allow-env --allow-read --allow-run=git
 

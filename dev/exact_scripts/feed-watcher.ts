@@ -1,6 +1,6 @@
 import { parse as parseToml } from "jsr:@std/toml@1.0.1";
 import { join } from "jsr:@std/path@1.0.4";
-import { parseFeed } from "jsr:@mikaelporttila/rss@1.1.1";
+import { parseFeed } from "./parse-feed.ts";
 import { DB } from "https://deno.land/x/sqlite@v3.9.0/mod.ts";
 import { z } from "https://deno.land/x/zod@v3.21.4/mod.ts";
 import { createMailboxMessages } from "./mailbox.ts";
@@ -59,41 +59,18 @@ async function loadFeedEntries(
   }
 
   try {
-    const feed = await parseFeed(await res.text());
-    const feedTitle = feed.title.value;
     const feedCategories = feedDefinition.categories;
-    if (!feedTitle) {
-      throw new Error(`Missing title in feed at ${feedUrl}`);
-    }
-
-    return feed.entries.flatMap((entry) => {
-      const link = (entry.links.find((link) =>
-        link.rel === "alternate"
-      ) || entry.links[0])?.href;
-      const title = entry.title?.value;
-      if (!link) {
-        throw new Error(`Missing link in feed entry at ${feedUrl}`);
-      }
-      if (!title) {
-        throw new Error(`Missing title in feed entry at ${feedUrl}`);
-      }
-
-      if (
-        feedCategories &&
-        !entry.categories?.some((category) =>
-          category.term && feedCategories.includes(category.term)
-        )
-      ) {
-        // The feed doesn't match any whitelisted category, so skip it
-        return [];
-      }
-
-      return [{
+    const feed = parseFeed(await res.text());
+    return feed.entries
+      .filter((entry) =>
+        !feedCategories ||
+        entry.categories?.some((category) => feedCategories.includes(category))
+      )
+      .map((entry) => ({
         id: entry.id,
-        link,
-        title: `${feedTitle} | ${title}`,
-      }];
-    });
+        link: entry.link,
+        title: `${feed.title} | ${entry.title}`,
+      }));
   } catch (err) {
     throw new Error(`Error parsing feed at ${feedUrl}`, { cause: err });
   }

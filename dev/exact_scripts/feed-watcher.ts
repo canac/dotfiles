@@ -53,7 +53,8 @@ async function loadFeedEntries(
   feedDefinition: FeedDefinition,
 ): Promise<FeedEntry[]> {
   const feedUrl = feedDefinition.url;
-  const res = await fetch(feedUrl).catch(() => null);
+  const res = await fetch(feedUrl, { signal: AbortSignal.timeout(10_000) })
+    .catch(() => null);
   if (!res?.ok) {
     throw new Error(`Couldn't load feed at ${feedUrl}`);
   }

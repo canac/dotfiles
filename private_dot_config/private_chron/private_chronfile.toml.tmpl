@@ -14,7 +14,7 @@ retry = true
 {{ if .cru }}
 [scheduled.mpdx-update]
 schedule = "0 */10 9-16 * * Mon-Fri" # 9-5 Monday-Friday
-command = "git pull"
+command = "git pull && yarn gql"
 workingDir = "~/dev/mpdx-react"
 {{ end }}
 

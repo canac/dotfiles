@@ -16,6 +16,11 @@ retry = true
 schedule = "0 */10 9-16 * * Mon-Fri" # 9-5 Monday-Friday
 command = "git pull && yarn gql"
 workingDir = "~/dev/mpdx-react"
+
+[scheduled.terraform-update]
+schedule = "0 */10 9-16 * * Mon-Fri" # 9-5 Monday-Friday
+command = "git switch master && git pull"
+workingDir = "~/dev/cru-terraform"
 {{ end }}
 
 {{ if .proxy }}

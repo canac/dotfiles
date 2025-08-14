@@ -21,6 +21,10 @@ workingDir = "~/dev/mpdx-react"
 schedule = "0 */10 9-16 * * Mon-Fri" # 9-5 Monday-Friday
 command = "git switch master && git pull"
 workingDir = "~/dev/cru-terraform"
+
+[startup.postgres-13]
+command = "/opt/homebrew/opt/postgresql@13/bin/postgres -D /opt/homebrew/var/postgresql@13 -p 5413"
+keepAlive = true
 {{ end }}
 
 {{ if .proxy }}

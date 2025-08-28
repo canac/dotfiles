@@ -44,15 +44,15 @@ function worktree-add --description 'Add a new worktree'
     end
 
     z $directory
-    if set --query init_command
-        echo $init_command | source
-    end
     if test -e yarn.lock
         yarn
     else if test -e package-lock.json
         npm install
     else
         echo "No yarn.lock or package-lock.json file found"
+    end
+    if set --query init_command
+        echo $init_command | source
     end
     portman create
     code $directory

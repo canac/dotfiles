@@ -1,5 +1,6 @@
 [repos.conf-registration-web]
 prefix = "ert"
+init_command = "yarn prepare"
 
 [repos.give-web]
 prefix = "give"

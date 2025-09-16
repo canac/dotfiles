@@ -1,7 +1,7 @@
-import { parse as parseToml } from "jsr:@std/toml@1.0.1";
-import { join } from "jsr:@std/path@1.0.4";
 import { DB } from "https://deno.land/x/sqlite@v3.9.0/mod.ts";
-import { z } from "https://deno.land/x/zod@v3.21.4/mod.ts";
+import { join } from "jsr:@std/path@1.0.4";
+import { parse as parseToml } from "jsr:@std/toml@1.0.1";
+import { z } from "jsr:@zod/zod@4.1.8";
 import { createMailboxMessages } from "./mailbox.ts";
 
 // The first command-line argument is the URL to a TOML file containing the list of packages to watch
@@ -13,9 +13,12 @@ if (!packagesListUrl) {
 console.log(`Loading packages list from ${packagesListUrl}`);
 const res = await fetch(packagesListUrl);
 const packageListSchema = z.object({
-  packages: z.record(z.union(
-    [z.literal("all"), z.literal("minor"), z.literal("major")],
-  )),
+  packages: z.record(
+    z.string(),
+    z.union(
+      [z.literal("all"), z.literal("minor"), z.literal("major")],
+    ),
+  ),
 });
 const packages = packageListSchema.parse(parseToml(await res.text())).packages;
 

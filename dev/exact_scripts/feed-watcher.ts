@@ -1,9 +1,9 @@
-import { parse as parseToml } from "jsr:@std/toml@1.0.1";
-import { join } from "jsr:@std/path@1.0.4";
-import { parseFeed } from "./parse-feed.ts";
 import { DB } from "https://deno.land/x/sqlite@v3.9.0/mod.ts";
-import { z } from "https://deno.land/x/zod@v3.21.4/mod.ts";
+import { join } from "jsr:@std/path@1.0.4";
+import { parse as parseToml } from "jsr:@std/toml@1.0.1";
+import { z } from "jsr:@zod/zod@4.1.8";
 import { createMailboxMessages } from "./mailbox.ts";
+import { parseFeed } from "./parse-feed.ts";
 
 const feedDefinition = z.object({
   url: z.string(),
@@ -21,6 +21,7 @@ console.log(`Loading feeds list from ${feedsListUrl}`);
 const res = await fetch(feedsListUrl);
 const feedsListSchema = z.object({
   feeds: z.record(
+    z.string(),
     z.union([z.string(), feedDefinition]).transform((feed) => {
       // Convert URLs to feed definitions
       if (typeof feed === "string") {

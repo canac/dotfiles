@@ -51,6 +51,7 @@ function worktree-add --description 'Add a new worktree'
     else
         echo "No yarn.lock or package-lock.json file found"
     end
+    sync-env
     if set --query init_command
         echo $init_command | source
     end

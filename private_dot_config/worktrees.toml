@@ -1,10 +1,14 @@
-[repos.conf-registration-web]
+[repos."canac/budgeteer"]
+prefix = "budgeteer"
+init_command = "pnpm db:generate"
+
+[repos."CruGlobal/conf-registration-web"]
 prefix = "ert"
 init_command = "yarn prepare"
 
-[repos.give-web]
+[repos."CruGlobal/give-web"]
 prefix = "give"
 
-[repos.mpdx-react]
+[repos."CruGlobal/mpdx-react"]
 prefix = "mpdx"
 init_command = "yarn gql"

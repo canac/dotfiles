@@ -1,7 +1,7 @@
 function worktree-add --description 'Add a new worktree'
     set full_repo $(git remote get-url origin || return 1)
-    if not set repo $(echo $full_repo | rg '^https:\/\/github\.com\/CruGlobal\/(.+?)\.git$' --replace '$1')
-        echo "Repo \"$full_repo\" does not match a CruGlobal GitHub repo"
+    if not set repo $(echo $full_repo | rg '^https:\/\/github\.com\/(.+?\/.+?)\.git$' --replace '$1')
+        echo "Repo \"$full_repo\" does not match a GitHub repo"
         return 1
     end
 
@@ -46,15 +46,22 @@ function worktree-add --description 'Add a new worktree'
     z $directory
     if test -e yarn.lock
         yarn
+    else if test -e pnpm-lock.yaml
+        pnpm install
     else if test -e package-lock.json
         npm install
     else
-        echo "No yarn.lock or package-lock.json file found"
+        echo "No yarn.lock, pnpm-lock.yaml, or package-lock.json file found"
     end
     sync-env
     if set --query init_command
         echo $init_command | source
     end
     portman create
-    code $directory
+    if echo $repo | rg --quiet '^CruGlobal/'
+        set profile Work
+    else
+        set profile Default
+    end
+    code --profile $profile $directory
 end

@@ -1,4 +1,5 @@
 import $ from "jsr:@david/dax@0.43.2";
+import { exists } from "jsr:@std/fs@1.0.19";
 import { join } from "jsr:@std/path@1.0.4";
 import { TextLineStream } from "jsr:@std/streams@1.0.10";
 
@@ -88,7 +89,15 @@ async function main() {
     repo.repo,
   );
   const envLocalPath = join(envConfigDir, ".env.local");
-  const envSecretsPath = join(envConfigDir, ".env.secrets");
+  const envSecretsPath = join(envConfigDir, "secrets.env");
+  const getSecretsScript = join(envConfigDir, "get-secrets.sh");
+
+  if (
+    await exists(getSecretsScript) && !(await exists(envSecretsPath)) ||
+    Deno.args.includes("--refresh")
+  ) {
+    await $`${getSecretsScript} > ${$.path(envSecretsPath)}`;
+  }
 
   const envFile = ".env.local";
   const overrideLines = await Array.fromAsync(

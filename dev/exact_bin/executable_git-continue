@@ -1,0 +1,19 @@
+#!/usr/bin/env fish
+
+if not set gitdir (git rev-parse --git-dir 2>/dev/null)
+    echo "Not a git repository" >&2
+    return 1
+end
+
+if test -f "$gitdir/CHERRY_PICK_HEAD"
+    git cherry-pick --continue
+else if test -f "$gitdir/MERGE_HEAD"
+    git commit
+else if test -f "$gitdir/REBASE_HEAD"
+    git rebase --continue
+else if test -f "$gitdir/REVERT_HEAD"
+    git revert --continue
+else
+    echo "No active operation found" >&2
+    return 1
+end

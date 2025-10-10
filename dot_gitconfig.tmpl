@@ -1,6 +1,7 @@
 [alias]
 	a = add
 	aa = add .
+	ab = abort
 	ai = add --interactive
 	ap = add --patch
 	b = branch
@@ -17,8 +18,8 @@
 	ce = commit --amend
 	cf = fixup
 	ch = cherry-pick
-	cha = cherry-pick --abort
 	cm = commit --allow-empty
+	cn = continue
 	cr = recommit
 	cv = commit --no-verify
 	d = diff
@@ -35,7 +36,6 @@
 	lg = l --graph
 	lv = log
 	m = merge --no-ff
-	ma = merge --abort
 	mi = merge-into
 	mid = merge-into develop
 	mis = merge-into staging
@@ -43,9 +43,7 @@
 	ms = merge staging
 	mt = merge --strategy-option theirs
 	r = restore
-	ra = rebase --abort
 	rbm = !git rebase origin/$(git primary)
-	rc = rebase --continue
 	rh = reset --hard
 	ri = rebase --interactive
 	rik = rebase --interactive --keep-base

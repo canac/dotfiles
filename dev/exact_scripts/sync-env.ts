@@ -88,10 +88,13 @@ async function main() {
     repo.owner,
     repo.repo,
   );
-  const envLocalPath = join(envConfigDir, ".env.local");
+  if (!(await exists(envConfigDir))) {
+    console.error(`No env files found for ${repo.owner}/${repo.repo}`);
+    Deno.exit(1);
+  }
+
   const envSecretsPath = join(envConfigDir, "secrets.env");
   const getSecretsScript = join(envConfigDir, "get-secrets.sh");
-
   if (
     await exists(getSecretsScript) && !(await exists(envSecretsPath)) ||
     Deno.args.includes("--refresh")
@@ -113,27 +116,27 @@ async function main() {
   }
 
   const envLines = [...overrideLines, SENTINEL_COMMENT];
-  let envEmpty = true;
   for await (
     const line of chain(
-      linesFromFile(envLocalPath),
+      linesFromFile(join(envConfigDir, ".env.local")),
       linesFromFile(envSecretsPath),
     )
   ) {
     const key = parseKey(line);
     if (key) {
       envLines.push(overrides.has(key) ? `# ${line}` : line);
-      envEmpty = false;
     }
-  }
-
-  if (envEmpty) {
-    console.error(`No env files found for ${repo.owner}/${repo.repo}`);
-    Deno.exit(1);
   }
 
   await Deno.writeTextFile(envFile, envLines.join("\n") + "\n");
   console.log(`Synced environment variables to ${envFile}`);
+
+  const miseFile = "mise.local.toml";
+  const miseLocalPath = join(envConfigDir, miseFile);
+  if (await exists(miseLocalPath)) {
+    await Deno.copyFile(miseLocalPath, miseFile);
+    console.log(`Synced mise configuration to ${miseFile}`);
+  }
 }
 
 main();

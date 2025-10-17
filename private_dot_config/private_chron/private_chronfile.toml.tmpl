@@ -35,7 +35,7 @@ keepAlive = true
 
 {{ if .watcher }}
 [startup.mailbox-proxy]
-command = "mailbox-proxy"
+command = "mailbox-proxy {{ .env.mailbox_proxy_auth_token }}"
 keepAlive = { delay = "1m", failures = true }
 
 [scheduled.feed-watcher]

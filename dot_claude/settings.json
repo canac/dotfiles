@@ -4,6 +4,7 @@
       "Bash(bundle:*)",
       "Bash(cargo:*)",
       "Bash(find:*)",
+      "Bash(gh:*)",
       "Bash(git:*)",
       "Bash(grep:*)",
       "Bash(ls:*)",

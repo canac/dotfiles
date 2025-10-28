@@ -14,4 +14,4 @@
 # @raycast.authorURL https://github.com/canac
 
 dns-resolver adguard
-echo "Switch to AdGuard for DNS resolution"
+echo "Switched to AdGuard for DNS resolution"

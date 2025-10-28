@@ -14,4 +14,4 @@
 # @raycast.authorURL https://github.com/canac
 
 dns-resolver nextdns
-echo "Switch to NextDNS for DNS resolution"
+echo "Switched to NextDNS for DNS resolution"

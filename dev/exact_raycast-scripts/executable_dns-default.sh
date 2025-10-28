@@ -14,4 +14,4 @@
 # @raycast.authorURL https://github.com/canac
 
 dns-resolver default
-echo "Switch to network default for DNS resolution"
+echo "Switched to network default for DNS resolution"

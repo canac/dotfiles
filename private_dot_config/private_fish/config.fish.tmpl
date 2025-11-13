@@ -1,5 +1,3 @@
-eval $({{ .brew_bin }}/brew shellenv)
-
 fish_add_path --global $HOMEBREW_PREFIX/opt/postgresql@18/bin
 fish_add_path --global ~/dev/bin
 fish_add_path --global ~/.deno/bin
@@ -27,7 +25,6 @@ set --export PGUSER postgres
 
 fzf --fish | source
 mcfly init fish | source
-mise activate fish --quiet | source
 starship init fish | source
 zoxide init fish | source
 {{- if eq .chezmoi.os "darwin" }}

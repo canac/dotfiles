@@ -1,0 +1,3 @@
+#!/usr/bin/env fish
+
+git l --color --decorate | fzf --no-sort --ansi --accept-nth 1

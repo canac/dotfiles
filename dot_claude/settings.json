@@ -8,6 +8,7 @@
       "Bash(git:*)",
       "Bash(grep:*)",
       "Bash(ls:*)",
+      "Bash(mise exec:*)",
       "Bash(npm:*)",
       "Bash(pnpm:*)",
       "Bash(yarn:*)",

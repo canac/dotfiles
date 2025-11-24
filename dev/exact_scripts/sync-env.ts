@@ -131,11 +131,14 @@ async function main() {
   await Deno.writeTextFile(envFile, envLines.join("\n") + "\n");
   console.log(`Synced environment variables to ${envFile}`);
 
-  const miseFile = "mise.local.toml";
-  const miseLocalPath = join(envConfigDir, miseFile);
-  if (await exists(miseLocalPath)) {
-    await Deno.copyFile(miseLocalPath, miseFile);
-    console.log(`Synced mise configuration to ${miseFile}`);
+  const extraPrefix = "extra_";
+  for await (const entry of Deno.readDir(envConfigDir)) {
+    if (entry.isFile && entry.name.startsWith(extraPrefix)) {
+      const name = entry.name.slice(extraPrefix.length);
+      const sourcePath = join(envConfigDir, entry.name);
+      await Deno.copyFile(sourcePath, name);
+      console.log(`Synced ${name}`);
+    }
   }
 }
 

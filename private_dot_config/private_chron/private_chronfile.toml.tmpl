@@ -15,10 +15,6 @@ retry = true
 [scheduled.pull-all]
 schedule = "0 */10 9-17 * * Mon-Fri" # 9-5 Monday-Friday
 command = "pull-all"
-
-[startup.postgres-14]
-command = "/opt/homebrew/opt/postgresql@14/bin/postgres -D /opt/homebrew/var/postgresql@14 -p 5414"
-keepAlive = true
 {{ end }}
 
 {{ if .proxy }}

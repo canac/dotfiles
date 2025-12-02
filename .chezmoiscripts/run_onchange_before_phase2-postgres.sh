@@ -14,8 +14,4 @@ setup_db() {
   fi
 }
 
-{{ if .cru }}
-setup_db 14
-{{ end }}
-
 setup_db 18

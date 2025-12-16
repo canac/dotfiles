@@ -140,6 +140,11 @@ async function main() {
       console.log(`Synced ${name}`);
     }
   }
+
+  const miseTasks = await $`mise task --local`.lines();
+  if (miseTasks.includes("sync-env-setup")) {
+    await $`mise task run sync-env-setup`;
+  }
 }
 
 main();

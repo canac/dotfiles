@@ -1,0 +1,5 @@
+[tasks.setup]
+run = [
+  "overcommit --sign",
+  "overcommit --install"
+]

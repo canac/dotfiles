@@ -1,0 +1,8 @@
+{
+  "prefixes": {
+    "CruGlobal/conf-registration-web": "ert",
+    "CruGlobal/give-web": "give",
+    "CruGlobal/mpdx-react": "mpdx",
+    "CruGlobal/mpdx_api": "mpdx-api"
+  }
+}

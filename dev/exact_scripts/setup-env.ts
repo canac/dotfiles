@@ -120,9 +120,9 @@ async function main() {
   const getSecretsScript = join(envConfigDir, "get-secrets.sh");
   if (
     await exists(getSecretsScript) && !(await exists(envSecretsPath)) ||
-    Deno.args.includes("--refresh")
+    Deno.args.includes("--refresh-secrets")
   ) {
-    await $`${getSecretsScript} > ${$.path(envSecretsPath)}`;
+    await $`${getSecretsScript} > ${envSecretsPath}`;
   }
 
   const envFile = ".env.local";
@@ -166,9 +166,12 @@ async function main() {
     }
   }
 
-  const miseTasks = await $`mise task --local`.lines();
-  if (miseTasks.includes("sync-env-setup")) {
-    await $`mise task run sync-env-setup`;
+  if (Deno.args.includes("--new")) {
+    await $`mise trust`;
+    const miseTasks = await $`mise task --local`.lines();
+    if (miseTasks.includes("setup")) {
+      await $`mise task run setup`.noThrow();
+    }
   }
 }
 

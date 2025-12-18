@@ -1,0 +1,2 @@
+[tasks.setup]
+run = "pnpm db:generate"

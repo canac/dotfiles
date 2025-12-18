@@ -1,12 +1,13 @@
 function worktree-add --description 'Add a new worktree'
-    set full_repo $(git remote get-url origin || return 1)
-    if not set repo $(echo $full_repo | rg '^https:\/\/github\.com\/(.+?\/.+?)\.git$' --replace '$1')
-        echo "Repo \"$full_repo\" does not match a GitHub repo"
+    set repo_url $(git remote get-url origin || return 1)
+    if not set full_repo $(echo $repo_url | rg '^https:\/\/github\.com\/(.+?\/.+?)\.git$' --replace '$1')
+        echo "Repo \"$repo_url\" does not match a GitHub repo"
         return 1
     end
-
-    set dir_prefix $(dasel --file $HOME/.config/worktrees.toml "repos.$repo.prefix" --write plain || return 1)
-    set init_command $(dasel --file $HOME/.config/worktrees.toml "repos.$repo.property(init_command?)" --write plain || return 1)
+    set parts $(string split / $full_repo)
+    set org $parts[1]
+    set repo $parts[2]
+    set dir_prefix $(jq --arg org $org --arg repo $repo '.prefixes[$org + "/" + $repo] // $repo' --raw-output $HOME/.config/worktrees.json)
 
     # Ensure we have the latest branches
     git fetch
@@ -50,15 +51,14 @@ function worktree-add --description 'Add a new worktree'
         pnpm install
     else if test -e package-lock.json
         npm install
+    else if test -e Gemfile.lock
+        bundle install
     else
-        echo "No yarn.lock, pnpm-lock.yaml, or package-lock.json file found"
+        echo "No lockfile found"
     end
-    sync-env
-    if set --query init_command
-        echo $init_command | source
-    end
+    setup-env --new
     portman create
-    if echo $repo | rg --quiet '^CruGlobal/'
+    if test $org = CruGlobal
         set profile Work
     else
         set profile Default

@@ -1,40 +1,41 @@
-[scheduled.homebrew-upgrade]
+[config]
+onError = 'mailbox add chron/error/$CHRON_JOB "$CHRON_JOB failed with exit code $CHRON_EXIT_CODE"'
+
+[jobs.homebrew-upgrade]
 schedule = "0 0 12 * * *" # every day at noon
 command = "homebrew-upgrade"
-makeUpMissedRun = true
-retry = true
+retry.limit = "unlimited"
 
-[scheduled.online-backup]
+[jobs.online-backup]
 schedule = "0 0 12 * * *" # every day at noon
 disabled = true
 command = "backup"
-makeUpMissedRun = true
-retry = true
+retry.limit = "unlimited"
 
 {{ if .cru }}
-[scheduled.pull-all]
+[jobs.pull-all]
 schedule = "0 */10 9-17 * * Mon-Fri" # 9-5 Monday-Friday
 command = "pull-all"
 {{ end }}
 
 {{ if .proxy }}
-[startup.mitmproxy]
+[jobs.mitmproxy]
 command = "mitmdump --quiet --ssl-insecure --listen-port $(portman create mitmproxy --no-activate --overwrite) --scripts $HOME/dev/proxy.py"
-keepAlive = true
+retry.limit = "unlimited"
 {{ end }}
 
 {{ if .watcher }}
-[startup.mailbox-proxy]
+[jobs.mailbox-proxy]
 command = "mailbox-proxy {{ .env.mailbox_proxy_auth_token }}"
-keepAlive = { delay = "1m", failures = true }
+retry.limit = "unlimited"
+retry.delay = "1m"
 
-[scheduled.feed-watcher]
+[jobs.feed-watcher]
 schedule = "0 0 12 * * Fri" # every Friday at noon
 command = "feed-watcher https://gist.githubusercontent.com/canac/647a8c4542cc088b333b3d0bcc765b9d/raw/feeds.toml"
-makeUpMissedRun = true
-retry = true
+retry.limit = "unlimited"
 
-[scheduled.release-watcher]
+[jobs.release-watcher]
 schedule = "0 0 * * * *" # hourly
 command = "release-watcher https://gist.githubusercontent.com/canac/ac3eaa16cb9c3e03530fbee64e1e690f/raw/packages.toml"
 {{ end }}

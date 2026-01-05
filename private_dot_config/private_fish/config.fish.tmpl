@@ -11,6 +11,7 @@ fish_add_path --global ~/.cargo/bin
 bind \cg insert-git-pick
 bind \cx wrap-watchexec
 
+set fish_color_command blue
 set fish_greeting
 set sponge_delay 10
 {{- if and .cru (eq .chezmoi.os "darwin") }}

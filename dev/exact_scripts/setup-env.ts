@@ -138,16 +138,7 @@ async function main() {
   }
 
   const gitExcludePath = ".git/info/exclude";
-  const excludeLines = await Array.fromAsync(
-    takeWhile(
-      linesFromFile(gitExcludePath),
-      (line) => line !== SENTINEL_COMMENT,
-    ),
-  );
-  const gitExcludeLines = extraFiles.length > 0
-    ? [...excludeLines, SENTINEL_COMMENT, ...extraFiles]
-    : excludeLines;
-  await Deno.writeTextFile(gitExcludePath, gitExcludeLines.join("\n") + "\n");
+  await $`ensure-lines ${gitExcludePath}`.stdinText(extraFiles.join("\n"));
 
   if (Deno.args.includes("--new")) {
     await $`mise trust`;

@@ -8,9 +8,7 @@ portman reload-caddy || true
 
 {{ if .cru }}
 # Add Caddyfile entries
-caddyfile_path="$HOMEBREW_PREFIX/etc/Caddyfile"
-cru_caddyfile_path="$HOME/.config/caddy/cru-Caddyfile"
-grep --silent --fixed-strings "$cru_caddyfile_path" "$caddyfile_path" || echo "import \"$cru_caddyfile_path\"" >> "$caddyfile_path"
+echo "import \"$HOME/.config/caddy/cru-Caddyfile\"" | ensure-lines "$HOMEBREW_PREFIX/etc/Caddyfile"
 {{ end }}
 
 brew services restart caddy

@@ -25,8 +25,7 @@ bw sync
 export SIGNING_KEY_ID="A88CE79A6BAC53C39AC331099025163398B61D7E"
 if ! gpg --list-secret-keys "$SIGNING_KEY_ID"; then
   bw get attachment private.key --itemid "GPG signing key"
-  passphrase=$(bw get notes "GPG passphrase")
-  gpg --import private.key --passphrase "$passphrase"
+  bw get notes "GPG passphrase" | gpg --batch --pinentry-mode loopback --passphrase-fd 0 --import private.key
   echo "$SIGNING_KEY_ID:6:" | gpg --import-ownertrust
   rm private.key
 fi

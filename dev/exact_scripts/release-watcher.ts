@@ -2,7 +2,7 @@ import { DB } from "https://deno.land/x/sqlite@v3.9.0/mod.ts";
 import { join } from "jsr:@std/path@1.0.4";
 import { parse as parseToml } from "jsr:@std/toml@1.0.1";
 import { z } from "jsr:@zod/zod@4.1.8";
-import { createMailboxMessages } from "./mailbox.ts";
+import { createMailboxMessages } from "./lib/mailbox.ts";
 
 // The first command-line argument is the URL to a TOML file containing the list of packages to watch
 const packagesListUrl = Deno.args[0];

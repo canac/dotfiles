@@ -1,4 +1,4 @@
-import { createMailboxMessages } from "./mailbox.ts";
+import { createMailboxMessages } from "./lib/mailbox.ts";
 
 const authToken = Deno.args[0];
 if (!authToken) {

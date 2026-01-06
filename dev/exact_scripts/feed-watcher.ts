@@ -2,8 +2,8 @@ import { DB } from "https://deno.land/x/sqlite@v3.9.0/mod.ts";
 import { join } from "jsr:@std/path@1.0.4";
 import { parse as parseToml } from "jsr:@std/toml@1.0.1";
 import { z } from "jsr:@zod/zod@4.1.8";
-import { createMailboxMessages } from "./mailbox.ts";
-import { parseFeed } from "./parse-feed.ts";
+import { createMailboxMessages } from "./lib/mailbox.ts";
+import { parseFeed } from "./lib/parse-feed.ts";
 
 const feedDefinition = z.object({
   url: z.string(),

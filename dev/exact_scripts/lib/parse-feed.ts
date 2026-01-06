@@ -32,9 +32,7 @@ export function parseFeed(contents: string): Feed {
           throw new Error("Missing link in feed entry");
         }
         if (!title) {
-          throw new Error(
-            "Missing title and description in feed entry}",
-          );
+          throw new Error("Missing title and description in feed entry");
         }
 
         return {

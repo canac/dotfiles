@@ -1,5 +1,5 @@
 {{ if ne .chezmoi.os "darwin" }}
-.chezmoiscripts/phase2-iterm.sh
+.chezmoiscripts/iterm.sh
 .chezmoiscripts/pinentry-macos.sh
 .chezmoiscripts/setup-macos.sh
 .config/fish/functions/lcman.fish
@@ -14,8 +14,8 @@ Library/
 {{ if not .cru }}
 .aws/
 .bundle/
-.chezmoiscripts/phase2-colima.sh
-.chezmoiscripts/phase2-hosts.sh
+.chezmoiscripts/colima.sh
+.chezmoiscripts/hosts.sh
 .config/env/CruGlobal/
 .config/fish/functions/gh-repo.fish
 .config/fish/functions/jr.fish
@@ -28,12 +28,12 @@ Library/
 {{ end }}
 
 {{ if not .proxy }}
-.chezmoiscripts/phase2-mitmproxy.sh
+.chezmoiscripts/mitmproxy.sh
 .config/fish/functions/proxy.fish
 {{ end }}
 
 {{ if not .rust }}
-.chezmoiscripts/phase2-rustup.sh
+.chezmoiscripts/rustup.sh
 {{ end }}
 
 {{ if not .watcher }}

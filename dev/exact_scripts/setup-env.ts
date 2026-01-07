@@ -137,7 +137,8 @@ async function main() {
     }
   }
 
-  const gitExcludePath = ".git/info/exclude";
+  const gitDir = await $`git rev-parse --git-common-dir`.text();
+  const gitExcludePath = join(gitDir, "info", "exclude");
   await $`ensure-lines ${gitExcludePath}`.stdinText(extraFiles.join("\n"));
 
   if (Deno.args.includes("--new")) {

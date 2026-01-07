@@ -91,7 +91,7 @@ async function main() {
     await exists(getSecretsScript) && !(await exists(envSecretsPath)) ||
     Deno.args.includes("--refresh-secrets")
   ) {
-    await $`${getSecretsScript} > ${envSecretsPath}`;
+    await $`${getSecretsScript} > ${$.path(envSecretsPath)}`;
   }
 
   const envFile = ".env.local";
@@ -115,10 +115,10 @@ async function main() {
     )
   ) {
     const { key } = parseLine(line);
-    if (key) {
-      envLines.push(
-        overrides.has(key) ? `# ${line.replaceAll("\n", "\n# ")}` : line,
-      );
+    if (key && overrides.has(key)) {
+      envLines.push(`# ${line.replaceAll("\n", "\n# ")}`);
+    } else {
+      envLines.push(line);
     }
   }
 

@@ -3,3 +3,9 @@ run = [
   "overcommit --sign",
   "overcommit --install"
 ]
+
+[tasks.gql]
+run = "rails graphql:schema:idl"
+
+[tasks.deploy-status]
+run = "gh workflow view build-deploy-ecs.yml"

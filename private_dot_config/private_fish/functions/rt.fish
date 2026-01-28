@@ -2,7 +2,7 @@ function rt --description 'Run tests for a file'
     if test -f Gemfile
         set pattern "*_spec.rb"
         set search_path spec/
-        set run_cmd "bundle exec rspec"
+        set run_cmd rspec
         set watch_cmd "watchexec -- $run_cmd"
     else if test -f yarn.lock
         set pattern '*.{spec,test}.{js,ts,tsx}'

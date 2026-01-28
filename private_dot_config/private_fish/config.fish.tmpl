@@ -3,6 +3,7 @@ fish_add_path --global ~/dev/bin
 fish_add_path --global ~/.deno/bin
 fish_add_path --global ~/.local/bin
 {{- if .cru }}
+fish_add_path --global ./bin
 fish_add_path --global $JAVA_HOME/bin
 {{- end }}
 {{- if .rust}}

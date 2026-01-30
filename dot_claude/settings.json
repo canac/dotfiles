@@ -12,10 +12,14 @@
       "Bash(npm:*)",
       "Bash(pnpm:*)",
       "Bash(yarn:*)",
+      "WebFetch",
       "WebSearch"
     ],
     "deny": [],
     "ask": []
   },
-  "model": "opus"
+  "model": "opus",
+  "enabledPlugins": {
+    "rust-analyzer-lsp@claude-plugins-official": true
+  }
 }

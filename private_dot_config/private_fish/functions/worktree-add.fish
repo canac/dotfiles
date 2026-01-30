@@ -37,11 +37,12 @@ function worktree-add --description 'Add a new worktree'
     set dir_suffix $(gum input --prompt="Directory name: $dir_prefix-" --placeholder="" --value=$branch || return 1)
     set directory $HOME/dev/$dir_prefix-$dir_suffix
 
+    # Disable overcommit while creating worktrees to errors about the signature changing
     switch $branch_type
         case new
-            git worktree add -b $branch $directory origin/$(git primary) --no-track || return 1
+            OVERCOMMIT_DISABLE=1 git worktree add -b $branch $directory origin/$(git primary) --no-track || return 1
         case existing
-            git worktree add $directory --checkout $branch || return 1
+            OVERCOMMIT_DISABLE=1 git worktree add $directory --checkout $branch || return 1
     end
 
     z $directory

@@ -1,5 +1,5 @@
 import { takeWhile } from "./lib/iterators.ts";
-import { linesFromFile, linesFromReadable } from "./lib/readables.ts";
+import { linesFromReadable, safeLinesFromFile } from "./lib/readables.ts";
 
 async function main() {
   if (Deno.args.length < 1 || Deno.args.length > 3) {
@@ -13,7 +13,7 @@ async function main() {
   const sentinelStart = `# begin managed by ${manager}`;
   const sentinelEnd = `# end managed by ${manager}`;
 
-  const iterable = linesFromFile(file);
+  const iterable = safeLinesFromFile(file);
   const beforeLines = await Array.fromAsync(
     takeWhile(iterable, (line) => line !== sentinelStart),
   );

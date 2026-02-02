@@ -6,6 +6,18 @@ export async function* chain<T>(
   }
 }
 
+export async function* filterMap<T, U>(
+  iterable: AsyncIterable<T>,
+  transformer: (value: T) => U | null,
+): AsyncGenerator<U, undefined> {
+  for await (const value of iterable) {
+    const transformed = transformer(value);
+    if (transformed !== null) {
+      yield transformed;
+    }
+  }
+}
+
 export async function* takeWhile<T>(
   iterable: AsyncIterable<T>,
   predicate: (value: T) => boolean,

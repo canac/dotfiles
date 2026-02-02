@@ -17,9 +17,6 @@ set fish_color_command blue
 set fish_greeting
 set sponge_delay 10
 {{- if .cru }}
-{{- if eq .chezmoi.os "darwin" }}
-set --export JAVA_HOME /Library/Java/JavaVirtualMachines/temurin-8.jdk/Contents/Home
-{{- end }}
 set --export DOCKER_HOST "unix://$HOME/.colima/default/docker.sock"
 {{- end }}
 set --export EDITOR code

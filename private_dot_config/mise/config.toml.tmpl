@@ -10,3 +10,6 @@ cru-cli = "latest"
 {{ end }}
 ruby = "latest"
 yarn = "latest"
+
+[tasks.deploy-status]
+run = "gh workflow view build-deploy-ecs.yml"

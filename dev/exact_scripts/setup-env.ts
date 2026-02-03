@@ -64,77 +64,23 @@ function parseLine(line: string): { key: string | null; value: string | null } {
   };
 }
 
-async function main() {
-  const repo = await getCurrentGitHubRepo();
-  if (!repo) {
-    console.error("No GitHub repository detected");
-    Deno.exit(1);
-  }
+interface CopiedFile {
+  from: string;
+  to: string;
+}
 
-  const homeDir = Deno.env.get("HOME");
-  if (!homeDir) {
-    console.error("$HOME environment variable is not set");
-    Deno.exit(1);
-  }
-
-  const envConfigDir = join(
-    homeDir,
-    ".config",
-    "env",
-    repo.owner,
-    repo.repo,
-  );
-  if (!(await exists(envConfigDir))) {
-    console.error(`No env files found for ${repo.owner}/${repo.repo}`);
-    Deno.exit(1);
-  }
-
-  const extraFiles = [];
-  for await (const entry of Deno.readDir(envConfigDir)) {
-    if (!entry.isFile) {
-      continue;
-    }
-
-    let name;
-
-    // copy_$filename files are copied to the working directory
-    name = stripPrefix(entry.name, "copy_");
-    if (name !== null) {
-      const sourcePath = join(envConfigDir, entry.name);
-      await Deno.copyFile(sourcePath, name);
-      console.log(`Synced ${name}`);
-      extraFiles.push(name);
-      continue;
-    }
-
-    // generate_$filename scripts generate files in the working directory
-    name = stripPrefix(entry.name, "generate_");
-    if (name !== null) {
-      const generatorScript = join(envConfigDir, entry.name);
-      // The script contains a "# generates $output" line that specifies the output file the script generates
-      const outputFile = (await filterMap(
-        linesFromFile(generatorScript),
-        (line) => stripPrefix(line, "# generates "),
-      ).next()).value;
-      // Reuse the generated file if it exists unless we are manually regenerating generated files
-      if (outputFile) {
-        const cachedFile = join(envConfigDir, outputFile);
-        if (
-          Deno.args.includes("--regenerate") || (!(await exists(cachedFile)))
-        ) {
-          await $`${generatorScript} > ${$.path(cachedFile)}`;
-          console.log(`Generated ${outputFile}`);
-        }
-        await Deno.copyFile(cachedFile, outputFile);
-        extraFiles.push(outputFile);
-      }
-      continue;
-    }
-  }
-
+/**
+ * Take the environment variables from .env.local and secrets.env and merge them into the project's .env.local, letting
+ * the project's .env.local take precedence.
+ */
+async function mergeEnvs(repoDir: string, envConfigDir: string) {
   const envFile = ".env.local";
+  const envPath = join(repoDir, envFile);
   const overrideLines = await Array.fromAsync(
-    takeWhile(entriesFromFile(envFile), (line) => line !== SENTINEL_COMMENT),
+    takeWhile(
+      entriesFromFile(envPath),
+      (line) => line !== SENTINEL_COMMENT,
+    ),
   );
 
   const overrides = new Set<string>();
@@ -160,14 +106,35 @@ async function main() {
     }
   }
 
-  await Deno.writeTextFile(envFile, envLines.join("\n") + "\n");
-  console.log(`Synced environment variables to ${envFile}`);
+  await Deno.writeTextFile(envPath, envLines.join("\n") + "\n");
+  console.log(`Synced environment variables to ${envPath}`);
+}
+
+/**
+ * Apply all changes to a specific git repo.
+ */
+async function setupRepo(
+  repoDir: string,
+  envConfigDir: string,
+  copiedFiles: CopiedFile[],
+) {
+  console.group(`Setting up repo ${repoDir}`);
+
+  for await (const { from, to } of copiedFiles) {
+    console.log(`Synced ${from}`);
+    await Deno.copyFile(join(envConfigDir, from), join(repoDir, to));
+  }
+
+  await mergeEnvs(repoDir, envConfigDir);
 
   const gitDir = await $`git rev-parse --git-common-dir`.text();
   const gitExcludePath = join(gitDir, "info", "exclude");
-  await $`ensure-lines ${gitExcludePath}`.stdinText(extraFiles.join("\n"));
+  const ignoredFiles = copiedFiles.map((file) => file.to);
+  await $`ensure-lines ${gitExcludePath}`.stdinText(ignoredFiles.join("\n"));
   console.log(
-    `Ignored ${extraFiles.length} file(s) in git [${extraFiles.join(", ")}]`,
+    `Ignored ${ignoredFiles.length} file(s) in git [${
+      ignoredFiles.join(", ")
+    }]`,
   );
 
   if (Deno.args.includes("--new")) {
@@ -176,6 +143,86 @@ async function main() {
     if (miseTasks.includes("setup")) {
       await $`mise task run setup`.noThrow();
     }
+  }
+
+  console.groupEnd();
+}
+
+async function main() {
+  const repo = await getCurrentGitHubRepo();
+  if (!repo) {
+    console.error("No GitHub repository detected");
+    Deno.exit(1);
+  }
+
+  const homeDir = Deno.env.get("HOME");
+  if (!homeDir) {
+    console.error("$HOME environment variable is not set");
+    Deno.exit(1);
+  }
+
+  const envConfigDir = join(
+    homeDir,
+    ".config",
+    "env",
+    repo.owner,
+    repo.repo,
+  );
+  if (!(await exists(envConfigDir))) {
+    console.error(`No env files found for ${repo.owner}/${repo.repo}`);
+    Deno.exit(1);
+  }
+
+  const copiedFiles: CopiedFile[] = [];
+  for await (const entry of Deno.readDir(envConfigDir)) {
+    if (!entry.isFile) {
+      continue;
+    }
+
+    let name;
+
+    // copy_$filename files are copied to the working directory
+    name = stripPrefix(entry.name, "copy_");
+    if (name !== null) {
+      copiedFiles.push({ from: entry.name, to: name });
+      continue;
+    }
+
+    // generate_$filename scripts generate files in the working directory
+    name = stripPrefix(entry.name, "generate_");
+    if (name !== null) {
+      const generatorScript = join(envConfigDir, entry.name);
+      // The script contains a "# generates $output" line that specifies the output file the script generates
+      const outputFile = (await filterMap(
+        linesFromFile(generatorScript),
+        (line) => stripPrefix(line, "# generates "),
+      ).next()).value;
+      // Reuse the generated file if it exists unless we are manually regenerating generated files
+      if (outputFile) {
+        const cachedFile = join(envConfigDir, outputFile);
+        if (
+          Deno.args.includes("--regenerate") || (!(await exists(cachedFile)))
+        ) {
+          await $`${generatorScript} > ${$.path(cachedFile)}`;
+          console.log(`Generated ${outputFile}`);
+        }
+        copiedFiles.push({ from: outputFile, to: outputFile });
+      }
+      continue;
+    }
+  }
+
+  if (Deno.args.includes("--all")) {
+    // Apply changes to all worktrees
+    const worktrees = (await $`git worktree list --porcelain`.lines())
+      .map((line) => stripPrefix(line, "worktree "))
+      .filter((line) => line !== null);
+    for await (const worktree of worktrees) {
+      await setupRepo(worktree, envConfigDir, copiedFiles);
+    }
+  } else {
+    const repo = await $`git rev-parse --show-toplevel`.text();
+    await setupRepo(repo, envConfigDir, copiedFiles);
   }
 }
 

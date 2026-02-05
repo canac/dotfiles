@@ -6,3 +6,9 @@ run = [
 
 [tasks.gql]
 run = "rails graphql:schema:idl"
+
+[tasks.local-stage]
+run = "dotenvx run --env-file .env.staging --"
+
+[tools]
+"dotenvx" = "latest"

@@ -70,13 +70,12 @@ interface CopiedFile {
 }
 
 /**
- * Take the environment variables from .env.local and secrets.env and merge them into the project's .env.local, letting
- * the project's .env.local take precedence.
+ * Take the environment variables from the secrets files and merge them into the project's .env.local, letting the
+ * project's .env.local take precedence.
  */
 async function mergeEnvs(
   repoDir: string,
-  envConfigDir: string,
-  secretsFile: string | null,
+  secretsFiles: string[],
 ) {
   const envFile = ".env.local";
   const envPath = join(repoDir, envFile);
@@ -98,8 +97,7 @@ async function mergeEnvs(
   const envLines = [...overrideLines, SENTINEL_COMMENT];
   for await (
     const line of chain(
-      entriesFromFile(join(envConfigDir, ".env.local")),
-      ...(secretsFile ? [entriesFromFile(secretsFile)] : []),
+      ...secretsFiles.map((file) => entriesFromFile(file)),
     )
   ) {
     const { key } = parseLine(line);
@@ -119,8 +117,7 @@ async function mergeEnvs(
  */
 async function setupRepo(
   repoDir: string,
-  envConfigDir: string,
-  secretsFile: string | null,
+  secretsFiles: string[],
   copiedFiles: CopiedFile[],
 ) {
   console.group(`Setting up repo ${repoDir}`);
@@ -130,7 +127,7 @@ async function setupRepo(
     await Deno.copyFile(from, join(repoDir, to));
   }
 
-  await mergeEnvs(repoDir, envConfigDir, secretsFile);
+  await mergeEnvs(repoDir, secretsFiles);
 
   const gitDir = await $`git rev-parse --git-common-dir`.text();
   const gitExcludePath = join(gitDir, "info", "exclude");
@@ -151,6 +148,16 @@ async function setupRepo(
   }
 
   console.groupEnd();
+}
+
+/**
+ * Run generate-cached and return the filename of the generated data.
+ */
+function runGenerator(generatorScript: string): Promise<string> {
+  const regenerate = Deno.args.includes("--regenerate");
+  return $`~/dev/scripts/generate-cached.fish ${generatorScript} ${
+    regenerate ? ["--regenerate"] : []
+  }`.text();
 }
 
 async function main() {
@@ -178,7 +185,7 @@ async function main() {
     Deno.exit(1);
   }
 
-  let secretsFile = null;
+  const secretsFiles = [join(envConfigDir, ".env.local")];
   const copiedFiles: CopiedFile[] = [];
   for await (const entry of Deno.readDir(envConfigDir)) {
     if (!entry.isFile) {
@@ -194,7 +201,15 @@ async function main() {
       continue;
     }
 
-    // generate_$filename scripts generate files in the working directory
+    // secrets_$filename scripts generate secrets to be merged into .env.local
+    name = stripPrefix(entry.name, "secrets_");
+    if (name !== null) {
+      const secretsFile = await runGenerator(join(envConfigDir, entry.name));
+      console.log(`Generated secrets from ${name}`);
+      secretsFiles.push(secretsFile);
+      continue;
+    }
+
     name = stripPrefix(entry.name, "generate_");
     if (name !== null) {
       const generatorScript = join(envConfigDir, entry.name);
@@ -204,17 +219,9 @@ async function main() {
         (line) => stripPrefix(line, "# generates "),
       ).next()).value;
       if (outputFile) {
-        const regenerate = Deno.args.includes("--regenerate");
-        const cachedFile =
-          await $`~/dev/scripts/generate-cached.fish ${generatorScript} ${
-            regenerate ? ["--regenerate"] : []
-          }`.text();
-        console.log(`Generated ${outputFile}`);
-        if (outputFile === "secrets.env") {
-          secretsFile = cachedFile;
-        } else {
-          copiedFiles.push({ from: cachedFile, to: outputFile });
-        }
+        const generatedFile = await runGenerator(generatorScript);
+        console.log(`Generated ${outputFile} from ${name}`);
+        copiedFiles.push({ from: generatedFile, to: outputFile });
       }
       continue;
     }
@@ -225,12 +232,13 @@ async function main() {
     const worktrees = (await $`git worktree list --porcelain`.lines())
       .map((line) => stripPrefix(line, "worktree "))
       .filter((line) => line !== null);
+    console.log(`Setting up ${worktrees.length} worktrees`);
     for await (const worktree of worktrees) {
-      await setupRepo(worktree, envConfigDir, secretsFile, copiedFiles);
+      await setupRepo(worktree, secretsFiles, copiedFiles);
     }
   } else {
     const repo = await $`git rev-parse --show-toplevel`.text();
-    await setupRepo(repo, envConfigDir, secretsFile, copiedFiles);
+    await setupRepo(repo, secretsFiles, copiedFiles);
   }
 }
 

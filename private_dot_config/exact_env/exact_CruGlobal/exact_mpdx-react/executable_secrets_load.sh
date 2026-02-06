@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# generates secrets.env
 
 echo '# API_URL=http://localhost:3001/graphql'
 echo '# REST_API_URL=http://localhost:3001/api/v2/'

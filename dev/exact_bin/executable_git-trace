@@ -1,11 +1,5 @@
 #!/usr/bin/env fish
 
-set file $argv[1]
-
-if test -z $file
-    # No file was provided, so choose one interactively
-    set file (fd --type file --hidden --exclude=.git/ | fzf --ghost "Choose a file to trace its history" || return 1)
-end
-
+set file (fd --type file --hidden --exclude=.git/ | fzf --query=$argv[1] --select-1 --ghost "Choose a file to trace its history" || return 1)
 set commit (git l -- "$file" | fzf --preview "git -c color.ui=always sw {1} -- \"$file\"" --preview-window 'right,75%' --accept-nth 1 || return 1)
 git show $commit -- $file

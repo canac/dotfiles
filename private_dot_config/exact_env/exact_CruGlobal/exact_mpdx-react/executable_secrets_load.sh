@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-echo '# API_URL=http://localhost:3001/graphql'
-echo '# REST_API_URL=http://localhost:3001/api/v2/'
-
 export AWS_PROFILE=mpdx-amplify
 (aws sts get-caller-identity || aws sso login) > /dev/null 2>&1 &&
 aws amplify get-app --app-id d3dytjb8adxkk5 | jq --raw-output '

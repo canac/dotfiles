@@ -1,4 +1,4 @@
 #!/usr/bin/env fish
 
-set commit $(git l --grep='^(amend|fixup|squash)! ' --extended-regexp --invert-grep | fzf --no-sort --accept-nth 1) &&
-git commit --fixup $commit
+set commit $(git l --grep='^(amend|fixup|squash)! ' --extended-regexp --invert-grep | fzf --no-sort --accept-nth 1)
+and git commit --fixup $commit

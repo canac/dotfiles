@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env fish
 
 defaults write -g AppleInterfaceStyle -int 4
 defaults write -g AppleEnableSwipeNavigateWithScrolls -int 1

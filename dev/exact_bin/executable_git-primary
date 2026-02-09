@@ -1,7 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env fish
 
-if git show-ref --quiet refs/heads/main; then
-  echo "main"
+if git show-ref --quiet refs/heads/main
+    echo main
 else
-  echo "master"
-fi
+    echo master
+end

@@ -1,4 +1,4 @@
 #!/usr/bin/env fish
 
-set commit $(git reflog | rg 'commit: (?!\w+! )' --pcre2 | fzf --no-sort --accept-nth 1) &&
-git log --format=%B --max-count=1 $commit | git commit --file=-
+set commit $(git reflog | rg 'commit: (?!\w+! )' --pcre2 | fzf --no-sort --accept-nth 1)
+and git log --format=%B --max-count=1 $commit | git commit --file=-

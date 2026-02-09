@@ -11,7 +11,7 @@ function dns-resolver --description 'Set the system DNS resolver'
 
     switch $resolver
         case default adguard nextdns
-            cp $HOME/.config/dnsmasq/$resolver.conf $HOMEBREW_PREFIX/etc/dnsmasq.conf
+            cp ~/.config/dnsmasq/$resolver.conf $HOMEBREW_PREFIX/etc/dnsmasq.conf
             brew services restart dnsmasq
         case '*'
             echo "Usage: dns-resolver [default|adguard|nextdns]"

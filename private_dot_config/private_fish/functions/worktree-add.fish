@@ -7,7 +7,7 @@ function worktree-add --description 'Add a new worktree'
     set parts $(string split / $full_repo)
     set org $parts[1]
     set repo $parts[2]
-    set dir_prefix $(jq --arg org $org --arg repo $repo '.prefixes[$org + "/" + $repo] // $repo' --raw-output $HOME/.config/worktrees.json)
+    set dir_prefix $(jq --arg org $org --arg repo $repo '.prefixes[$org + "/" + $repo] // $repo' --raw-output ~/.config/worktrees.json)
 
     # Ensure we have the latest branches
     git fetch
@@ -35,7 +35,7 @@ function worktree-add --description 'Add a new worktree'
     end
 
     set dir_suffix $(gum input --prompt="Directory name: $dir_prefix-" --placeholder="" --value=$branch || return 1)
-    set directory $HOME/dev/$dir_prefix-$dir_suffix
+    set directory ~/dev/$dir_prefix-$dir_suffix
 
     # Disable overcommit while creating worktrees to errors about the signature changing
     switch $branch_type

@@ -1,13 +1,13 @@
-#!/usr/bin/env bash
+#!/usr/bin/env fish
 
-current_name=$(git rev-parse --abbrev-ref HEAD)
-new_name="$current_name-backup"
-suffix=2
+set current_name (git rev-parse --abbrev-ref HEAD)
+set new_name "$current_name-backup"
+set suffix 2
 
-while git show-ref --quiet "refs/heads/$new_name"; do
-  new_name="$current_name-backup$suffix"
-  ((suffix++))
-done
+while git show-ref --quiet refs/heads/$new_name
+    set new_name "$current_name-backup$suffix"
+    set suffix (math $suffix + 1)
+end
 
-git branch "$new_name"
+git branch $new_name
 echo "Backed up the current branch to $new_name"

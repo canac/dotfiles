@@ -1,8 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env fish
 
-current=$(git branch --show-current)
-if [[ -z "$current" ]]; then
-  exit 1
+set current (git branch --show-current)
+if test -z $current
+    return 1
 else
-  echo "$current"
-fi
+    echo $current
+end

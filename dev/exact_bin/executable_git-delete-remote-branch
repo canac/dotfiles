@@ -1,4 +1,4 @@
 #!/usr/bin/env fish
 
-git push origin --delete (git current) &&
-    git branch --unset-upstream
+git push origin --delete (git current)
+and git branch --unset-upstream

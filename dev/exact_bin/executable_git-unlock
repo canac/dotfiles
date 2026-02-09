@@ -1,3 +1,3 @@
-#!/usr/bin/env bash
+#!/usr/bin/env fish
 
-rm "$(git rev-parse --git-dir)/index.lock"
+rm (git rev-parse --git-dir)/index.lock

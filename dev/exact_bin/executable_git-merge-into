@@ -1,19 +1,12 @@
 #!/usr/bin/env fish
 
-set current_branch $(git current)
-if test -z $current_branch
-    echo "Error: You are not currently on a branch"
-    exit 1
-end
-
-# Check for argument
 if test (count $argv) -lt 1
     echo "Usage: git merge-into <target-branch>"
     exit 1
 end
 
-git switch $argv[1] &&
-    git pull &&
-    git merge - --no-edit &&
-    git push &&
-    git switch -
+git switch $argv[1]
+and git pull
+and git merge - --no-edit
+and git push
+and git switch -

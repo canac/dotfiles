@@ -11,7 +11,7 @@ function lcman --description 'launchctl manager'
     set command $argv[1]
     set service $argv[2]
     set domain_target gui/$(id -u $USER)
-    if not set plist_file $(fd --type file . $HOME/Library/LaunchAgents | rg --fixed-strings ".$service.plist")
+    if not set plist_file $(fd --type file . ~/Library/LaunchAgents | rg --fixed-strings ".$service.plist")
         echo "Service not found: $service"
         return 1
     end

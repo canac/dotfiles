@@ -1,7 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env fish
 
 # Install ensure-lines
 deno install --global --force \
   --allow-read \
   --allow-write \
-  "$HOME/dev/scripts/ensure-lines.ts"
+  ~/dev/scripts/ensure-lines.ts

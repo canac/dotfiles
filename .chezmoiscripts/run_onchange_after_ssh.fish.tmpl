@@ -1,0 +1,6 @@
+#!/usr/bin/env fish
+
+# Add the SSH key if it hasn't been added already
+if not ssh-add -l | grep -q "{{ .email }}"
+    ssh-add ~/.ssh/id_ed25519
+end

@@ -20,7 +20,7 @@ command = "pull-all"
 
 {{ if .proxy }}
 [jobs.mitmproxy]
-command = "mitmdump --quiet --ssl-insecure --listen-port $(portman create mitmproxy --no-activate --overwrite) --scripts $HOME/dev/proxy.py"
+command = "mitmdump --quiet --ssl-insecure --listen-port $(portman create mitmproxy --no-activate --overwrite) --scripts ~/dev/proxy.py"
 retry.limit = "unlimited"
 {{ end }}
 

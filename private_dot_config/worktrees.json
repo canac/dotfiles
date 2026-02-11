@@ -3,6 +3,7 @@
     "CruGlobal/conf-registration-web": "ert",
     "CruGlobal/give-web": "give",
     "CruGlobal/mpdx-react": "mpdx",
-    "CruGlobal/mpdx_api": "mpdx-api"
+    "CruGlobal/mpdx_api": "mpdx-api",
+    "CruGlobal/staff_accounting_app": "saa"
   }
 }

@@ -1,3 +1,4 @@
 auto-update = download
+auto-update-channel = tip
 font-family = FiraCode Nerd Font Mono
 window-padding-x = 4

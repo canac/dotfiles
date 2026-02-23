@@ -52,10 +52,9 @@ function worktree-add --description 'Add a new worktree'
         pnpm install
     else if test -e package-lock.json
         npm install
-    else if test -e Gemfile.lock
+    end
+    if test -e Gemfile.lock
         bundle install
-    else
-        echo "No lockfile found"
     end
     setup-env --new
     portman create

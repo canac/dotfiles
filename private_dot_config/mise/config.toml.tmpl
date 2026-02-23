@@ -1,15 +1,21 @@
 [settings]
 idiomatic_version_file_enable_tools = ["ruby"]
 
-[tool_alias]
-cru-cli = "https://github.com/CruGlobal/asdf-cru-cli.git"
-
 [tools]
 {{ if .cru }}
-cru-cli = "latest"
+"asdf:CruGlobal/asdf-cru-cli" = "latest"
+dotenvx = "latest"
 {{ end }}
 ruby = "latest"
 yarn = "latest"
 
+{{ if .cru }}
+[shell_alias]
+local-stage = "mise task run local-stage"
+
 [tasks.deploy-status]
 run = "gh workflow view build-deploy-ecs.yml"
+
+[tasks.local-stage]
+run = "dotenvx run --env-file .env.local.staging --"
+{{ end }}

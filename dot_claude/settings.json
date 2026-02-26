@@ -1,4 +1,22 @@
 {
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "permission_prompt",
+        "hooks": [
+          { "type": "command", "command": "say \"Permission required\"" }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          { "type": "command", "command": "say \"Task complete\"" }
+        ]
+      }
+    ]
+  },
   "permissions": {
     "allow": [
       "Bash(bundle:*)",
@@ -21,7 +39,11 @@
       "WebSearch"
     ],
     "deny": [],
-    "ask": []
+    "ask": [],
+    "additionalDirectories": [
+      "~/dev",
+      "~/.local/share/mise"
+    ]
   },
   "model": "opus",
   "enabledPlugins": {

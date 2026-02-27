@@ -144,8 +144,9 @@ async function setupRepo(
 
   if (Deno.args.includes("--new")) {
     await $`mise trust --quiet`;
-    const miseTasks = await $`mise task --local`.lines();
-    if (miseTasks.includes("setup")) {
+    if (
+      (await $`mise task info setup --local`.quiet("both").noThrow()).code === 0
+    ) {
       await $`mise task run setup`.noThrow();
     }
   }

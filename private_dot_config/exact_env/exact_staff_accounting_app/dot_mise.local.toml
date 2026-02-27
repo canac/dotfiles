@@ -1,5 +1,8 @@
 [tasks.setup]
 run = "yarn build:css"
 
+[tasks.start]
+run = "dev"
+
 [tasks.create-user]
 run = "rails runner \"User.create!(username: '', sso_guid: '7d81dc01-3508-4980-829b-7cafb1a334e1')\""

@@ -31,7 +31,6 @@
       "Bash(ls:*)",
       "Bash(tail:*)",
       "Bash(xargs:*)",
-      "Bash(mise exec:*)",
       "Bash(npm:*)",
       "Bash(pnpm:*)",
       "Bash(yarn:*)",
@@ -48,5 +47,6 @@
   "model": "opus",
   "enabledPlugins": {
     "rust-analyzer-lsp@claude-plugins-official": true
-  }
+  },
+  "skipDangerousModePermissionPrompt": true
 }

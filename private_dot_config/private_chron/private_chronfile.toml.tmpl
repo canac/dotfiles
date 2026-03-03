@@ -34,8 +34,4 @@ retry.delay = "1m"
 schedule = "0 0 12 * * Fri" # every Friday at noon
 command = "feed-watcher https://gist.githubusercontent.com/canac/647a8c4542cc088b333b3d0bcc765b9d/raw/feeds.toml"
 retry.limit = "unlimited"
-
-[jobs.release-watcher]
-schedule = "0 0 * * * *" # hourly
-command = "release-watcher https://gist.githubusercontent.com/canac/ac3eaa16cb9c3e03530fbee64e1e690f/raw/packages.toml"
 {{ end }}

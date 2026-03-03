@@ -2,6 +2,7 @@
 
 # Install mailbox-proxy
 deno install --global --force \
-    --allow-net=mailbox-proxy.canac.deno.net \
+    --allow-env=PORT \
+    --allow-net=0.0.0.0 \
     --allow-run=mailbox \
     ~/dev/scripts/mailbox-proxy.ts

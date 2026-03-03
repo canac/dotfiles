@@ -6,29 +6,17 @@ if (!authToken) {
   Deno.exit(1);
 }
 
-const connect = () => {
-  const ws = new WebSocket("wss://mailbox-proxy.canac.deno.net/", {
-    headers: {
-      Authorization: authToken,
-    },
-  });
-  ws.addEventListener("message", async (event) => {
-    if (typeof event.data === "string") {
-      await createMailboxMessages([{
-        mailbox: "mailbox-proxy",
-        content: event.data,
-      }]);
-    }
-  });
+const port = parseInt(Deno.env.get("PORT") ?? "");
+Deno.serve({ port: port || undefined }, async (req) => {
+  if (req.headers.get("authorization") !== authToken) {
+    return new Response("Unauthorized", { status: 401 });
+  }
 
-  ws.addEventListener("close", () => {
-    console.log("Reconnecting to websocket...");
-    connect();
-  });
+  if (req.method !== "POST") {
+    return new Response("Method Not Allowed", { status: 405 });
+  }
 
-  ws.addEventListener("error", () => {
-    ws.close();
-  });
-};
-
-connect();
+  const content = await req.text();
+  await createMailboxMessages([{ mailbox: "mailbox-proxy", content }]);
+  return new Response(null);
+});

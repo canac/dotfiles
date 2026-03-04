@@ -1,6 +1,8 @@
 {
   "permissions": {
     "allow": [
+      "Bash(bin/rails:*)",
+      "Bash(bin/rspec:*)",
       "Bash(bundle:*)",
       "Bash(cargo:*)",
       "Bash(cat:*)",
@@ -11,6 +13,7 @@
       "Bash(git:*)",
       "Bash(grep:*)",
       "Bash(ls:*)",
+      "Bash(rspec:*)",
       "Bash(tail:*)",
       "Bash(xargs:*)",
       "Bash(npm:*)",

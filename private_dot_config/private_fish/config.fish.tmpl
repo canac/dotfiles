@@ -18,6 +18,7 @@ set fish_greeting
 set sponge_delay 10
 {{- if .cru }}
 set --export DOCKER_HOST "unix://$HOME/.colima/default/docker.sock"
+set --export MCP_JIRA_TOKEN "{{ .secrets.JIRA_TOKEN }}"
 {{- end }}
 set --export EDITOR code
 set --export HOMEBREW_NO_ENV_HINTS 1

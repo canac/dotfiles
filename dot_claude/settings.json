@@ -1,22 +1,4 @@
 {
-  "hooks": {
-    "Notification": [
-      {
-        "matcher": "permission_prompt",
-        "hooks": [
-          { "type": "command", "command": "say \"Permission required\"" }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          { "type": "command", "command": "say \"Task complete\"" }
-        ]
-      }
-    ]
-  },
   "permissions": {
     "allow": [
       "Bash(bundle:*)",
@@ -44,7 +26,31 @@
       "~/.local/share/mise"
     ]
   },
-  "model": "opus",
+  "model": "Opus",
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "say \"Permission required\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "say \"Task complete\""
+          }
+        ]
+      }
+    ]
+  },
   "enabledPlugins": {
     "rust-analyzer-lsp@claude-plugins-official": true
   },

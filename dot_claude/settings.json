@@ -25,6 +25,7 @@
     "deny": [],
     "ask": [],
     "additionalDirectories": [
+      "/tmp",
       "~/dev",
       "~/.local/share/mise"
     ]

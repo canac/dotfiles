@@ -1,4 +1,6 @@
 import $ from "jsr:@david/dax@0.43.2";
+import { message, object, option } from "jsr:@optique/core@0.10";
+import { run } from "jsr:@optique/run@0.10";
 import { exists } from "jsr:@std/fs@1.0.19";
 import { basename, join } from "jsr:@std/path@1.0.4";
 import { chain, takeWhile } from "./lib/iterators.ts";
@@ -119,6 +121,7 @@ async function setupRepo(
   repoDir: string,
   secretsFiles: File[],
   copiedFiles: File[],
+  isNew: boolean,
 ) {
   console.group(`Setting up repo ${repoDir}`);
 
@@ -142,7 +145,7 @@ async function setupRepo(
     }]`,
   );
 
-  if (Deno.args.includes("--new")) {
+  if (isNew) {
     await $`mise trust --quiet`;
     if (
       (await $`mise task info setup --local`.quiet("both").noThrow()).code === 0
@@ -157,14 +160,29 @@ async function setupRepo(
 /**
  * Run generate-cached and return the filename of the generated data.
  */
-function runGenerator(generatorScript: string): Promise<string> {
-  const regenerate = Deno.args.includes("--regenerate");
+function runGenerator(
+  generatorScript: string,
+  regenerate: boolean,
+): Promise<string> {
   return $`~/dev/scripts/generate-cached.fish ${generatorScript} ${
     regenerate ? ["--regenerate"] : []
   }`.text();
 }
 
+const parser = object({
+  new: option("--new"),
+  all: option("--all"),
+  regenerate: option("--regenerate"),
+});
+
 async function main() {
+  const config = run(parser, {
+    programName: "setup-env",
+    description: message`Set up worktrees with personalized customizations`,
+    help: "both",
+    completion: "command",
+  });
+
   const repo = await getCurrentGitHubRepo();
   if (!repo) {
     console.error("No GitHub repository detected");
@@ -202,7 +220,7 @@ async function main() {
     const stat = await Deno.stat(join(envConfigDir, entry.name));
     const executable = ((stat.mode ?? 0) & 0o100) !== 0;
     const source = executable
-      ? await runGenerator(join(envConfigDir, entry.name))
+      ? await runGenerator(join(envConfigDir, entry.name), config.regenerate)
       : join(envConfigDir, entry.name);
     const file = { source, name };
 
@@ -215,18 +233,18 @@ async function main() {
     }
   }
 
-  if (Deno.args.includes("--all")) {
+  if (config.all) {
     // Apply changes to all worktrees
     const worktrees = (await $`git worktree list --porcelain`.lines())
       .map((line) => stripPrefix(line, "worktree "))
       .filter((line) => line !== null);
     console.log(`Setting up ${worktrees.length} worktrees`);
     for await (const worktree of worktrees) {
-      await setupRepo(worktree, secretsFiles, copiedFiles);
+      await setupRepo(worktree, secretsFiles, copiedFiles, config.new);
     }
   } else {
     const repo = await $`git rev-parse --show-toplevel`.text();
-    await setupRepo(repo, secretsFiles, copiedFiles);
+    await setupRepo(repo, secretsFiles, copiedFiles, config.new);
   }
 }
 

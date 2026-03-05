@@ -2,7 +2,8 @@
 .chezmoiscripts/iterm.sh
 .chezmoiscripts/pinentry-macos.sh
 .chezmoiscripts/setup-macos.sh
-.config/fish/functions/lcman.fish
+dev/scripts/install/completions-lcman.fish
+dev/scripts/install/install-lcman.fish
 .gnupg/
 Library/
 {{ end }}

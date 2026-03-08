@@ -14,7 +14,7 @@
 # @raycast.author Caleb Cox
 # @raycast.authorURL https://github.com/canac
 
-if pgrep chron > /dev/null; then
+if chron jobs > /dev/null 2>&1; then
   echo "Running"
 else
   echo "Not running"

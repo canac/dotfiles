@@ -1,7 +1,7 @@
 [tasks.setup]
 run = [
   "overcommit --sign",
-  "overcommit --install"
+  "overcommit --install",
 ]
 
 [tasks.gql]

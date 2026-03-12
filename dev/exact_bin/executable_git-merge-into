@@ -5,7 +5,7 @@ if test (count $argv) -lt 1
     exit 1
 end
 
-git switch $argv[1]
+git switch --ignore-other-worktrees $argv[1]
 and git pull
 and git merge - --no-edit
 and git push

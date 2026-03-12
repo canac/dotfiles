@@ -1,5 +1,4 @@
 {{ if ne .chezmoi.os "darwin" }}
-.chezmoiscripts/iterm.sh
 .chezmoiscripts/pinentry-macos.sh
 .chezmoiscripts/setup-macos.sh
 dev/scripts/install/completions-lcman.fish

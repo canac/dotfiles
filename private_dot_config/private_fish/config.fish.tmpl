@@ -31,9 +31,6 @@ fzf --fish | source
 mcfly init fish | source
 starship init fish | source
 zoxide init fish | source
-{{- if eq .chezmoi.os "darwin" }}
-source ~/.iterm2_shell_integration.fish
-{{- end }}
 
 abbr --add c 'code .'
 abbr --add ca 'chezmoi apply'

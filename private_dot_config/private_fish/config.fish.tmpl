@@ -1,3 +1,4 @@
+set CDPATH . ~/dev
 fish_add_path --global $HOMEBREW_PREFIX/opt/postgresql@18/bin
 fish_add_path --global ~/dev/bin
 fish_add_path --global ~/.deno/bin
@@ -35,7 +36,6 @@ zoxide init fish | source
 abbr --add c 'code .'
 abbr --add ca 'chezmoi apply'
 abbr --add caw 'watchexec -- chezmoi apply'
-abbr --add cd z
 abbr --add cgron 'pbpaste | gron | code -'
 abbr --add cr 'cargo run --'
 abbr --add g git

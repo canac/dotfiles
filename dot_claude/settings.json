@@ -24,6 +24,7 @@
     ],
     "deny": [],
     "ask": [],
+    "defaultMode": "acceptEdits",
     "additionalDirectories": [
       "/tmp",
       "~/dev",
@@ -56,7 +57,10 @@
     ]
   },
   "enabledPlugins": {
-    "rust-analyzer-lsp@claude-plugins-official": true
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "ruby-lsp@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true
   },
+  "voiceEnabled": true,
   "skipDangerousModePermissionPrompt": true
 }

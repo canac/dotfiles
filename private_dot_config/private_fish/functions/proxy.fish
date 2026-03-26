@@ -1,6 +1,6 @@
 function proxy --description 'Set system HTTP(S) proxy status'
     if test $(count $argv) -ne 1
-        echo "Usage: proxy [on|off]"
+        echo "Usage: proxy [on|off]" >&2
         return 1
     end
 
@@ -16,7 +16,7 @@ function proxy --description 'Set system HTTP(S) proxy status'
             networksetup -setwebproxystate "Wi-Fi" off
             networksetup -setsecurewebproxystate "Wi-Fi" off
         case '*'
-            echo "Invalid state: $state must be on or off"
+            echo "Invalid state: $state must be on or off" >&2
             return 1
     end
 end

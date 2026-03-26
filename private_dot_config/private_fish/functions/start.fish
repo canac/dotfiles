@@ -10,6 +10,6 @@ function start --description 'Start a project'
     else if test -e package-lock.json
         npm start
     else
-        echo "No Gemfile, yarn.lock, or package-lock.json file found"
+        echo "No Gemfile, yarn.lock, or package-lock.json file found" >&2
     end
 end

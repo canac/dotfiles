@@ -9,7 +9,7 @@ function rt --description 'Run tests for a file'
         set run_cmd "yarn jest --runTestsByPath"
         set watch_cmd "$run_cmd --watch"
     else
-        echo "Error: no test runner found"
+        echo "Error: no test runner found" >&2
         return 1
     end
 

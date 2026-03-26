@@ -1,7 +1,8 @@
 function worktree-add --description 'Add a new worktree'
     set repo_url $(git remote get-url origin || return 1)
-    if not set full_repo $(echo $repo_url | rg '^https:\/\/github\.com\/(.+?\/.+?)\.git$' --replace '$1')
-        echo "Repo \"$repo_url\" does not match a GitHub repo"
+    set full_repo $(echo $repo_url | rg '^https:\/\/github\.com\/(.+?\/.+?)\.git$' --replace '$1')
+    or begin
+        echo "Repo \"$repo_url\" does not match a GitHub repo" >&2
         return 1
     end
     set parts $(string split / $full_repo)

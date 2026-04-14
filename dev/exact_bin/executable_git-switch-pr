@@ -1,0 +1,4 @@
+#!/usr/bin/env fish
+
+set pr (gh pr list --search '-author:@me -author:dependabot[bot]' | fzf --accept-nth=1 --delimiter='\t')
+and gh pr checkout $pr

@@ -24,7 +24,7 @@
     ],
     "deny": [],
     "ask": [],
-    "defaultMode": "auto",
+    "defaultMode": "acceptEdits",
     "additionalDirectories": [
       "/tmp",
       "~/dev",
@@ -74,8 +74,10 @@
       }
     }
   },
-  "effortLevel": "xhigh",
+  "effortLevel": "high",
   "skipDangerousModePermissionPrompt": true,
+  "remoteControlAtStartup": true,
+  "agentPushNotifEnabled": false,
   "voiceEnabled": true,
   "skipAutoPermissionPrompt": true
 }

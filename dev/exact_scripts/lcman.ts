@@ -12,8 +12,8 @@ import {
   or,
   type ValueParser,
   withDefault,
-} from "jsr:@optique/core@0.10";
-import { run } from "jsr:@optique/run@0.10";
+} from "jsr:@optique/core@1.0";
+import { run } from "jsr:@optique/run@1.0";
 import { join } from "jsr:@std/path@1";
 
 const home = Deno.env.get("HOME");
@@ -52,8 +52,9 @@ function readServices(): AsyncIterable<Service> {
 
 function service(): ValueParser<"async", string> {
   return {
-    $mode: "async",
+    mode: "async",
     metavar: "SERVICE",
+    placeholder: "",
     parse(input) {
       return Promise.resolve({ success: true, value: input });
     },

@@ -1,6 +1,6 @@
 import $ from "jsr:@david/dax@0.43.2";
-import { message, object, option } from "jsr:@optique/core@0.10";
-import { run } from "jsr:@optique/run@0.10";
+import { message, object, option } from "jsr:@optique/core@1.0";
+import { run } from "jsr:@optique/run@1.0";
 import { exists } from "jsr:@std/fs@1.0.19";
 import { basename, join } from "jsr:@std/path@1.0.4";
 import { chain, takeWhile } from "./lib/iterators.ts";

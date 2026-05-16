@@ -2,6 +2,7 @@ import { DB } from "https://deno.land/x/sqlite@v3.9.0/mod.ts";
 import { join } from "jsr:@std/path@1.0.4";
 import { parse as parseToml } from "jsr:@std/toml@1.0.1";
 import { z } from "jsr:@zod/zod@4.1.8";
+import { assert, home } from "./lib/cli.ts";
 import { createMailboxMessages } from "./lib/mailbox.ts";
 import { parseFeed } from "./lib/parse-feed.ts";
 
@@ -13,10 +14,7 @@ type FeedDefinition = z.infer<typeof feedDefinition>;
 
 // The first command-line argument is the URL to a TOML file containing the list of feeds
 const feedsListUrl = Deno.args[0];
-if (!feedsListUrl) {
-  console.error("Usage: feed-watcher [feed list url]");
-  Deno.exit(1);
-}
+assert(feedsListUrl, "Usage: feed-watcher [feed list url]");
 console.log(`Loading feeds list from ${feedsListUrl}`);
 const res = await fetch(feedsListUrl);
 const feedsListSchema = z.object({
@@ -33,11 +31,7 @@ const feedsListSchema = z.object({
 });
 const { feeds } = feedsListSchema.parse(parseToml(await res.text()));
 
-const home = Deno.env.get("HOME");
-if (!home) {
-  throw new Error("$HOME environment variable is not set");
-}
-const db = new DB(join(home, ".local/share/canac/feed-watcher.db"));
+const db = new DB(join(home(), ".local/share/canac/feed-watcher.db"));
 db.query(`CREATE TABLE IF NOT EXISTS seen_entries (
   id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   entry_guid TEXT NOT NULL UNIQUE

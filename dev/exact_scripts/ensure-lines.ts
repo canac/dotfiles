@@ -1,11 +1,12 @@
+import { assert } from "./lib/cli.ts";
 import { takeWhile } from "./lib/iterators.ts";
 import { linesFromReadable, safeLinesFromFile } from "./lib/readables.ts";
 
 async function main() {
-  if (Deno.args.length < 1 || Deno.args.length > 3) {
-    console.error("Usage: ensure-lines [file] [manager]");
-    Deno.exit(1);
-  }
+  assert(
+    Deno.args.length === 1 || Deno.args.length === 2,
+    "Usage: ensure-lines [file] [manager]",
+  );
 
   const file = Deno.args[0];
   const manager = Deno.args[1] ?? "chezmoi";

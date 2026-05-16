@@ -15,12 +15,9 @@ import {
 } from "jsr:@optique/core@1.0";
 import { run } from "jsr:@optique/run@1.0";
 import { join } from "jsr:@std/path@1";
+import { assert, home } from "./lib/cli.ts";
 
-const home = Deno.env.get("HOME");
-if (!home) {
-  throw new Error("$HOME environment variable is not set");
-}
-const launchAgentsDir = join(home, "Library", "LaunchAgents");
+const launchAgentsDir = join(home(), "Library", "LaunchAgents");
 
 function stripSuffix(input: string, suffix: string): string | null {
   return input.endsWith(suffix) ? input.slice(0, -suffix.length) : null;
@@ -80,17 +77,13 @@ async function findService(name: string): Promise<Service> {
     readServices(),
     filter((service) => service.name.includes(name)),
   ));
-  if (matches.length === 0) {
-    console.error(`No services matching \"${name}\" found`);
-    Deno.exit(1);
-  } else if (matches.length > 1) {
-    console.error(
-      `Multiple services matching \"${name}\": ${
-        matches.map((match) => match.name).join(", ")
-      }`,
-    );
-    Deno.exit(1);
-  }
+  assert(matches.length, `No services matching "${name}" found`);
+  assert(
+    matches.length <= 1,
+    `Multiple services matching "${name}": ${
+      matches.map((match) => match.name).join(", ")
+    }`,
+  );
 
   return matches[0];
 }

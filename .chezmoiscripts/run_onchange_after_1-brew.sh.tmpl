@@ -52,9 +52,6 @@ brew "vips"
 brew "ffmpeg"
 brew "yt-dlp"
 {{ end }}
-{{ if .rust }}
-brew "rustup"
-{{ end }}
 {{ if eq .chezmoi.os "darwin" }}
 brew "cask"
 brew "pinentry-mac"

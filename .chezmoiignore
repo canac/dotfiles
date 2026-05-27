@@ -1,8 +1,8 @@
 {{ if ne .chezmoi.os "darwin" }}
 .chezmoiscripts/pinentry-macos.sh
 .chezmoiscripts/setup-macos.sh
-dev/scripts/install/completions-lcman.fish
 dev/scripts/install/install-lcman.fish
+dev/scripts/install/installcompletions-lcman.fish
 .gnupg/
 Library/
 {{ end }}

@@ -89,11 +89,6 @@ cask "ticktick"
 {{ end }}
 EOF
 
-mise install
-
-deno install jsr:@canac/bundle-blame --global --reload --force --allow-env --allow-read --allow-write --allow-run=git,yarn
-deno install jsr:@canac/git-cleanup --global --reload --force --allow-env --allow-read --allow-run=git
-
 {{ if .cru }}
 # stage-console expects to be able to call docker-credential-desktop
 credential_helper={{ if eq .chezmoi.os "darwin" }}"docker-credential-osxkeychain"{{ else }}"docker-credential-pass"{{ end }}

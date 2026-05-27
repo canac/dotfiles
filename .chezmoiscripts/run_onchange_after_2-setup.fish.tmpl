@@ -2,6 +2,11 @@
 
 # In phase 2, we can use fish installed in phase 1
 
+{{ if .cru }}
+# asdf-cru-cli requires gh to be logged in
+gh auth token &> /dev/null || gh auth login
+{{ end }}
+
 mise install
 
 deno install jsr:@canac/bundle-blame --global --reload --force --allow-env --allow-read --allow-write --allow-run=git,yarn

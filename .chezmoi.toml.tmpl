@@ -1,4 +1,3 @@
-{{- $backup_namespace := promptStringOnce . "backup_namespace" "What is your backup namespace" -}}
 {{- $email := "canac@users.noreply.github.com" -}}
 {{- $env := (bitwarden "item" "chezmoi-env.yml").notes | fromYaml -}}
 {{- $password_salt := $env.PASSWORD_SALT -}}
@@ -10,8 +9,6 @@
 encryption = "gpg"
 
 [data]
-    backup_bucket = "grader-rectify-patio"
-    backup_namespace = {{ $backup_namespace | quote }}
     brew_bin = {{ default (printf "%s/bin" (env "HOMEBREW_PREFIX")) (index . "brew_bin") | quote }}
     email = {{ $email | quote }}
     nextdns_profile = "1d7724"
@@ -21,11 +18,6 @@ encryption = "gpg"
     proxy = {{ $proxy }}
     rust = {{ $rust }}
     watcher = {{ $watcher }}
-
-[data.env]
-    b2_account_id = {{ $env.B2_ACCOUNT_ID | quote }}
-    b2_account_key = {{ $env.B2_ACCOUNT_KEY | quote }}
-    restic_password = {{ sha256sum (print $backup_namespace $password_salt) | quote }}
 
 [data.secrets]
 {{- range $key, $value := $env }}

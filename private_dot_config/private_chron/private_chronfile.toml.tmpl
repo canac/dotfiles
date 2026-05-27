@@ -6,12 +6,6 @@ schedule = "0 0 12 * * *" # every day at noon
 command = "homebrew-upgrade"
 retry.limit = "unlimited"
 
-[jobs.online-backup]
-schedule = "0 0 12 * * *" # every day at noon
-disabled = true
-command = "backup"
-retry.limit = "unlimited"
-
 {{ if .cru }}
 [jobs.pull-all]
 schedule = "0 */10 9-17 * * Mon-Fri" # 9-5 Monday-Friday

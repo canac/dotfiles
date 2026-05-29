@@ -31,6 +31,7 @@
       "~/.local/share/mise"
     ]
   },
+  "model": "opus[1m]",
   "hooks": {
     "Notification": [
       {
@@ -76,8 +77,9 @@
   },
   "effortLevel": "high",
   "skipDangerousModePermissionPrompt": true,
-  "remoteControlAtStartup": true,
+  "theme": "dark",
+  "remoteControlAtStartup": false,
   "agentPushNotifEnabled": false,
-  "voiceEnabled": true,
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "voiceEnabled": true
 }

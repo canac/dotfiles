@@ -6,6 +6,11 @@ export interface GitHubRepo {
   repo: string;
 }
 
+export async function branchExists(branch: string): Promise<boolean> {
+  const result = await $`git show-ref --quiet refs/heads/${branch}`.noThrow();
+  return result.code === 0;
+}
+
 export async function currentGitHubRepo(): Promise<GitHubRepo> {
   const remoteUrl = await $`git remote get-url origin`.text();
   const match = remoteUrl.match(

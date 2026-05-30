@@ -6,6 +6,17 @@ export async function* chain<T>(
   }
 }
 
+export async function* filter<T>(
+  iterable: AsyncIterable<T>,
+  predicate: (value: T) => boolean,
+): AsyncGenerator<T> {
+  for await (const value of iterable) {
+    if (predicate(value)) {
+      yield value;
+    }
+  }
+}
+
 export async function* takeWhile<T>(
   iterable: AsyncIterable<T>,
   predicate: (value: T) => boolean,

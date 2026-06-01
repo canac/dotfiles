@@ -4,7 +4,7 @@ set certificate_file ~/.mitmproxy/mitmproxy-ca-cert.pem
 
 if not test -e $certificate_file
     # Start mitmproxy in the background to create the certificate file and wait for it to exist
-    mitmproxy >/dev/null 2>&1 &
+    mitmproxy &>/dev/null &
     set mitmproxy_pid $last_pid
     while not test -e $certificate_file
         sleep 0.1

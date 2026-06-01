@@ -50,8 +50,8 @@ const parser = object({
 const config = await run(parser, {
   programName: "git-work",
   description: message`Start work in a new git worktree`,
-  help: "both",
-  completion: "command",
+  help: "option",
+  completion: "option",
 });
 
 /** Prompt the user to select an existing branch or type input a new branch */

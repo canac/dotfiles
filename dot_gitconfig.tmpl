@@ -18,9 +18,11 @@
 	ce = commit --amend
 	cf = fixup
 	ch = cherry-pick
+	changed-specs = !git swn --diff-filter=d | rg spec/
 	cm = commit --allow-empty
 	cn = continue
 	cr = recommit
+	cs = changed-specs
 	cv = commit --no-verify
 	d = diff
 	db = !git diff $(git merge-base $(git primary) HEAD)
@@ -59,6 +61,7 @@
 	pf = push --force-with-lease --force-if-includes
 	s = status
 	sa = stash apply
+	sf = staged-files
 	sh = stash
 	si = stash --staged
 	ski = stash --keep-index
@@ -67,6 +70,7 @@
 	spi = stash pop --index
 	ss = stash show
 	st = switch
+	staged-files = dsn --diff-filter=d
 	stb = switch --create
 	std = switch --detach
 	stf = switch --force

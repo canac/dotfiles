@@ -17,8 +17,10 @@ yarn = "latest"
 local-stage = "mise task run local-stage"
 
 [tasks.deploy-status]
+dir = {{ `"{{cwd}}"` }}
 run = "gh workflow view build-deploy-ecs.yml"
 
 [tasks.local-stage]
+dir = {{ `"{{cwd}}"` }}
 run = "dotenvx run --env-file .env.local.staging --"
 {{ end }}

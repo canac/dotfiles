@@ -1,5 +1,8 @@
 [tools]
 task = "latest"
 
+[tasks.build-install]
+run = "task build && cp cru ~/.local/bin/"
+
 [tasks.sync-env-setup]
 run = "pre-commit install"

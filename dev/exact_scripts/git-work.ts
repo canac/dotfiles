@@ -165,7 +165,7 @@ async function main() {
   console.log(
     `Creating a worktree in ${bold(cyan(`~/dev/${relativeDir}`))} on branch ${
       bold(cyan(branch))
-    } ${!existing && config.stack ? dim(` stacked on ${config.stack}`) : ""}`,
+    }${!existing && config.stack ? dim(` stacked on ${config.stack}`) : ""}`,
   );
 
   $.setPrintCommand(true);

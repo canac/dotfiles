@@ -196,6 +196,11 @@ async function main() {
     const secretName = stripPrefix(entry.name, "secrets_");
     const name = secretName ?? entry.name;
 
+    // Sensitive env files used by local-env like .env.local.staging aren't copied
+    if (secretName === null && name.startsWith(".env.local.")) {
+      continue;
+    }
+
     // Treat all executable files as generators, otherwise simply copy the file
     const stat = await Deno.stat(join(envConfigDir, entry.name));
     const executable = ((stat.mode ?? 0) & 0o100) !== 0;

@@ -22,7 +22,9 @@
       "WebFetch",
       "WebSearch"
     ],
-    "deny": [],
+    "deny": [
+      "Read(~/.config/env/**)"
+    ],
     "ask": [],
     "defaultMode": "acceptEdits",
     "additionalDirectories": [

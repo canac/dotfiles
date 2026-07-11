@@ -26,6 +26,6 @@ retry.limit = "unlimited"
 
 [jobs.release-watcher]
 schedule = "0 0 12 * * Fri" # every Friday at noon
-command = "release-watcher {{ .secrets.GITHUB_TOKEN }}"
+command = "release-watcher {{ doppler "GITHUB_TOKEN" }}"
 retry.limit = "unlimited"
 {{ end }}

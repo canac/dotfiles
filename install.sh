@@ -10,22 +10,21 @@ eval "$("$homebrew_bin" shellenv)"
 
 # Install bootstrap dependencies
 brew bundle --file=- <<EOF
-brew "bitwarden-cli"
 brew "chezmoi"
+brew "doppler"
 brew "gnupg"
 EOF
 
-# Log into Bitwarden, or unlock the vault if the user is already logged in
-BW_SESSION=$(bw login --raw || bw unlock --raw)
-export BW_SESSION
-bw sync
+# Authenticate with Doppler so chezmoi and the steps below can read secrets
+doppler me >/dev/null 2>&1 || doppler login
 
 # Import the GPG signing key if it hasn't been imported already
 # because it will be needed by chezmoi to decrypt files
 export SIGNING_KEY_ID="A88CE79A6BAC53C39AC331099025163398B61D7E"
 if ! gpg --list-secret-keys "$SIGNING_KEY_ID"; then
-  bw get attachment private.key --itemid "GPG signing key"
-  bw get notes "GPG passphrase" | gpg --batch --pinentry-mode loopback --passphrase-fd 0 --import private.key
+  doppler secrets get GPG_PRIVATE_KEY --project chezmoi --config main --plain | base64 --decode > private.key
+  doppler secrets get GPG_PASSPHRASE --project chezmoi --config main --plain \
+    | gpg --batch --pinentry-mode loopback --passphrase-fd 0 --import private.key
   echo "$SIGNING_KEY_ID:6:" | gpg --import-ownertrust
   rm private.key
 fi

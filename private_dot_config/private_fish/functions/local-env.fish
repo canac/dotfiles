@@ -7,6 +7,11 @@ function local-env --description "Run a command with a project's deployment env 
         return 1
     end
 
+    if test "$env" = prod; and set -q CLAUDECODE
+        echo "local-env: refusing to run prod env inside Claude Code" >&2
+        return 1
+    end
+
     set --local origin (git remote get-url origin 2>/dev/null)
     if test -z "$origin"
         echo "local-env: not in a git repo with an origin remote" >&2

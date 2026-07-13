@@ -7,10 +7,11 @@
 encryption = "gpg"
 
 [data]
+    # HOMEBREW_PREFIX is initially set by ./install.sh
     brew_bin = {{ default (printf "%s/bin" (env "HOMEBREW_PREFIX")) (index . "brew_bin") | quote }}
     email = {{ $email | quote }}
     nextdns_profile = "1d7724"
-    signing_key_id = {{ default (env "SIGNING_KEY_ID") (index . "signing_key_id") | quote }}
+    signing_key_id = {{ include ".signing_key_id" | trim | quote }}
     cru = {{ $cru }}
     personal = {{ not $cru }}
     proxy = {{ $proxy }}
@@ -24,6 +25,9 @@ encryption = "gpg"
 [doppler]
     project = "chezmoi"
     config = "main"
+
+[hooks.read-source-state.pre]
+    command = {{ printf "%s/.install.sh" .chezmoi.sourceDir | quote }}
 
 [gpg]
     recipient = {{ $email | quote }}

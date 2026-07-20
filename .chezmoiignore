@@ -16,6 +16,7 @@ Library/
 .bundle/
 .chezmoiscripts/colima.sh
 .chezmoiscripts/hosts.sh
+.claude/commands/
 .config/env/CruGlobal/
 .config/fish/functions/gh-repo.fish
 .config/fish/functions/jr.fish

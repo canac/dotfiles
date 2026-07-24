@@ -24,6 +24,7 @@ import { stripPrefix } from "./lib/strings.ts";
 const WORKTREE_PREFIXES = new Map<string, string>([
   ["CruGlobal/conf-registration-web", "ert"],
   ["CruGlobal/give-web", "give"],
+  ["CruGlobal/know-god-web", "godtools"],
   ["CruGlobal/mpdx-react", "mpdx"],
   ["CruGlobal/mpdx_api", "mpdx-api"],
   ["CruGlobal/staff_accounting_app", "saa"],

@@ -1,0 +1,38 @@
+worktree-path = "~/dev/{{ repo }}-{{ branch | sanitize }}"
+
+[list]
+json-schema = 2
+
+[[pre-start]]
+setup-env = "setup-env --new"
+portman = "portman create"
+dependencies = """
+if [ -f yarn.lock ]; then
+  yarn
+elif [ -f pnpm-lock.yaml ]; then
+  pnpm install
+elif [ -f package-lock.json ]; then
+  npm install
+fi
+if [ -f Gemfile.lock ]; then
+  bundle install
+fi
+"""
+
+[[post-start]]
+open = 'code --profile {{ "Work" if owner | default(value="") == "CruGlobal" else "Default" }} {{ worktree_path }}'
+
+[projects."github.com/CruGlobal/conf-registration-web"]
+worktree-path = "~/dev/ert-{{ branch | sanitize }}"
+
+[projects."github.com/CruGlobal/give-web"]
+worktree-path = "~/dev/give-{{ branch | sanitize }}"
+
+[projects."github.com/CruGlobal/mpdx-react"]
+worktree-path = "~/dev/mpdx-{{ branch | sanitize }}"
+
+[projects."github.com/CruGlobal/mpdx_api"]
+worktree-path = "~/dev/mpdx-api-{{ branch | sanitize }}"
+
+[projects."github.com/CruGlobal/staff_accounting_app"]
+worktree-path = "~/dev/saa-{{ branch | sanitize }}"

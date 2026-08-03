@@ -171,8 +171,6 @@ async function main() {
 
   $.setPrintCommand(true);
 
-  // Disable overcommit while creating worktrees to avoid errors about the signature changing
-  const env = { OVERCOMMIT_DISABLE: "1" };
   let args: string[] = [];
   if (existing) {
     args = [branch, "--force"];
@@ -189,7 +187,7 @@ async function main() {
       args.push("--no-track");
     }
   }
-  await $`git worktree add ${directory} ${args}`.env(env);
+  await $`git worktree add ${directory} ${args}`;
 
   const profile = org === "CruGlobal" ? "Work" : "Default";
   await $`code --profile ${profile} ${directory}`;

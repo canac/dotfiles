@@ -1,3 +1,0 @@
-PostCommit:
-  CustomScript:
-    enabled: false

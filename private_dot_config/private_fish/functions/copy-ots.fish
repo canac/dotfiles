@@ -5,7 +5,7 @@ function copy-ots --description "Create a One Time Secret URL from stdin or clip
         read --null secret
     end
 
-    set domain us
+    set domain eu
     set body (jq --null-input --arg secret "$secret" '{secret: {kind: "conceal", secret: $secret}}')
     set response (curl --silent --fail-with-body \
         --request POST "https://$domain.onetimesecret.com/api/v2/guest/secret/conceal" \

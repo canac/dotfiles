@@ -8,9 +8,9 @@ customCommands:
     command: git recommit
     output: terminal
 git:
-  pagers:
+  diffRenderers:
     - colorArg: always
-      pager: delta --paging=never
+      command: delta --paging=never
 gui:
   nerdFontsVersion: "3"
   showIcons: true

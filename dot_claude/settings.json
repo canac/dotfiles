@@ -43,7 +43,8 @@
     "rust-analyzer-lsp@claude-plugins-official": true,
     "ruby-lsp@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true,
-    "caveman@caveman": true
+    "caveman@caveman": true,
+    "worktrunk@worktrunk": true
   },
   "extraKnownMarketplaces": {
     "caveman": {

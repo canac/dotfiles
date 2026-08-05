@@ -20,7 +20,7 @@ fi
 """
 
 [[post-start]]
-open = 'code --profile {{ "Work" if owner | default(value="") == "CruGlobal" else "Default" }} {{ worktree_path }}'
+open = 'code --profile {{ "Work" if owner | default("") == "CruGlobal" else "Default" }} {{ worktree_path }}'
 
 [projects."github.com/CruGlobal/conf-registration-web"]
 worktree-path = "~/dev/ert-{{ branch | sanitize }}"

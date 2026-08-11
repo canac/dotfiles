@@ -41,6 +41,5 @@ Library/
 dev/scripts/
 {{ end }}
 
-.vscode/
 install.sh
 README.md

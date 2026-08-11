@@ -1,4 +1,10 @@
 {
   "deno.enablePaths": ["dev/exact_scripts/"],
-  "editor.defaultFormatter": "denoland.vscode-deno"
+  "editor.defaultFormatter": "denoland.vscode-deno",
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[skill]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

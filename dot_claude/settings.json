@@ -26,7 +26,7 @@
       "Read(~/.config/env/**)"
     ],
     "ask": [],
-    "defaultMode": "acceptEdits",
+    "defaultMode": "auto",
     "additionalDirectories": [
       "/tmp",
       "~/dev",

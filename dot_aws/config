@@ -1,13 +1,22 @@
-[profile cru-sso]
+[sso-session cru]
 sso_start_url = https://cru.awsapps.com/start
 sso_region = us-east-1
+sso_registration_scopes = sso:account:access
+
+[profile cru-sso]
+sso_session = cru
 sso_role_name = default
 region = us-east-1
 output = json
 
 [profile mpdx-amplify]
-sso_start_url = https://cru.awsapps.com/start
-sso_region = us-east-1
+sso_session = cru
 sso_account_id = 753232867021
 sso_role_name = mpdx-react-amplify
+region = us-east-1
+
+[profile self-healing-agent]
+sso_session = cru
+sso_account_id = 056154071827
+sso_role_name = self-healing-agent
 region = us-east-1

@@ -44,13 +44,20 @@
     "ruby-lsp@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true,
     "caveman@caveman": true,
-    "worktrunk@worktrunk": true
+    "worktrunk@worktrunk": true,
+    "agent-review@cruglobal": true
   },
   "extraKnownMarketplaces": {
     "caveman": {
       "source": {
         "source": "github",
         "repo": "JuliusBrussee/caveman"
+      }
+    },
+    "cruglobal": {
+      "source": {
+        "source": "github",
+        "repo": "CruGlobal/agent-review"
       }
     }
   },

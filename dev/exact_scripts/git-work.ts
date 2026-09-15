@@ -1,6 +1,11 @@
 import $ from "jsr:@david/dax@0.43.2";
+import { derivePromptConfig, prompt } from "jsr:@optique/clack@1.3";
 import {
   argument,
+  conditional,
+  constant,
+  dependency,
+  flag,
   map,
   message,
   object,
@@ -8,14 +13,19 @@ import {
   optional,
   or,
   string,
-} from "jsr:@optique/core@1.0";
-import { gitRef } from "jsr:@optique/git@1.0";
-import { run } from "jsr:@optique/run@1.0";
-import { bold, cyan, dim, red } from "jsr:@std/fmt@1/colors";
+} from "jsr:@optique/core@1.3";
+import { gitRef } from "jsr:@optique/git@1.3";
+import { run } from "jsr:@optique/run@1.3";
+import { memoize } from "jsr:@std/cache@0.2/memoize";
+import { bold, cyan, dim } from "jsr:@std/fmt@1/colors";
 import { exists } from "jsr:@std/fs@1";
 import { join } from "jsr:@std/path@1";
-import { isCancel, TextPrompt } from "npm:@clack/core@1.3.1";
-import { autocomplete, cancel, Option } from "npm:@clack/prompts@1.4.0";
+import {
+  autocomplete,
+  cancel,
+  isCancel,
+  Option,
+} from "npm:@clack/prompts@1.4.0";
 import { assert, home } from "./lib/cli.ts";
 import { branchExists, currentGitHubRepo } from "./lib/git.ts";
 import { filter } from "./lib/iterators.ts";
@@ -30,33 +40,19 @@ const WORKTREE_PREFIXES = new Map<string, string>([
   ["CruGlobal/staff_accounting_app", "saa"],
 ]);
 
-const parser = object({
-  branch: optional(
-    argument(string({ metavar: "BRANCH" })),
-  ),
-  yes: option("-y", "--yes", {
-    description: message`Accept the generated directory name`,
-  }),
-  stack: optional(
-    or(
-      map(
-        option("--stack", gitRef({ metavar: "REF" })),
-        (ref) => ref,
-      ),
-      map(option("--stack"), () => "HEAD"),
-    ),
-  ),
-});
+const gitHubRepo = memoize(currentGitHubRepo);
 
-const config = await run(parser, {
-  programName: "git-work",
-  description: message`Start work in a new git worktree`,
-  help: "option",
-  completion: "option",
-});
+async function directoryPrefix(): Promise<string> {
+  const { org, repo } = await gitHubRepo();
+  return WORKTREE_PREFIXES.get(`${org}/${repo}`) ?? repo;
+}
+
+function defaultDirectory(prefix: string, branch: string): string {
+  return `${prefix}-${branch.replaceAll("/", "-")}`;
+}
 
 /** Prompt the user to select an existing branch or type input a new branch */
-async function promptBranch(): Promise<{ branch: string; existing: boolean }> {
+async function promptBranch(): Promise<string> {
   // Ensure we have the latest branches
   await $`git fetch --prune`;
   const refs =
@@ -91,52 +87,68 @@ async function promptBranch(): Promise<{ branch: string; existing: boolean }> {
     cancel("Cancelled");
     Deno.exit(1);
   }
-  return {
-    branch: selected,
-    existing: branches.has(selected),
-  };
+  return selected;
 }
 
-/** Prompt the user to chose a directory name */
-async function promptDirectory(
-  dirPrefix: string,
-  branch: string,
-): Promise<string> {
-  const defaultSuffix = branch.replaceAll("/", "-");
-  if (config.yes) {
-    return `${dirPrefix}-${defaultSuffix}`;
-  }
+const branchSource = dependency(string({ metavar: "BRANCH" }));
 
-  const existingDirs = new Set(
-    (await Array.fromAsync(
-      filter(Deno.readDir(join(home(), "dev")), (entry) => entry.isDirectory),
-    )).map((entry) => entry.name),
-  );
+const parser = object({
+  branch: prompt(argument(branchSource), {
+    type: "text",
+    message: "Choose an existing branch or create a new one:",
+    prompter: promptBranch,
+  }),
+  directory: conditional(
+    map(
+      flag("-y", "--yes", {
+        description: message`Accept the generated directory name`,
+      }),
+      () => "yes" as const,
+    ),
+    { yes: constant(undefined) },
+    prompt(
+      option("--directory", string({ metavar: "DIR" }), {
+        description: message`New worktree directory name`,
+      }),
+      derivePromptConfig(branchSource, async (branch) => {
+        const existingDirs = new Set(
+          (await Array.fromAsync(
+            filter(
+              Deno.readDir(join(home(), "dev")),
+              (entry) => entry.isDirectory,
+            ),
+          )).map((entry) => entry.name),
+        );
+        return {
+          type: "text",
+          message: "Directory name:",
+          initialValue: defaultDirectory(await directoryPrefix(), branch),
+          validate: (value: string) =>
+            existingDirs.has(value)
+              ? `~/dev/${value} already exists`
+              : undefined,
+        };
+      }),
+    ),
+  ),
+  stack: optional(
+    or(
+      map(
+        option("--stack", gitRef({ metavar: "REF" })),
+        (ref) => ref,
+      ),
+      map(option("--stack"), () => "HEAD"),
+    ),
+  ),
+});
 
-  const validate = (value: string | undefined): string | undefined => {
-    const dir = `${dirPrefix}-${value ?? ""}`;
-    if (existingDirs.has(dir)) {
-      return `~/dev/${dir} already exists`;
-    }
-    return undefined;
-  };
-
-  const prompt = new TextPrompt({
-    initialUserInput: defaultSuffix,
-    validate,
-    render() {
-      const problem = validate(this.userInput);
-      const line = `Directory name: ${dirPrefix}-${this.userInputWithCursor}`;
-      return problem ? `${line}\n${red(problem)}` : line;
-    },
-  });
-  const result = await prompt.prompt();
-  if (isCancel(result)) {
-    cancel("Cancelled");
-    Deno.exit(1);
-  }
-  return `${dirPrefix}-${result}`;
-}
+const config = await run(parser, {
+  programName: "git-work",
+  description: message`Start work in a new git worktree`,
+  help: "option",
+  completion: "option",
+  termWidth: "auto",
+});
 
 /** Install the new worktree's dependencies */
 async function installDependencies() {
@@ -153,15 +165,12 @@ async function installDependencies() {
 }
 
 async function main() {
-  const { org, repo } = await currentGitHubRepo();
-  const dirPrefix = WORKTREE_PREFIXES.get(`${org}/${repo}`) ?? repo;
-
-  const { branch, existing } = config.branch
-    ? { branch: config.branch, existing: await branchExists(config.branch) }
-    : await promptBranch();
-
-  const relativeDir = await promptDirectory(dirPrefix, branch);
-  const directory = join(home(), "dev", relativeDir);
+  const { branch } = config;
+  const existing = await branchExists(branch);
+  const [, directory] = config.directory;
+  const relativeDir = directory ??
+    defaultDirectory(await directoryPrefix(), branch);
+  const destination = join(home(), "dev", relativeDir);
 
   console.log(
     `Creating a worktree in ${bold(cyan(`~/dev/${relativeDir}`))} on branch ${
@@ -187,12 +196,13 @@ async function main() {
       args.push("--no-track");
     }
   }
-  await $`git worktree add ${directory} ${args}`;
+  await $`git worktree add ${destination} ${args}`;
 
+  const { org } = await gitHubRepo();
   const profile = org === "CruGlobal" ? "Work" : "Default";
-  await $`code --profile ${profile} ${directory}`;
+  await $`code --profile ${profile} ${destination}`;
 
-  Deno.chdir(directory);
+  Deno.chdir(destination);
   await installDependencies();
   await $`setup-env --new`.noThrow();
   await $`portman create`;
@@ -200,7 +210,7 @@ async function main() {
   // Write the new directory so a shell wrapper can cd into it, inspired by lazygit
   const newDirFile = Deno.env.get("GIT_WORK_NEW_DIR_FILE");
   if (newDirFile) {
-    await Deno.writeTextFile(newDirFile, directory);
+    await Deno.writeTextFile(newDirFile, destination);
   }
 }
 

@@ -11,9 +11,9 @@ import {
   option,
   or,
   type ValueParser,
-  withDefault,
-} from "jsr:@optique/core@1.0";
-import { run } from "jsr:@optique/run@1.0";
+} from "jsr:@optique/core@1.3";
+import { findSimilar } from "jsr:@optique/core@1.3/suggestion";
+import { run } from "jsr:@optique/run@1.3";
 import { join } from "jsr:@std/path@1";
 import { assert, home } from "./lib/cli.ts";
 
@@ -73,11 +73,19 @@ const serviceArg = argument(service(), {
 });
 
 async function findService(name: string): Promise<Service> {
-  const matches = await Array.fromAsync(pipe(
-    readServices(),
-    filter((service) => service.name.includes(name)),
-  ));
-  assert(matches.length, `No services matching "${name}" found`);
+  const services = await Array.fromAsync(readServices());
+  const matches = services.filter((service) => service.name.includes(name));
+  const similar = matches.length === 0
+    ? findSimilar(name, services.map((service) => service.name))
+    : [];
+  assert(
+    matches.length,
+    similar.length === 0
+      ? `No services matching "${name}" found`
+      : `No services matching "${name}" found. Did you mean ${
+        similar.join(", ")
+      }?`,
+  );
   assert(
     matches.length <= 1,
     `Multiple services matching "${name}": ${
@@ -106,12 +114,9 @@ const parser = or(
     object({
       type: constant("logs"),
       service: serviceArg,
-      lines: withDefault(
-        option("-n", "--lines", integer(), {
-          description: message`Number of lines to show`,
-        }),
-        100,
-      ),
+      lines: option("-n", "--lines", integer(), {
+        description: message`Number of lines to show`,
+      }).withDefault(100),
       follow: option("-f", "--follow", {
         description: message`Follow the log output`,
       }),
@@ -149,6 +154,7 @@ const config = await run(parser, {
   description: message`launchctl manager`,
   help: "both",
   completion: "command",
+  termWidth: "auto",
 });
 
 const { name, path: plist } = await findService(config.service);

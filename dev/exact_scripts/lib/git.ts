@@ -7,7 +7,9 @@ export interface GitHubRepo {
 }
 
 export async function branchExists(branch: string): Promise<boolean> {
-  const result = await $`git show-ref --quiet refs/heads/${branch}`.noThrow();
+  const result =
+    await $`git show-ref --quiet refs/heads/${branch} refs/remotes/origin/${branch}`
+      .noThrow();
   return result.code === 0;
 }
 

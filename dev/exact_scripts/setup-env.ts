@@ -1,6 +1,6 @@
 import $ from "jsr:@david/dax@0.43.2";
-import { message, object, option } from "jsr:@optique/core@1.0";
-import { run } from "jsr:@optique/run@1.0";
+import { message, object, option } from "jsr:@optique/core@1.3";
+import { run } from "jsr:@optique/run@1.3";
 import { exists } from "jsr:@std/fs@1.0.19";
 import { basename, join } from "jsr:@std/path@1.0.4";
 import { assert, home } from "./lib/cli.ts";
@@ -161,9 +161,15 @@ function runGenerator(
 }
 
 const parser = object({
-  new: option("--new"),
-  all: option("--all"),
-  regenerate: option("--regenerate"),
+  new: option("--new", {
+    description: message`Run setup tasks`,
+  }),
+  all: option("--all", {
+    description: message`Set up every worktree`,
+  }),
+  regenerate: option("--regenerate", {
+    description: message`Regenerate cached secrets`,
+  }),
 });
 
 async function main() {
@@ -172,6 +178,7 @@ async function main() {
     description: message`Set up worktrees with personalized customizations`,
     help: "both",
     completion: "command",
+    termWidth: "auto",
   });
 
   const { repo } = await currentGitHubRepo();

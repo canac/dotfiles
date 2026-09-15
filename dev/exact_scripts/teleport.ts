@@ -9,8 +9,8 @@ import {
   optional,
   or,
   string,
-} from "jsr:@optique/core@1.0";
-import { run } from "jsr:@optique/run@1.0";
+} from "jsr:@optique/core@1.3";
+import { run } from "jsr:@optique/run@1.3";
 import { join, resolve } from "jsr:@std/path@1";
 import { z } from "jsr:@zod/zod@4.1.8";
 import { home } from "./lib/cli.ts";
